@@ -70,16 +70,19 @@ async function runPython(codeId, outputId) {
   const outputElem = document.getElementById(outputId);
 
   try {
-    // Redirect Python stdout to capture prints
     let output = "";
+
+    // Redirect stdout and stderr during this run
     pyodide.setStdout({
-      batched: (s) => { output += s; },
-      error: (s) => { output += s; }
+      batched: (s) => { output += s; }
+    });
+    pyodide.setStderr({
+      batched: (s) => { output += s; }
     });
 
     await pyodide.runPythonAsync(code);
 
-    outputElem.textContent = output; // display the captured stdout
+    outputElem.textContent = output; // display captured stdout
   } catch(err) {
     outputElem.textContent = "Error: " + err;
   }
