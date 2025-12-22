@@ -63,28 +63,59 @@ function beginInvestigation() {
   document.getElementById("room1").style.display = "block";
 }
 
-// Run Python in a textarea
-async function runPython(codeId, outputId) {
+async function runPython(codeId) {
   if (!pyodideReady) return;
+
   const code = document.getElementById(codeId).value;
-  const outputElem = document.getElementById(outputId);
+  const secretElem = document.getElementById("secretMessage");
+  const originalText = secretElem.getAttribute("data-original");
 
   try {
-    let output = "";
+    // Wrap the code to execute in Pyodide
+    const wrappedCode = `
+${code}
+result = None
+import builtins
+_stdout = []
+def fake_print(*args, **kwargs):
+    _stdout.append(" ".join(map(str,args)))
+builtins.print = fake_print
+try:
+    exec("""${code.replace(/`/g, '\\`')}""")
+    if _stdout:
+        result = "\\n".join(_stdout)
+except:
+    result = None
+`;
 
-    // Redirect stdout and stderr during this run
-    pyodide.setStdout({
-      batched: (s) => { output += s; }
-    });
-    pyodide.setStderr({
-      batched: (s) => { output += s; }
-    });
+    await pyodide.runPythonAsync(wrappedCode);
 
-    await pyodide.runPythonAsync(code);
+    const transformed = pyodide.globals.get("result");
 
-    outputElem.textContent = output; // display captured stdout
-  } catch(err) {
-    outputElem.textContent = "Error: " + err;
+    if (transformed) {
+      // Check if output matches original expected decode
+      // For now, we treat any output as attempt
+      if (transformed.trim() === originalText.trim()) {
+        // Correct decode (rare: if they literally re-print original)
+        secretElem.textContent = transformed;
+      } else {
+        // Incorrect decode: show wrong output for 5 seconds
+        secretElem.textContent = transformed;
+        secretElem.classList.add("flash-red");
+
+        setTimeout(() => {
+          secretElem.textContent = originalText;
+          secretElem.classList.remove("flash-red");
+        }, 5000);
+      }
+    } else {
+      // Python error: revert to original
+      secretElem.textContent = originalText;
+    }
+
+  } catch (err) {
+    // JS error: revert
+    secretElem.textContent = originalText;
   }
 }
 
