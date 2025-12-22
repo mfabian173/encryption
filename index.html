@@ -101,6 +101,42 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBEIREIRE. YRG GUR TNZRF ORTVA!
   </button>
   <p class="feedback" id="feedback1"></p>
 </div>
+  
+<!-- ROOM 2 -->
+<div id="room2" class="room" style="display:none;">
+  <h2>Room 2: Login Logs</h2>
+  <p class="instruction">
+    You've successfully logged into the system. Here are the login logs from the night of the breach.
+    All entries appear scrambled with a Caesar cipher. Determine the shift to generate a suspect list.
+  </p>
+
+  <!-- Caesar shifted logs -->
+  <div class="logs">
+    <pre id="logData">
+Wklv lv d whvw log wr gdwh: 01-15-2025 03:47 - Fdvhvdu 3vph
+Wklv lv d whvw log wr gdwh: 01-15-2025 03:55 - Sdvvzrug1
+Wklv lv d whvw log wr gdwh: 01-15-2025 04:10 - Fdvhvdu 3vph
+Wklv lv d whvw log wr gdwh: 01-15-2025 04:22 - Sdvvzrug2
+Wklv lv d whvw log wr gdwh: 01-15-2025 04:30 - Vxshfw1
+    </pre>
+  </div>
+
+  <!-- Caesar input -->
+  <p>Enter the Caesar shift number you think was used to decode the logs:</p>
+  <input id="caesarShift" type="number" placeholder="Shift (e.g., 3)">
+  <button onclick="decodeCaesarLogs()">Decode Logs</button>
+
+  <!-- Decoded logs -->
+  <div class="logs">
+    <pre id="decodedLogs"></pre>
+  </div>
+
+  <!-- Suspect list -->
+  <div class="suspectList">
+    <h3>Suspects</h3>
+    <ul id="suspects"></ul>
+  </div>
+</div>
 
 <script src="app.js"></script>
 </body>
