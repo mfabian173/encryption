@@ -177,3 +177,23 @@ pre {
   transition: background-color 0.3s, color 0.3s;
 }
 
+.room.locked {
+  filter: grayscale(100%);
+  opacity: 0.5;
+  pointer-events: none; /* prevents clicks inside */
+  position: relative;
+}
+
+/* Overlay Access Denied text */
+.room.locked::before {
+  content: "ACCESS DENIED";
+  color: red;
+  font-size: 2em;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
