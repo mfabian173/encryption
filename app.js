@@ -1,5 +1,9 @@
 let pyodideReady = false;
 let pyodide;
+document.body.insertAdjacentHTML(
+  "afterbegin",
+  "<p id='loading'>⏳ Loading Python environment…</p>"
+);
 
 async function initPyodide() {
   pyodide = await loadPyodide();
