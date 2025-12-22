@@ -130,7 +130,8 @@ function unlock(roomNum, correct) {
 
   if (answer === correct) {
     feedback.textContent = "ACCESS GRANTED";
-
+    
+    document.getElementById("room2").style.display = "block";
     // Animate correct decode with green flash
     animateDecode(secretElem, correct, () => {
       secretElem.classList.add("flash-green");
@@ -138,7 +139,6 @@ function unlock(roomNum, correct) {
       secretElem.classList.remove("flash-red");
       setTimeout(() => secretElem.classList.remove("flash-green"), 1000);
       
-    document.getElementById("room2").style.display = "block";
     });
 
   } else {
