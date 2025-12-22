@@ -243,3 +243,46 @@ def base64_decode(text):
 <code>${code}</code>
 `;
 }
+
+
+// -----------------------
+// Caesar cipher decode function
+function caesarDecode(text, shift) {
+  return text.replace(/[a-zA-Z]/g, function(c){
+    const base = c <= 'Z' ? 65 : 97;
+    return String.fromCharCode((c.charCodeAt(0) - base - shift + 26) % 26 + base);
+  });
+}
+
+// Decode logs based on user input
+function decodeCaesarLogs() {
+  const shiftInput = document.getElementById("caesarShift").value;
+  const shift = parseInt(shiftInput);
+  const logData = document.getElementById("logData").textContent;
+  const decodedElem = document.getElementById("decodedLogs");
+  const suspectListElem = document.getElementById("suspects");
+
+  if (isNaN(shift)) {
+    decodedElem.textContent = "Please enter a valid number for the shift.";
+    return;
+  }
+
+  const decoded = logData
+    .split("\n")
+    .map(line => caesarDecode(line, shift))
+    .join("\n");
+
+  decodedElem.textContent = decoded;
+
+  // Extract suspects (example: any word starting with 'Suspect')
+  const suspects = [];
+  decoded.split("\n").forEach(line => {
+    const match = line.match(/Suspect\d*/i);
+    if (match && !suspects.includes(match[0])) {
+      suspects.push(match[0]);
+    }
+  });
+
+  // Display suspects
+  suspectListElem.innerHTML = suspects.map(s => `<li>${s}</li>`).join("");
+}
