@@ -130,7 +130,6 @@ except:
 }
 
 
-// Unlock logic
 function unlock(roomNum, correct) {
   const answerElem = document.getElementById(`answer${roomNum}`);
   const feedback = document.getElementById(`feedback${roomNum}`);
@@ -143,17 +142,17 @@ function unlock(roomNum, correct) {
   if (answer === correctAnswer) {
     feedback.textContent = "ACCESS GRANTED";
 
-    // Animate decode of secret message
+    // Animate secret message
     animateDecode(secretElem, correctAnswer);
 
     // Unlock Room 2
     const room2 = document.getElementById("room2");
-    room2.classList.remove("locked");
-    room2.scrollIntoView({behavior:"smooth"}); // optional
+    room2.classList.remove("locked"); // fully interactive now
+    room2.scrollIntoView({behavior:"smooth"});
+
   } else {
     feedback.textContent = "ACCESS DENIED";
 
-    // Animate wrong decode
     const wrongText = "WRONG DECODE!";
     animateDecode(secretElem, wrongText, () => {
       secretElem.classList.add("flash-red");
@@ -165,6 +164,7 @@ function unlock(roomNum, correct) {
     });
   }
 }
+
 
 
 function showBrief(cipher) {
