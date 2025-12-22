@@ -126,29 +126,28 @@ function unlock(roomNum, correct) {
   const feedback = document.getElementById(`feedback${roomNum}`);
   const secretElem = document.getElementById("secretMessage");
   const originalText = secretElem.getAttribute("data-original");
+
   const answer = answerElem.value.trim().toUpperCase();
+  const correctAnswer = correct.toUpperCase();
 
-  if (answer === correct) {
+  if (answer === correctAnswer) {
     feedback.textContent = "ACCESS GRANTED";
-    
-    document.getElementById("room2").style.display = "block";
-    // Animate correct decode with green flash
-    animateDecode(secretElem, correct, () => {
-      secretElem.classList.add("flash-green");
-      // Remove red flash in case it was lingering
-      secretElem.classList.remove("flash-red");
-      setTimeout(() => secretElem.classList.remove("flash-green"), 1000);
-      
-    });
 
+    // Animate decode of secret message
+    animateDecode(secretElem, correctAnswer);
+
+    // Unlock Room 2
+    const room2 = document.getElementById("room2");
+    room2.classList.remove("locked");
+    room2.scrollIntoView({behavior:"smooth"}); // optional
   } else {
     feedback.textContent = "ACCESS DENIED";
 
-    // Animate wrong decode with red flash
+    // Animate wrong decode
     const wrongText = "WRONG DECODE!";
     animateDecode(secretElem, wrongText, () => {
       secretElem.classList.add("flash-red");
-      secretElem.classList.remove("flash-green"); // ensure green is removed
+      secretElem.classList.remove("flash-green");
       setTimeout(() => {
         secretElem.textContent = originalText;
         secretElem.classList.remove("flash-red");
@@ -156,6 +155,7 @@ function unlock(roomNum, correct) {
     });
   }
 }
+
 
 function showBrief(cipher) {
   const display = document.getElementById("briefDisplay");
