@@ -132,3 +132,18 @@ button { margin-top: 10px; padding: 10px 15px; cursor: pointer; }
   font-size: 0.95em;
   color: #111;
 }
+
+.brief-display code {
+  display: block;
+  background: #272822; /* dark terminal style */
+  color: #f8f8f2; /* light text */
+  padding: 12px;
+  margin: 15px 0;
+  overflow-x: auto;
+  border-left: 4px solid #66d9ef; /* cyan accent for code */
+  font-family: "Courier New", monospace;
+  font-size: 0.95em;
+  line-height: 1.4em;
+  white-space: pre; /* important: preserves all indents and line breaks */
+}
+
