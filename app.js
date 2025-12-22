@@ -93,3 +93,16 @@ function unlockRoom2() {
   setTimeout(() => document.getElementById("roomLock2").remove(), 1200);
   document.getElementById("room2Content").classList.remove("room-locked");
 }
+// SAFETY CHECK: ensure startCase exists
+window.startCase = function () {
+  const briefing = document.getElementById("briefing");
+  const room1 = document.getElementById("room1");
+
+  if (!briefing || !room1) {
+    console.error("Missing briefing or room1 section");
+    return;
+  }
+
+  briefing.classList.add("hidden");
+  room1.classList.remove("hidden");
+};
