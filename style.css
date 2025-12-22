@@ -1,76 +1,92 @@
 body {
-  background: #0a0a0a;
-  color: #e0e0e0;
-  font-family: "Courier New", monospace;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #111;
+  color: #eaeaea;
+  max-width: 900px;
+  margin: auto;
   padding: 20px;
 }
 
-button {
-  background: black;
-  color: #00ff00;
-  border: 1px solid #00ff00;
-  padding: 8px 12px;
+h1 { color: #ff4d4d; letter-spacing: 2px; }
+h2 { margin-top: 30px; border-bottom: 1px solid #444; padding-bottom: 5px; }
+
+.case-box {
+  background: #1b1b1b;
+  border-left: 5px solid #ff4d4d;
+  padding: 10px;
+  margin: 15px 0;
 }
 
-.hidden { display: none; }
+.critical { color: #ff4d4d; font-weight: bold; }
+.instruction { font-style: italic; color: #ccc; }
 
+ul { margin-left: 20px; }
+
+textarea {
+  width: 100%;
+  height: 140px;
+  background: #111;
+  color: #0f0;
+  border: 1px solid #333;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+button { margin-top: 10px; padding: 10px 15px; cursor: pointer; }
+
+#beginBtn {
+  margin-top: 30px;
+  padding: 15px 30px;
+  font-size: 1.1em;
+  font-weight: bold;
+  background: #ff4d4d;
+  color: black;
+  border: none;
+}
+#beginBtn:hover { background: #ff7070; }
+
+.lock { margin-top: 20px; padding: 10px; border: 1px dashed #555; }
+.feedback { margin-top: 5px; }
+#loading { font-size: 0.9em; color: #aaa; margin-bottom: 20px; }
+
+/* Secret file display styling */
 .secret-file {
   background: #0b0b0b;
-  border: 1px solid #444;
-  padding: 10px;
-  margin: 10px 0;
+  border: 2px solid #0f0;
+  padding: 15px;
+  font-family: "Courier New", monospace;
+  color: #0f0;
+  margin-top: 10px;
+  white-space: pre-wrap;
+  max-height: 150px;
+  overflow-y: auto;
 }
 
-.lock-status { color: red; }
-.lock-status.unlocked { color: #00ff00; }
-
-textarea, pre {
-  background: black;
-  color: #00ff00;
-  border: 1px solid #555;
-  width: 100%;
-}
-
-.room-lock {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.95);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-
-.lock-panel {
-  border: 2px solid red;
-  padding: 25px;
-  color: red;
-}
-
-.room-locked {
-  pointer-events: none;
-  filter: blur(1px);
-}
-
-.room-unlock {
-  animation: fade 1.2s forwards;
-}
-
-@keyframes fade {
-  to { opacity: 0; }
-}
-
+/* Briefs folder */
 .briefs-folder {
   display: flex;
   gap: 10px;
+  margin: 10px 0;
 }
 
 .brief-card {
+  background: #222;
   border: 1px solid #555;
-  padding: 5px 10px;
+  padding: 10px;
+  width: 120px;
+  text-align: center;
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.brief-display pre {
-  margin-top: 10px;
+.brief-card:hover { transform: scale(1.05); border-color: #0f0; }
+
+.brief-display {
+  background: #111;
+  color: #7fffd4;
+  padding: 10px;
+  border-left: 3px solid #7fffd4;
+  margin-top: 5px;
+  min-height: 40px;
 }
+
