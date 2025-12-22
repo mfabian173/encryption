@@ -137,6 +137,8 @@ function unlock(roomNum, correct) {
       // Remove red flash in case it was lingering
       secretElem.classList.remove("flash-red");
       setTimeout(() => secretElem.classList.remove("flash-green"), 1000);
+      
+    document.getElementById("room2").style.display = "block";
     });
 
   } else {
