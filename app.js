@@ -1,6 +1,3 @@
-
-
-
 let pyodideReady = false;
 let pyodide;
 
