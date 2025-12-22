@@ -9,75 +9,28 @@ button {
   background: black;
   color: #00ff00;
   border: 1px solid #00ff00;
-  padding: 10px 15px;
-  cursor: pointer;
+  padding: 8px 12px;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
 .secret-file {
   background: #0b0b0b;
-  border: 2px solid #333;
-  padding: 15px;
-  margin-top: 20px;
-  box-shadow: inset 0 0 15px #000;
-}
-
-#secretMessage {
-  color: #7cff7c;
-  letter-spacing: 1px;
-}
-
-.lock-status {
-  margin-top: 10px;
-  font-weight: bold;
-  color: red;
-}
-
-.lock-status.unlocked {
-  color: #00ff00;
-}
-
-/* Cipher briefs */
-.briefs-folder {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.brief-card {
-  background: #1a1a1a;
-  border: 1px solid #555;
+  border: 1px solid #444;
   padding: 10px;
-  cursor: pointer;
+  margin: 10px 0;
 }
 
-.brief-display pre {
+.lock-status { color: red; }
+.lock-status.unlocked { color: #00ff00; }
+
+textarea, pre {
   background: black;
-  border: 1px solid #00ff00;
   color: #00ff00;
-  padding: 10px;
-  white-space: pre-wrap;
-  margin-top: 10px;
-}
-
-/* Terminal */
-textarea {
+  border: 1px solid #555;
   width: 100%;
-  background: black;
-  color: #00ff00;
-  border: 1px solid #00ff00;
 }
 
-pre#output {
-  background: black;
-  border: 1px solid #555;
-  padding: 10px;
-}
-
-/* LOCK OVERLAY */
 .room-lock {
   position: absolute;
   inset: 0;
@@ -85,14 +38,12 @@ pre#output {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
-  animation: flicker 0.2s infinite;
+  z-index: 10;
 }
 
 .lock-panel {
   border: 2px solid red;
-  padding: 30px;
-  box-shadow: 0 0 30px red;
+  padding: 25px;
   color: red;
 }
 
@@ -101,16 +52,25 @@ pre#output {
   filter: blur(1px);
 }
 
-@keyframes flicker {
-  0% { opacity: 0.97; }
-  50% { opacity: 1; }
-  100% { opacity: 0.96; }
-}
-
 .room-unlock {
-  animation: unlockFade 1.2s forwards;
+  animation: fade 1.2s forwards;
 }
 
-@keyframes unlockFade {
+@keyframes fade {
   to { opacity: 0; }
+}
+
+.briefs-folder {
+  display: flex;
+  gap: 10px;
+}
+
+.brief-card {
+  border: 1px solid #555;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.brief-display pre {
+  margin-top: 10px;
 }
