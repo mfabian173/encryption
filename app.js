@@ -67,13 +67,24 @@ function beginInvestigation() {
 async function runPython(codeId, outputId) {
   if (!pyodideReady) return;
   const code = document.getElementById(codeId).value;
+  const outputElem = document.getElementById(outputId);
+
   try {
-    const output = await pyodide.runPythonAsync(code);
-    document.getElementById(outputId).textContent = output;
+    // Redirect Python stdout to capture prints
+    let output = "";
+    pyodide.setStdout({
+      batched: (s) => { output += s; },
+      error: (s) => { output += s; }
+    });
+
+    await pyodide.runPythonAsync(code);
+
+    outputElem.textContent = output; // display the captured stdout
   } catch(err) {
-    document.getElementById(outputId).textContent = "Error: " + err;
+    outputElem.textContent = "Error: " + err;
   }
 }
+
 
 // Unlock logic
 function unlock(roomNum, correct) {
