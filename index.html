@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Encrypted Breach</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
+</head>
+<body>
+
+<h1>🔐 The Encrypted Breach</h1>
+
+<section class="story">
+  <p><strong>02:13 AM — Automated Security Alert</strong></p>
+  <p>
+    An unauthorized user accessed the lab’s internal server.
+    Instead of stealing data, they left encrypted messages.
+  </p>
+  <p>
+    Your task is to decode the messages and identify
+    who accessed the system and where they were working from.
+  </p>
+</section>
+
+<!-- ROOM 1 -->
+<section id="room1" class="room active">
+  <h2>Room 1: The Console</h2>
+
+  <p>
+    The intruder left behind an encrypted message.
+    One of the provided ciphers will decode it.
+  </p>
+
+  <textarea id="code1">
+print(atbash("YMJ VZNHP GWTBS KTC OZRUX TAJW YMJ QFED ITL"))
+  </textarea>
+
+  <button onclick="runPython('code1','output1')">Run Python</button>
+  <pre id="output1"></pre>
+
+  <div class="lock">
+    <input id="answer1" placeholder="Enter decrypted message">
+    <button onclick="unlock(1, 'THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG')">
+      Unlock
+    </button>
+    <p class="feedback" id="feedback1"></p>
+  </div>
+</section>
+
+<!-- ROOM 2 -->
+<section id="room2" class="room locked">
+  <h2>Room 2: Shift Detected</h2>
+
+  <p>
+    A second message was encrypted using a Caesar shift.
+    The shift value has changed.
+  </p>
+
+  <textarea id="code2">
+encrypted = "KHOOR ZRUOG"
+
+for s in range(26):
+    print(s, caesar(encrypted, -s))
+  </textarea>
+
+  <button onclick="runPython('code2','output2')">Run Python</button>
+  <pre id="output2"></pre>
+
+  <div class="lock">
+    <input id="answer2" placeholder="Enter decrypted message">
+    <button onclick="unlock(2, 'HELLO WORLD')">Unlock</button>
+    <p class="feedback" id="feedback2"></p>
+  </div>
+</section>
+
+<!-- ROOM 3 -->
+<section id="room3" class="room locked">
+  <h2>Room 3: Completing the Algorithm</h2>
+
+  <p>
+    The intruder reused their cipher again.
+    This time, part of the code is missing.
+  </p>
+
+  <textarea id="code3">
+def caesar_decrypt(text, shift):
+    result = ""
+    for char in text:
+        if char.isalpha():
+            base = ord('A')
+            result += chr((ord(char) - base - shift) % 26 + base)
+        else:
+            result += char
+    return result
+
+print(caesar_decrypt("YMNX NX F YJXY", 5))
+  </textarea>
+
+  <button onclick="runPython('code3','output3')">Run Python</button>
+  <pre id="output3"></pre>
+
+  <div class="lock">
+    <input id="answer3" placeholder="Enter decrypted message">
+    <button onclick="unlock(3, 'THIS IS A TEST')">Unlock</button>
+    <p class="feedback" id="feedback3"></p>
+  </div>
+</section>
+
+<!-- ROOM 4 -->
+<section id="room4" class="room locked">
+  <h2>Room 4: Keyword Cipher</h2>
+
+  <p>
+    The final message uses a keyword-based cipher.
+  </p>
+
+  <textarea id="code4">
+def vigenere_decrypt(text, key):
+    result = ""
+    key_index = 0
+    for char in text:
+        if char.isalpha():
+            shift = ord(key[key_index % len(key)]) - ord('A')
+            result += chr((ord(char) - ord('A') - shift) % 26 + ord('A'))
+            key_index += 1
+        else:
+            result += char
+    return result
+
+print(vigenere_decrypt("LXFOPV EF RNHR", "LAB"))
+  </textarea>
+
+  <button onclick="runPython('code4','output4')">Run Python</button>
+  <pre id="output4"></pre>
+
+  <div class="lock">
+    <input id="answer4" placeholder="Enter decrypted message">
+    <button onclick="unlock(4, 'ATTACK AT DAWN')">Unlock</button>
+    <p class="feedback" id="feedback4"></p>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section id="final" class="room locked">
+  <h2>Final Report</h2>
+
+  <p>
+    Logs confirm the intruder used weak classical encryption.
+  </p>
+
+  <p><strong>User:</strong> rholloway</p>
+  <p><strong>Location:</strong> Physics Wing, Room 314</p>
+
+  <p>
+    The breach wasn’t caused by advanced hacking —
+    it was caused by predictable human behavior.
+  </p>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>
