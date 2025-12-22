@@ -1,13 +1,16 @@
-let pyodideReady = false;
-let pyodide;
+
 document.body.insertAdjacentHTML(
   "afterbegin",
   "<p id='loading'>⏳ Loading Python environment…</p>"
 );
 
+let pyodideReady = false;
+let pyodide;
+
 async function initPyodide() {
   pyodide = await loadPyodide();
-  await pyodide.runPythonAsync(`
+
+  await pyodide.runPythonAsync(
 def caesar(text, shift):
     result = ""
     for char in text:
@@ -27,8 +30,10 @@ def atbash(text):
         else:
             result += char
     return result
-`);
+);
   pyodideReady = true;
+  document.getElementById("loading").textContent = "✅ Python ready.";
+
 }
 
 initPyodide();
