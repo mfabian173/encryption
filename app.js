@@ -1,16 +1,10 @@
-
-document.body.insertAdjacentHTML(
-  "afterbegin",
-  "<p id='loading'>⏳ Loading Python environment…</p>"
-);
-
 let pyodideReady = false;
 let pyodide;
 
 async function initPyodide() {
   pyodide = await loadPyodide();
 
-  await pyodide.runPythonAsync(
+  await pyodide.runPythonAsync(`
 def caesar(text, shift):
     result = ""
     for char in text:
@@ -30,14 +24,26 @@ def atbash(text):
         else:
             result += char
     return result
-);
+`);
+
   pyodideReady = true;
+
+  // Update loading status
   document.getElementById("loading").textContent = "✅ Python ready.";
 
+  // Reveal Begin button
+  document.getElementById("beginBtn").style.display = "inline-block";
 }
 
 initPyodide();
 
+// Unlock Room 1 when Begin clicked
+function beginInvestigation() {
+  document.getElementById("briefing").style.display = "none";
+  document.getElementById("room1").style.display = "block";
+}
+
+// Run Python in a textarea
 async function runPython(codeId, outputId) {
   if (!pyodideReady) return;
   const code = document.getElementById(codeId).value;
@@ -45,16 +51,14 @@ async function runPython(codeId, outputId) {
   document.getElementById(outputId).textContent = output;
 }
 
+// Unlock logic for each room
 function unlock(roomNum, correct) {
   const answer = document.getElementById(`answer${roomNum}`).value.trim().toUpperCase();
   const feedback = document.getElementById(`feedback${roomNum}`);
 
   if (answer === correct) {
     feedback.textContent = "ACCESS GRANTED";
-    const next = document.getElementById(
-      roomNum === 4 ? "final" : `room${roomNum + 1}`
-    );
-    if (next) next.classList.remove("locked");
+    // Placeholder: could unlock next room here
   } else {
     feedback.textContent = "ACCESS DENIED";
   }
