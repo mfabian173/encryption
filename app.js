@@ -1,106 +1,149 @@
-let pyodideReady = false;
 let pyodide;
+let pyodideReady = false;
+let room1Unlocked = false;
+
+const CORRECT_MESSAGE =
+"In one hour, all of your files will be wiped forever. Let the games begin!";
 
 async function initPyodide() {
   pyodide = await loadPyodide();
+  pyodideReady = true;
+  document.getElementById("loading").textContent = "✅ Python ready.";
+}
+initPyodide();
 
-  await pyodide.runPythonAsync(`
-import base64
+function startCase() {
+  document.getElementById("briefing").classList.add("hidden");
+  document.getElementById("room1").classList.remove("hidden");
+}
+
+function showBrief(cipher) {
+  const d = document.getElementById("briefDisplay");
+  let text = "";
+
+  if (cipher === "atbash") {
+    text = `
+Atbash Cipher
 
 def atbash(text):
     result = ""
-    for char in text:
-        if char.isalpha():
-            base = ord('A') if char.isupper() else ord('a')
-            result += chr(base + (25 - (ord(char) - base)))
+    for c in text:
+        if c.isalpha():
+            base = ord('A') if c.isupper() else ord('a')
+            result += chr(base + (25 - (ord(c) - base)))
         else:
-            result += char
+            result += c
     return result
+`;
+  }
+
+  if (cipher === "caesar") {
+    text = `
+Caesar Cipher
 
 def caesar(text, shift):
     result = ""
-    for char in text:
-        if char.isalpha():
-            base = ord('A') if char.isupper() else ord('a')
-            result += chr((ord(char) - base + shift) % 26 + base)
+    for c in text:
+        if c.isalpha():
+            base = ord('A') if c.isupper() else ord('a')
+            result += chr((ord(c) - base + shift) % 26 + base)
         else:
-            result += char
+            result += c
     return result
+`;
+  }
+
+  if (cipher === "rot13") {
+    text = `
+ROT13
 
 def rot13(text):
     return caesar(text, 13)
+`;
+  }
+
+  if (cipher === "vigenere") {
+    text = `
+Vigenère Cipher
 
 def vigenere(text, key):
     result = ""
-    key_index = 0
-    key = key.upper()
-    for char in text:
-        if char.isalpha():
-            shift = ord(key[key_index % len(key)]) - ord('A')
-            result += chr((ord(char.upper()) - ord('A') + shift) % 26 + ord('A'))
-            key_index += 1
+    k = 0
+    for c in text:
+        if c.isalpha():
+            shift = ord(key[k % len(key)].upper()) - ord('A')
+            result += chr((ord(c.upper()) - ord('A') + shift) % 26 + ord('A'))
+            k += 1
         else:
-            result += char
+            result += c
     return result
+`;
+  }
 
-def base64_encode(text):
-    return base64.b64encode(text.encode()).decode()
+  if (cipher === "base64") {
+    text = `
+Base64
 
-def base64_decode(text):
-    return base64.b64decode(text.encode()).decode()
-  `);
+import base64
+def decode(text):
+    return base64.b64decode(text).decode()
+`;
+  }
 
-  pyodideReady = true;
-  document.getElementById("loading").textContent = "✅ Python ready.";
-  document.getElementById("beginBtn").style.display = "inline-block";
+  d.innerHTML = `<pre>${text}</pre>`;
 }
 
-initPyodide();
-
-// Unlock Room 1 when Begin clicked
-function beginInvestigation() {
-  document.getElementById("briefing").style.display = "none";
-  document.getElementById("room1").style.display = "block";
-}
-
-// Run Python in a textarea
 async function runPython(codeId, outputId) {
   if (!pyodideReady) return;
+
   const code = document.getElementById(codeId).value;
+  const outputEl = document.getElementById(outputId);
+
   try {
-    const output = await pyodide.runPythonAsync(code);
-    document.getElementById(outputId).textContent = output;
-  } catch(err) {
-    document.getElementById(outputId).textContent = "Error: " + err;
+    const result = await pyodide.runPythonAsync(code);
+    outputEl.textContent = result ?? "";
+
+    if (
+      typeof result === "string" &&
+      result.toLowerCase().includes("one hour") &&
+      !room1Unlocked
+    ) {
+      unlockRoom();
+    }
+
+  } catch (err) {
+    outputEl.textContent = err;
   }
 }
 
-// Unlock logic
-function unlock(roomNum, correct) {
-  const answer = document.getElementById(`answer${roomNum}`).value.trim().toUpperCase();
-  const feedback = document.getElementById(`feedback${roomNum}`);
-  if (answer === correct) feedback.textContent = "ACCESS GRANTED";
-  else feedback.textContent = "ACCESS DENIED";
+function unlockRoom() {
+  room1Unlocked = true;
+
+  document.getElementById("secretMessage").textContent = CORRECT_MESSAGE;
+
+  const lock = document.getElementById("lockStatus");
+  lock.textContent = "🔓 FILE DECRYPTED — ROOM 1 CLEARED";
+  lock.classList.add("unlocked");
+
+  const overlay = document.getElementById("roomLock");
+  overlay.classList.add("room-unlock");
+  setTimeout(() => overlay.remove(), 1200);
+
+  document.getElementById("room1Content").classList.remove("room-locked");
+
+  evidenceBanner();
 }
 
-// Detective briefs display
-function showBrief(cipher) {
-  const display = document.getElementById("briefDisplay");
-  switch(cipher) {
-    case "atbash":
-      display.textContent = "Atbash: Ancient Hebrew substitution cipher, reverses the alphabet.";
-      break;
-    case "caesar":
-      display.textContent = "Caesar: Named for Julius Caesar, shifts letters by a set value.";
-      break;
-    case "rot13":
-      display.textContent = "ROT13: Simple letter rotation by 13, used in online forums.";
-      break;
-    case "vigenere":
-      display.textContent = "Vigenère: Polyalphabetic cipher from the 16th century, more secure than Caesar.";
-      break;
-    case "base64":
-      display.textContent = "Base64: Encoding scheme for binary data, often used in computers.";
-      break;
-  }
+function evidenceBanner() {
+  const b = document.createElement("div");
+  b.textContent = "📂 EVIDENCE UNLOCKED";
+  b.style.position = "fixed";
+  b.style.top = "20px";
+  b.style.right = "20px";
+  b.style.background = "#003300";
+  b.style.color = "#00ff00";
+  b.style.padding = "10px";
+  b.style.border = "1px solid #00ff00";
+  document.body.appendChild(b);
+  setTimeout(() => b.remove(), 3000);
 }
