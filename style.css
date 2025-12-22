@@ -1,0 +1,47 @@
+body {
+  background: #0b0b0b;
+  color: #eee;
+  font-family: monospace;
+  padding: 20px;
+}
+
+h1, h2 {
+  color: #7fffd4;
+}
+
+.room {
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 40px auto;
+  max-width: 900px;
+}
+
+.room.locked {
+  opacity: 0.35;
+  pointer-events: none;
+  filter: blur(1.5px);
+}
+
+textarea {
+  width: 100%;
+  height: 140px;
+  background: #111;
+  color: #0f0;
+  border: 1px solid #333;
+  padding: 10px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+.lock {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px dashed #555;
+}
+
+.feedback {
+  margin-top: 5px;
+}
