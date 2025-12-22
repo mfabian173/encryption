@@ -59,9 +59,19 @@ initPyodide();
 
 // Unlock Room 1 when Begin clicked
 function beginInvestigation() {
+  // Hide briefing
   document.getElementById("briefing").style.display = "none";
-  document.getElementById("room1").style.display = "block";
+
+  // Show Room 1
+  const room1 = document.getElementById("room1");
+  room1.style.display = "block";
+
+  // Show Room 2 as locked
+  const room2 = document.getElementById("room2");
+  room2.style.display = "block";  // now visible
+  room2.classList.add("locked");   // greyed out, cannot interact
 }
+
 
 async function runPython(codeId) {
   if (!pyodideReady) return;
