@@ -13,68 +13,82 @@
 <section id="briefing">
   <h1>URGENT — CASE #CS-2025-001</h1>
   <h2>The Missing Data Case</h2>
-
-  <p><strong>Priority:</strong> CRITICAL</p>
-  <p><strong>Objective:</strong> Identify the culprit before irreversible damage occurs.</p>
-
-  <p>
-    At 03:47 AM on January 15th, 2025, TechCorp detected unauthorized access to its database.
-    An encrypted note was left behind by the attacker.
-  </p>
-
+  <p>Unauthorized database access detected. Decrypt all evidence to identify the culprit.</p>
   <button onclick="startCase()">BEGIN INVESTIGATION</button>
 </section>
 
-<section id="room1" class="hidden" style="position: relative;">
+<!-- ================= ROOM 1 ================= -->
 
-  <!-- LOCK OVERLAY -->
-  <div id="roomLock" class="room-lock">
+<section id="room1" class="hidden" style="position: relative;">
+  <div id="roomLock1" class="room-lock">
     <div class="lock-panel">
       <h1>🔒 ACCESS DENIED</h1>
-      <p>Encrypted data detected.</p>
-      <p>Decryption required.</p>
+      <p>Encrypted file detected.</p>
     </div>
   </div>
 
   <div id="room1Content" class="room-locked">
-
     <h2>Room 1: Encrypted Server Note</h2>
 
     <div class="secret-file">
-      <h3>📁 Recovered Server File</h3>
       <pre id="secretMessage">
 !N 0NE H0UR, @LL 0F Y0UR F!LES W!LL B3 W!P3D F0R3V3R. L3T TH3 G@M3S B3G!N!
       </pre>
     </div>
 
-    <div id="lockStatus" class="lock-status">🔒 FILE ENCRYPTED</div>
+    <div id="lockStatus1" class="lock-status">🔒 FILE ENCRYPTED</div>
 
-    <h3>📂 Cipher Briefs</h3>
     <div class="briefs-folder">
       <div class="brief-card" onclick="showBrief('atbash')">Atbash</div>
       <div class="brief-card" onclick="showBrief('caesar')">Caesar</div>
       <div class="brief-card" onclick="showBrief('rot13')">ROT13</div>
-      <div class="brief-card" onclick="showBrief('vigenere')">Vigenère</div>
-      <div class="brief-card" onclick="showBrief('base64')">Base64</div>
     </div>
 
-    <div id="briefDisplay" class="brief-display">
-      Select a cipher brief to view details and Python code.
+    <div id="briefDisplay" class="brief-display"></div>
+
+    <textarea id="pythonCode1" rows="7"></textarea>
+    <button onclick="runPython1()">▶ Run Python</button>
+    <pre id="output1"></pre>
+  </div>
+</section>
+
+<!-- ================= ROOM 2 ================= -->
+
+<section id="room2" class="hidden" style="position: relative;">
+  <div id="roomLock2" class="room-lock">
+    <div class="lock-panel">
+      <h1>🔒 SECONDARY CLEARANCE REQUIRED</h1>
+      <p>Suspicious login logs encrypted.</p>
+    </div>
+  </div>
+
+  <div id="room2Content" class="room-locked">
+    <h2>Room 2: Suspicious Login Logs</h2>
+
+    <div class="secret-file">
+      <pre>
+03:41  XVVQDO
+03:43  GRJH
+03:44  DOLFH
+03:46  XVVQDO
+      </pre>
     </div>
 
-    <h3>💻 Python Terminal</h3>
-    <textarea id="pythonCode" rows="8">
-# Copy a cipher function above
-# Then write a print() statement using the secret message
+    <p>
+      Usernames appear Caesar-shifted.
+      Identify a real name and suspicious repeated access.
+    </p>
+
+    <textarea id="pythonCode2" rows="8">
+# Try looping through all shifts (0–25)
+# Print each result
     </textarea>
 
-    <button onclick="runPython('pythonCode','output')">▶ Run Python</button>
-    <pre id="output"></pre>
-
+    <button onclick="runPython2()">▶ Run Python</button>
+    <pre id="output2"></pre>
   </div>
 </section>
 
 <script src="app.js"></script>
 </body>
 </html>
-
