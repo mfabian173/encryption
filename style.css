@@ -1,91 +1,116 @@
 body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background-color: #111;
-  color: #eaeaea;
-  max-width: 900px;
-  margin: auto;
+  background: #0a0a0a;
+  color: #e0e0e0;
+  font-family: "Courier New", monospace;
   padding: 20px;
 }
 
-h1 { color: #ff4d4d; letter-spacing: 2px; }
-h2 { margin-top: 30px; border-bottom: 1px solid #444; padding-bottom: 5px; }
-
-.case-box {
-  background: #1b1b1b;
-  border-left: 5px solid #ff4d4d;
-  padding: 10px;
-  margin: 15px 0;
+button {
+  background: black;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  padding: 10px 15px;
+  cursor: pointer;
 }
 
-.critical { color: #ff4d4d; font-weight: bold; }
-.instruction { font-style: italic; color: #ccc; }
-
-ul { margin-left: 20px; }
-
-textarea {
-  width: 100%;
-  height: 140px;
-  background: #111;
-  color: #0f0;
-  border: 1px solid #333;
-  padding: 10px;
-  margin-top: 10px;
+.hidden {
+  display: none;
 }
 
-button { margin-top: 10px; padding: 10px 15px; cursor: pointer; }
-
-#beginBtn {
-  margin-top: 30px;
-  padding: 15px 30px;
-  font-size: 1.1em;
-  font-weight: bold;
-  background: #ff4d4d;
-  color: black;
-  border: none;
-}
-#beginBtn:hover { background: #ff7070; }
-
-.lock { margin-top: 20px; padding: 10px; border: 1px dashed #555; }
-.feedback { margin-top: 5px; }
-#loading { font-size: 0.9em; color: #aaa; margin-bottom: 20px; }
-
-/* Secret file display styling */
 .secret-file {
   background: #0b0b0b;
-  border: 2px solid #0f0;
+  border: 2px solid #333;
   padding: 15px;
-  font-family: "Courier New", monospace;
-  color: #0f0;
-  margin-top: 10px;
-  white-space: pre-wrap;
-  max-height: 150px;
-  overflow-y: auto;
+  margin-top: 20px;
+  box-shadow: inset 0 0 15px #000;
 }
 
-/* Briefs folder */
+#secretMessage {
+  color: #7cff7c;
+  letter-spacing: 1px;
+}
+
+.lock-status {
+  margin-top: 10px;
+  font-weight: bold;
+  color: red;
+}
+
+.lock-status.unlocked {
+  color: #00ff00;
+}
+
+/* Cipher briefs */
 .briefs-folder {
   display: flex;
   gap: 10px;
-  margin: 10px 0;
+  margin-top: 10px;
 }
 
 .brief-card {
-  background: #222;
+  background: #1a1a1a;
   border: 1px solid #555;
   padding: 10px;
-  width: 120px;
-  text-align: center;
   cursor: pointer;
-  transition: transform 0.2s;
 }
 
-.brief-card:hover { transform: scale(1.05); border-color: #0f0; }
-
-.brief-display {
-  background: #111;
-  color: #7fffd4;
+.brief-display pre {
+  background: black;
+  border: 1px solid #00ff00;
+  color: #00ff00;
   padding: 10px;
-  border-left: 3px solid #7fffd4;
-  margin-top: 5px;
-  min-height: 40px;
+  white-space: pre-wrap;
+  margin-top: 10px;
+}
+
+/* Terminal */
+textarea {
+  width: 100%;
+  background: black;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+}
+
+pre#output {
+  background: black;
+  border: 1px solid #555;
+  padding: 10px;
+}
+
+/* LOCK OVERLAY */
+.room-lock {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: flicker 0.2s infinite;
+}
+
+.lock-panel {
+  border: 2px solid red;
+  padding: 30px;
+  box-shadow: 0 0 30px red;
+  color: red;
+}
+
+.room-locked {
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+@keyframes flicker {
+  0% { opacity: 0.97; }
+  50% { opacity: 1; }
+  100% { opacity: 0.96; }
+}
+
+.room-unlock {
+  animation: unlockFade 1.2s forwards;
+}
+
+@keyframes unlockFade {
+  to { opacity: 0; }
 }
