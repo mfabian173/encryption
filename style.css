@@ -167,3 +167,9 @@ pre {
   color: #ff6666 !important; /* light red text */
   transition: background-color 0.3s, color 0.3s;
 }
+
+.flash-green {
+  background-color: #003300 !important;
+  color: #00ff00 !important;
+  transition: background-color 0.3s, color 0.3s;
+}
