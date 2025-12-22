@@ -7,16 +7,8 @@ body {
   padding: 20px;
 }
 
-h1 {
-  color: #ff4d4d;
-  letter-spacing: 2px;
-}
-
-h2 {
-  margin-top: 30px;
-  border-bottom: 1px solid #444;
-  padding-bottom: 5px;
-}
+h1 { color: #ff4d4d; letter-spacing: 2px; }
+h2 { margin-top: 30px; border-bottom: 1px solid #444; padding-bottom: 5px; }
 
 .case-box {
   background: #1b1b1b;
@@ -25,19 +17,10 @@ h2 {
   margin: 15px 0;
 }
 
-.critical {
-  color: #ff4d4d;
-  font-weight: bold;
-}
+.critical { color: #ff4d4d; font-weight: bold; }
+.instruction { font-style: italic; color: #ccc; }
 
-.instruction {
-  font-style: italic;
-  color: #ccc;
-}
-
-ul {
-  margin-left: 20px;
-}
+ul { margin-left: 20px; }
 
 textarea {
   width: 100%;
@@ -49,11 +32,7 @@ textarea {
   margin-top: 10px;
 }
 
-button {
-  margin-top: 10px;
-  padding: 10px 15px;
-  cursor: pointer;
-}
+button { margin-top: 10px; padding: 10px 15px; cursor: pointer; }
 
 #beginBtn {
   margin-top: 30px;
@@ -64,24 +43,49 @@ button {
   color: black;
   border: none;
 }
+#beginBtn:hover { background: #ff7070; }
 
-#beginBtn:hover {
-  background: #ff7070;
+.lock { margin-top: 20px; padding: 10px; border: 1px dashed #555; }
+.feedback { margin-top: 5px; }
+#loading { font-size: 0.9em; color: #aaa; margin-bottom: 20px; }
+
+/* Secret file display styling */
+.secret-file {
+  background: #0b0b0b;
+  border: 2px solid #0f0;
+  padding: 15px;
+  font-family: "Courier New", monospace;
+  color: #0f0;
+  margin-top: 10px;
+  white-space: pre-wrap;
+  max-height: 150px;
+  overflow-y: auto;
 }
 
-.lock {
-  margin-top: 20px;
+/* Briefs folder */
+.briefs-folder {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.brief-card {
+  background: #222;
+  border: 1px solid #555;
   padding: 10px;
-  border: 1px dashed #555;
+  width: 120px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.feedback {
+.brief-card:hover { transform: scale(1.05); border-color: #0f0; }
+
+.brief-display {
+  background: #111;
+  color: #7fffd4;
+  padding: 10px;
+  border-left: 3px solid #7fffd4;
   margin-top: 5px;
+  min-height: 40px;
 }
-
-#loading {
-  font-size: 0.9em;
-  color: #aaa;
-  margin-bottom: 20px;
-}
-
