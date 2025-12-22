@@ -2,85 +2,106 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Case #CS-2025-001</title>
+  <title>The Encrypted Breach</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
 </head>
 <body>
 
-<div id="loading">⏳ Initializing secure Python environment…</div>
+<!-- LOADING STATUS -->
+<p id="loading">⏳ Initializing investigation environment…</p>
 
-<section id="briefing">
-  <h1>URGENT — CASE #CS-2025-001</h1>
-  <h2>The Missing Data Case</h2>
-  <p>Unauthorized database access detected. Decrypt all evidence to identify the culprit.</p>
-  <button onclick="startCase()">BEGIN INVESTIGATION</button>
-</section>
+<!-- BRIEFING -->
+<div id="briefing">
+  <h1>URGENT</h1>
 
-<!-- ================= ROOM 1 ================= -->
-
-<section id="room1" class="hidden" style="position: relative;">
-  <div id="room1Content">
-    <h2>Room 1: Encrypted Server Note</h2>
-
-    <div class="secret-file">
-      <pre id="secretMessage">
-!N 0NE H0UR, @LL 0F Y0UR F!LES W!LL B3 W!P3D F0R3V3R. L3T TH3 G@M3S B3G!N!
-      </pre>
-    </div>
-
-    <div id="lockStatus1" class="lock-status">🔒 FILE ENCRYPTED</div>
-
-    <div class="briefs-folder">
-      <div class="brief-card" onclick="showBrief('atbash')">Atbash</div>
-      <div class="brief-card" onclick="showBrief('caesar')">Caesar</div>
-      <div class="brief-card" onclick="showBrief('rot13')">ROT13</div>
-    </div>
-
-    <div id="briefDisplay" class="brief-display"></div>
-
-    <textarea id="pythonCode1" rows="7"></textarea>
-    <button onclick="runPython1()">▶ Run Python</button>
-    <pre id="output1"></pre>
-  </div>
-</section>
-
-<!-- ================= ROOM 2 ================= -->
-
-<section id="room2" class="hidden" style="position: relative;">
-  <div id="roomLock2" class="room-lock">
-    <div class="lock-panel">
-      <h1>🔒 SECONDARY CLEARANCE REQUIRED</h1>
-      <p>Suspicious login logs encrypted.</p>
-    </div>
+  <div class="case-box">
+    <p><strong>CASE #</strong> CS-2025-001</p>
+    <p><strong>Title:</strong> The Missing Data Case</p>
   </div>
 
-  <div id="room2Content" class="room-locked">
-    <h2>Room 2: Suspicious Login Logs</h2>
+  <h2>Priority</h2>
+  <p class="critical">CRITICAL — Immediate action required</p>
 
-    <div class="secret-file">
-      <pre>
-03:41  XVVQDO
-03:43  GRJH
-03:44  DOLFH
-03:46  XVVQDO
-      </pre>
-    </div>
+  <h2>Time Allocated</h2>
+  <p>3 Hours — Complete all phases</p>
 
-    <p>
-      Usernames appear Caesar-shifted.
-      Identify a real name and suspicious repeated access.
-    </p>
+  <h2>Objective</h2>
+  <ul>
+    <li>Identify culprit</li>
+    <li>Use all available evidence</li>
+  </ul>
 
-    <textarea id="pythonCode2" rows="8">
-# Try looping through all shifts (0–25)
-# Print each result
-    </textarea>
+  <h2>Case Summary</h2>
+  <p class="instruction">Read carefully before beginning your investigation.</p>
 
-    <button onclick="runPython2()">▶ Run Python</button>
-    <pre id="output2"></pre>
+  <p>
+    At <strong>03:47 AM on January 15th, 2025</strong>, the TechCorp security system
+    detected unauthorized access to the company’s main database.
+    Critical customer data files were accessed and potentially compromised.
+  </p>
+
+  <p>
+    The security team managed to preserve several pieces of evidence before
+    the attacker covered their tracks:
+  </p>
+
+  <ul>
+    <li>An encrypted note left behind in the server logs</li>
+    <li>Server login logs showing suspicious access patterns</li>
+    <li>A suspicious image file uploaded to the system</li>
+    <li>Employee alibi records from the night of the breach</li>
+    <li>Complete suspect profiles of all employees with system access</li>
+  </ul>
+
+  <p>
+    Your mission is to analyze this evidence using computer science techniques
+    to identify the culprit. You will decrypt messages, analyze data patterns,
+    extract hidden information, and apply logical reasoning to solve the case.
+  </p>
+
+  <button id="beginBtn" onclick="beginInvestigation()">
+    ▶ BEGIN INVESTIGATION
+  </button>
+</div>
+
+<!-- ROOM 1 -->
+<div id="room1" class="room" style="display:none;">
+  <h2>Room 1: Server Logs</h2>
+  <p>Investigators recovered an encrypted note from the server logs. Use Python ciphers to decrypt it.</p>
+
+  <!-- Detective briefs -->
+  <div class="briefs-folder">
+    <div class="brief-card" onclick="showBrief('atbash')">Atbash</div>
+    <div class="brief-card" onclick="showBrief('caesar')">Caesar</div>
+    <div class="brief-card" onclick="showBrief('rot13')">ROT13</div>
+    <div class="brief-card" onclick="showBrief('vigenere')">Vigenère</div>
+    <div class="brief-card" onclick="showBrief('base64')">Base64</div>
   </div>
-</section>
+  <div id="briefDisplay" class="brief-display">Select a cipher brief to learn more.</div>
+
+  <!-- Secret file display (scrambled Atbash) -->
+  <div class="secret-file">
+    <pre id="secretMessage">
+RM LMR SLFI, ZOO LU BLFI URVHV DFOO YV DRKVI UFMVI. OGV GSV TZNVH HRMT!
+    </pre>
+  </div>
+
+  <!-- Python code input -->
+  <p>Write your Python print statement using a cipher to decode the message:</p>
+  <textarea id="code1" placeholder='Example: print(atbash("RM LMR SLFI, ZOO LU BLFI URVHV DFOO YV DRKVI UFMVI. OGV GSV TZNVH HRMT!"))'></textarea>
+  <button onclick="runPython('code1','output1')">Run Python</button>
+  <pre id="output1"></pre>
+
+  <!-- Lock -->
+  <div class="lock">
+    <input id="answer1" placeholder="Enter decrypted message">
+    <button onclick="unlock(1, 'IN ONE HOUR, ALL OF YOUR FILES WILL BE WIPED FOREVER. LET THE GAMES BEGIN!')">
+      Unlock
+    </button>
+    <p class="feedback" id="feedback1"></p>
+  </div>
+</div>
 
 <script src="app.js"></script>
 </body>
