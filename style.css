@@ -161,9 +161,19 @@ pre {
 }
 
 
-/* Flash red effect for wrong decode */
+/* Terminal flashes for correct/incorrect decode */
 .flash-red {
-  background-color: #550000 !important; /* dark red flash */
-  color: #ff6666 !important; /* light red text */
+  background-color: #550000 !important;
+  color: #ff6666 !important;
+}
+
+.flash-green {
+  background-color: #003300 !important;
+  color: #00ff00 !important;
+}
+
+/* Make sure terminal has smooth transition for flash */
+#secretMessage {
   transition: background-color 0.3s, color 0.3s;
 }
+
