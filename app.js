@@ -122,10 +122,37 @@ except:
 
 // Unlock logic
 function unlock(roomNum, correct) {
-  const answer = document.getElementById(`answer${roomNum}`).value.trim().toUpperCase();
+  const answerElem = document.getElementById(`answer${roomNum}`);
   const feedback = document.getElementById(`feedback${roomNum}`);
-  if (answer === correct) feedback.textContent = "ACCESS GRANTED";
-  else feedback.textContent = "ACCESS DENIED";
+  const secretElem = document.getElementById("secretMessage");
+  const originalText = secretElem.getAttribute("data-original");
+  const answer = answerElem.value.trim().toUpperCase();
+
+  if (answer === correct) {
+    feedback.textContent = "ACCESS GRANTED";
+
+    // Animate correct decode with green flash
+    animateDecode(secretElem, correct, () => {
+      secretElem.classList.add("flash-green");
+      // Remove red flash in case it was lingering
+      secretElem.classList.remove("flash-red");
+      setTimeout(() => secretElem.classList.remove("flash-green"), 1000);
+    });
+
+  } else {
+    feedback.textContent = "ACCESS DENIED";
+
+    // Animate wrong decode with red flash
+    const wrongText = "WRONG DECODE!";
+    animateDecode(secretElem, wrongText, () => {
+      secretElem.classList.add("flash-red");
+      secretElem.classList.remove("flash-green"); // ensure green is removed
+      setTimeout(() => {
+        secretElem.textContent = originalText;
+        secretElem.classList.remove("flash-red");
+      }, 5000);
+    });
+  }
 }
 
 function showBrief(cipher) {
