@@ -148,7 +148,7 @@ button { margin-top: 10px; padding: 10px 15px; cursor: pointer; }
 }
 
 /* Terminal style for Python output */
-pre {
+#secretMessage {
   background: #000;
   color: #0f0;
   padding: 15px;
@@ -157,17 +157,14 @@ pre {
   font-size: 0.95em;
   overflow-x: auto;
   white-space: pre-wrap; /* wrap long lines */
-  margin-top: 10px;
-}
-
-
-/* Flash red effect for wrong decode */
-.flash-red {
-  background-color: #550000 !important; /* dark red flash */
-  color: #ff6666 !important; /* light red text */
   transition: background-color 0.3s, color 0.3s;
 }
 
+/* Flash red effect for wrong decode */
+.flash-red {
+  background-color: #550000 !important;
+  color: #ff6666 !important;
+}
 .flash-green {
   background-color: #003300 !important;
   color: #00ff00 !important;
