@@ -119,6 +119,21 @@ except:
   }
 }
 
+function animateDecode(element, text, done) {
+  element.textContent = "";
+  let i = 0;
+
+  const interval = setInterval(() => {
+    element.textContent += text[i];
+    i++;
+
+    if (i >= text.length) {
+      clearInterval(interval);
+      if (done) done();
+    }
+  }, 30);
+}
+
 
 function unlock(roomNum, correct) {
   const answerElem = document.getElementById(`answer${roomNum}`);
