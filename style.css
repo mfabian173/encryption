@@ -184,16 +184,44 @@ pre {
   position: relative;
 }
 
-/* Overlay Access Denied text */
+/* ============================= */
+/* LOCKED ROOM (ACCESS DENIED)   */
+/* ============================= */
+
+.room.locked {
+  position: relative;
+  filter: blur(6px) grayscale(100%);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Dark overlay */
+.room.locked::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 1;
+}
+
+/* ACCESS DENIED text */
 .room.locked::before {
   content: "ACCESS DENIED";
-  color: red;
-  font-size: 2em;
-  font-weight: bold;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  text-align: center;
+
+  color: #ff2b2b;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+
+  text-shadow:
+    0 0 10px rgba(255, 0, 0, 0.8),
+    0 0 25px rgba(255, 0, 0, 0.6);
+
+  z-index: 2;
   pointer-events: none;
 }
