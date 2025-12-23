@@ -91,16 +91,17 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE YRG GUR TNZRF ORTVA!
   <p>Write your Python print statement using a cipher to decode the message:</p>
   <textarea id="code1" placeholder='Example: print(atbash("VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBEIREIRE. YRG GUR TNZRF ORTVA!"))'></textarea>
   <button onclick="runPython('code1')">Run Python</button>
+  <!-- Lock -->
+  <div class="lock">
+    <input id="answer1" placeholder="Enter decrypted message">
+    <button onclick="unlock(1, 'IN ONE HOUR, ALL OF YOUR FILES WILL BE WIPED FOREVER. LET THE GAMES BEGIN!')">
+      Unlock
+    </button>
+    <p class="feedback" id="feedback1"></p>
+  </div>
 </div>
   
-<!-- Lock -->
-<div class="lock">
-  <input id="answer1" placeholder="Enter decrypted message">
-  <button onclick="unlock(1, 'IN ONE HOUR, ALL OF YOUR FILES WILL BE WIPED FOREVER. LET THE GAMES BEGIN!')">
-    Unlock
-  </button>
-  <p class="feedback" id="feedback1"></p>
-</div>
+
   
 <!-- ROOM 2 -->
 <div id="room2" class="room locked" style="display:none;">
