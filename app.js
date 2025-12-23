@@ -2,6 +2,7 @@ let pyodideReady = false;
 let pyodide;
 
 async function initPyodide() {
+  console.log("🔥 initPyodide() CALLED");
   try {
     pyodide = await loadPyodide({
       indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/"
