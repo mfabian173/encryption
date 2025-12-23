@@ -160,18 +160,6 @@ pre {
   margin-top: 10px;
 }
 
-
-/* Terminal flashes for correct/incorrect decode */
-.flash-red {
-  background-color: #550000 !important;
-  color: #ff6666 !important;
-}
-
-.flash-green {
-  background-color: #003300 !important;
-  color: #00ff00 !important;
-}
-
 /* Make sure terminal has smooth transition for flash */
 #secretMessage {
   transition: background-color 0.3s, color 0.3s;
@@ -226,3 +214,20 @@ pre {
   pointer-events: none;
 }
 
+.flash-green {
+  animation: greenFlash 1s ease;
+}
+
+.flash-red {
+  animation: redFlash 1s ease;
+}
+
+@keyframes greenFlash {
+  0% { background: rgba(0,255,0,0.4); }
+  100% { background: transparent; }
+}
+
+@keyframes redFlash {
+  0% { background: rgba(255,0,0,0.4); }
+  100% { background: transparent; }
+}
