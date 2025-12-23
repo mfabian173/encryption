@@ -2,9 +2,12 @@ let pyodideReady = false;
 let pyodide;
 
 async function initPyodide() {
-  pyodide = await loadPyodide();
+  try {
+    pyodide = await loadPyodide({
+      indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/"
+    });
 
-  await pyodide.runPythonAsync(`
+    await pyodide.runPythonAsync(`
 import base64
 
 def atbash(text):
@@ -29,33 +32,19 @@ def caesar(text, shift):
 
 def rot13(text):
     return caesar(text, 13)
+    `);
 
-def vigenere(text, key):
-    result = ""
-    key_index = 0
-    key = key.upper()
-    for char in text:
-        if char.isalpha():
-            shift = ord(key[key_index % len(key)]) - ord('A')
-            result += chr((ord(char.upper()) - ord('A') + shift) % 26 + ord('A'))
-            key_index += 1
-        else:
-            result += char
-    return result
+    pyodideReady = true;
+    document.getElementById("loading").textContent = "✅ Investigation environment ready.";
+    document.getElementById("beginBtn").style.display = "inline-block";
 
-def base64_encode(text):
-    return base64.b64encode(text.encode()).decode()
-
-def base64_decode(text):
-    return base64.b64decode(text.encode()).decode()
-  `);
-
-  pyodideReady = true;
-  document.getElementById("loading").textContent = "✅ Python ready.";
-  document.getElementById("beginBtn").style.display = "inline-block";
+  } catch (err) {
+    console.error("Pyodide failed:", err);
+    document.getElementById("loading").textContent =
+      "❌ Failed to initialize investigation environment.";
+  }
 }
 
-initPyodide();
 
 // Unlock Room 1 when Begin clicked
 function beginInvestigation() {
