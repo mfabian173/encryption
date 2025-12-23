@@ -258,33 +258,40 @@ function caesarDecode(text, shift) {
 
 // Decode logs based on user input
 function decodeCaesarLogs() {
-  const shiftInput = document.getElementById("caesarShift").value;
-  const shift = parseInt(shiftInput);
-  const logData = document.getElementById("logData").textContent;
-  const decodedElem = document.getElementById("decodedLogs");
-  const suspectListElem = document.getElementById("suspects");
+  const shift = parseInt(document.getElementById("caesarShift").value);
+  const output = document.getElementById("decodedLogs");
+  const suspects = document.getElementById("suspects");
 
-  if (isNaN(shift)) {
-    decodedElem.textContent = "Please enter a valid number for the shift.";
+  const encrypted = document.getElementById("logData").textContent;
+  const correctShift = 3;
+
+  if (shift !== correctShift) {
+    output.classList.add("flash-red");
+    animateText(output, "❌ INVALID DECRYPTION ATTEMPT");
+    setTimeout(() => {
+      output.textContent = "";
+      output.classList.remove("flash-red");
+    }, 3000);
     return;
   }
 
-  const decoded = logData
-    .split("\n")
-    .map(line => caesarDecode(line, shift))
-    .join("\n");
-
-  decodedElem.textContent = decoded;
-
-  // Extract suspects (example: any word starting with 'Suspect')
-  const suspects = [];
-  decoded.split("\n").forEach(line => {
-    const match = line.match(/Suspect\d*/i);
-    if (match && !suspects.includes(match[0])) {
-      suspects.push(match[0]);
-    }
+  output.classList.add("flash-green");
+  animateText(output, decryptedLogs, 10, () => {
+    suspects.style.display = "block";
   });
-
-  // Display suspects
-  suspectListElem.innerHTML = suspects.map(s => `<li>${s}</li>`).join("");
 }
+
+
+function animateText(element, text, speed = 20, done) {
+  element.textContent = "";
+  let i = 0;
+  const interval = setInterval(() => {
+    element.textContent += text[i];
+    i++;
+    if (i >= text.length) {
+      clearInterval(interval);
+      if (done) done();
+    }
+  }, speed);
+}
+
