@@ -321,5 +321,3 @@ function animateText(element, text, speed = 20, done) {
 }
 
 window.addEventListener("load", initPyodide);
-});
-
