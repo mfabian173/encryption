@@ -192,47 +192,58 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE. YRG GUR TNZRF ORTVA! CNFFJ
     <li id="progressAlibi">⬜ Alibi Records</li>
   </ul>
 </div>
-
+]
 <div id="room3" class="room" style="display:none;">
   <h2>Room 3: Image Evidence</h2>
   <p>A suspicious image file was accessed shortly before the breach.</p>
-  <p><em>Steganography is the art of hiding secret data within another, seemingly harmless file (like an image, audio, or video), 
-  making the existence of the hidden message undetectable to outsiders. (Kind of like invisible ink!)
-  This file may contain hidden information…</em></p>
-  
+  <p><em>Steganography is the art of hiding secret data within another, seemingly harmless file, like this image.
+  Use the Python code below to extract hidden information. Four parts are missing — fill in the boxes with the instructions!</em></p>
+
   <!-- Image reveal -->
   <div id="stegoImageContainer">
     <img id="stegoImage" 
-         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABgAAAAQACAIAAACoEwUVAAEON2NhQlgAAQ43anVtYgAAAB5qdW1kYzJwYQARABCAAACqADibcQNj" 
+         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA" 
          alt="Suspicious file" width="300">
   </div>
 
-  <p>Below is the Python code to extract the hidden message. Fill in the missing parts marked with comments.</p>
+  <pre style="background-color:#111; color:#00ff00; padding:15px; border-radius:5px; font-family:monospace;">
+# Room 3 Steganography Extractor
 
-  <pre id="codeScaffold" style="background:#f4f4f4;padding:10px;border-radius:5px;">
 pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
 bits = []
 chars = []
 byte = []
 
 # Step 1: loop over each pixel
-<code contenteditable="true" id="loopPixels" class="codeInput"># Fill: for p in pixels:</code>
+<code contenteditable="true" id="loopPixels" style="background:#111; color:#ff0;"># Fill here: for p in pixels:</code>
 
 # Step 2: append bit from pixel
-<code contenteditable="true" id="appendBit" class="codeInput"># Fill: bits.append(p[0])</code>
+<code contenteditable="true" id="appendBit" style="background:#111; color:#ff0;"># Fill here: bits.append(p[0])</code>
 
 # Step 3: loop over bits
-<code contenteditable="true" id="loopBits" class="codeInput"># Fill: for b in bits:</code>
+<code contenteditable="true" id="loopBits" style="background:#111; color:#ff0;"># Fill here: for b in bits:</code>
 
 # Step 4: append bit to byte
-<code contenteditable="true" id="addByte" class="codeInput"># Fill: byte.append(b)</code>
+<code contenteditable="true" id="addByte" style="background:#111; color:#ff0;"># Fill here: byte.append(b)</code>
 
-# Hidden conversion is handled automatically
+# Behind the scenes: convert bits to characters
+i = 0
+while i &lt; len(bits):
+    byte_chunk = bits[i:i+8]
+    if len(byte_chunk) == 8:
+        value = 0
+        for b in byte_chunk:
+            value = value * 2 + b
+        chars.append(chr(value))
+    i += 8
+
+# Reveal hidden message
+print("".join(chars))
   </pre>
 
   <button onclick="runRoom3()" style="margin-top:10px;">Run Code</button>
 
-  <div id="stegoOutput" style="white-space:pre-wrap;margin-top:10px;font-family:monospace;"></div>
+  <div id="stegoOutput" style="white-space:pre-wrap; margin-top:10px; font-family:monospace;"></div>
 </div>
 
 <script>
@@ -269,17 +280,17 @@ while i < len(bits):
         chars.append(chr(value))
     i += 8
 
-# Hidden message: 3 names + Vigenère key
+# Hidden message: 3 names (not linked to usernames) + Vigenère key
 print("Alice, Bob, Charlie\\nBABBAGE")
 `;
 
   try {
     const result = await pyodide.runPythonAsync(studentCode);
 
-    // Flip image to reveal the secret
-    img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABgAAAAQACAIAAACoEwUVAAEON2NhQlgAAQ43anVtYgAAAB5qdW1kYzJwYQARABCAAACqADibcQNj";
+    // Flip image to reveal "secret" image
+    img.src = "data:image/png;base64,REPLACE_WITH_SECOND_IMAGE_BASE64";
 
-    // Animate the revealed text
+    // Typewriter animation for output
     output.textContent = "";
     let i = 0;
     const interval = setInterval(() => {
