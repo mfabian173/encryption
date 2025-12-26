@@ -380,24 +380,28 @@ function decodeCaesarLogs() {
           </div>
         `;
 
-        // Click → show bio
-        li.addEventListener("click", () => {
-          const bio = document.getElementById("suspectBio");
-          bio.querySelector("#bioName").textContent = li.dataset.name;
-          bio.querySelector("#bioLang").textContent = li.dataset.language;
-          bio.querySelector("#bioAccess").textContent = li.dataset.access;
-
-          // Populate recent files
-          const bioFiles = bio.querySelector("#bioFiles");
-          bioFiles.innerHTML = "";
-          (userFileAccess[user] || []).forEach(f => {
-            const liFile = document.createElement("li");
-            liFile.textContent = f;
-            bioFiles.appendChild(liFile);
-          });
-
-          bio.style.display = "block";
+              // Click → show bio
+      li.addEventListener("click", () => {
+        const bio = document.getElementById("suspectBio");
+        bio.querySelector("#bioName").textContent = li.dataset.name;
+        bio.querySelector("#bioLang").textContent = li.dataset.language;
+        bio.querySelector("#bioAccess").textContent = li.dataset.access;
+      
+        // Populate recent files (including clickable Room 3 link)
+        const bioFiles = bio.querySelector("#bioFiles");
+        bioFiles.innerHTML = "";
+        (userFileAccess[user] || []).forEach(f => {
+          const liFile = document.createElement("li");
+          if (user === "USER_03" && f.includes("secret_key")) {
+            liFile.innerHTML = `<a href="#" onclick="openRoom3()">📁 ${f}</a>`;
+          } else {
+            liFile.textContent = `📄 ${f}`;
+          }
+          bioFiles.appendChild(liFile);
         });
+      
+        bio.style.display = "block";
+      });
 
         suspects.appendChild(li);
       });
@@ -425,8 +429,6 @@ function animateText(element, text, speed = 20, done) {
 
 function openRoom3() {
   // Lock room 2 interaction if you want
-  document.getElementById("room2").classList.add("locked");
-
   // Show room 3
   const room3 = document.getElementById("room3");
   room3.style.display = "block";
@@ -463,10 +465,13 @@ function runChallenge() {
     const decryptedLogs = caesarDecode(document.getElementById("logData").textContent, correctShift);
     output.classList.add("flash-green");
     output.textContent = decryptedLogs;
+    output.classList.add("flash-green");
+    output.textContent = `✅ Correct shift: ${correctShift}\n\n${decryptedLogs}`;
 
-    // Show suspects and update progress
+  // Show suspects and update progress
     document.getElementById("suspects").style.display = "block";
     updateProgress("progressLogs");
+
   } else {
     output.classList.add("flash-red");
     output.textContent = "❌ Challenge failed! Make sure to loop from 0-26 and set shift.";
