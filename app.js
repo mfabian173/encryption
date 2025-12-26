@@ -282,15 +282,21 @@ const decryptedLogs = `
 
 // -----------------------
 // Caesar cipher decode function
+// Robust Caesar decode
 function caesarDecode(text, shift) {
-  return text.replace(/[a-zA-Z]/g, function(c){
-    const base = c <= 'Z' ? 65 : 97;
-    return String.fromCharCode((c.charCodeAt(0) - base - shift + 26) % 26 + base);
-  });
+  return text.split("").map(char => {
+    if (char >= "A" && char <= "Z") {
+      const code = ((char.charCodeAt(0) - 65 - shift + 26) % 26) + 65;
+      return String.fromCharCode(code);
+    } else if (char >= "a" && char <= "z") {
+      const code = ((char.charCodeAt(0) - 97 - shift + 26) % 26) + 97;
+      return String.fromCharCode(code);
+    } else {
+      return char; // non-letter stays the same
+    }
+  }).join("");
 }
 
-// Decode logs based on user input
-// Decode logs based on user input
 function decodeCaesarLogs() {
   const shift = parseInt(document.getElementById("caesarShift").value);
   const output = document.getElementById("decodedLogs");
@@ -304,10 +310,12 @@ function decodeCaesarLogs() {
   suspects.innerHTML = "";
   suspects.style.display = "none";
 
-  // Decode lines even if shift is wrong
+  // Always decode logs, even if wrong
   const decryptedLines = encrypted.split("\n").map(line => caesarDecode(line, shift));
+
   const decryptedText = `🔐 Attempted shift: ${shift}\n\n` + decryptedLines.join("\n");
 
+  // Animate decrypted logs
   animateText(output, decryptedText, 10, () => {
     // Highlight ACCESS DENIED
     decryptedLines.forEach(line => {
@@ -319,82 +327,78 @@ function decodeCaesarLogs() {
       }
     });
 
-    // Wrong shift
-    if (shift !== correctShift) {
-      output.classList.add("flash-red");
-      output.innerHTML =
-        `<strong style="color:#ff5555;">❌ INCORRECT SHIFT</strong><br><br>` + output.innerHTML;
-      return; // stop here — no suspects unlocked
-    }
+    // Correct shift → show suspects
+    if (shift === correctShift) {
+      output.classList.add("flash-green");
 
-    // Correct shift
-    output.classList.add("flash-green");
+      // Hardcoded suspect file access
+      const userFileAccess = {
+        "USER_12": ["finances.csv"],
+        "USER_07": ["employee_records.db", "admin.cfg (DENIED)"],
+        "USER_03": ["secret_key.jxz"] // clickable
+      };
 
-    const users = new Set();
-    decryptedLines.forEach(line => {
-      const userMatch = line.match(/USER_\d+/);
-      if (userMatch) users.add(userMatch[0]);
-    });
-
-    // Hardcoded file access
-    const userFileAccess = {
-      "USER_12": ["finances.csv"],
-      "USER_07": ["employee_records.db", "admin.cfg (DENIED)"],
-      "USER_03": ["secret_key.jxz"] // <-- clickable
-    };
-
-    // Populate suspects
-    users.forEach(user => {
-      const li = document.createElement("li");
-      li.classList.add("suspect");
-
-      li.dataset.name = user;
-      li.dataset.language =
-        user === "USER_12"
-          ? "R — statistical computing & data analysis"
-          : user === "USER_07"
-          ? "C/C++ — systems-level programming"
-          : user === "USER_03"
-          ? "SQL — structured database querying"
-          : "Unknown";
-      li.dataset.access =
-        user === "USER_12"
-          ? "Full admin access"
-          : user === "USER_07"
-          ? "Read / Write access"
-          : user === "USER_03"
-          ? "Restricted access"
-          : "Unknown";
-
-      li.innerHTML = `
-        <div class="suspect-title">${user}</div>
-        <div class="recent-files">
-          <em>Recent file access:</em>
-          <ul>
-            ${(userFileAccess[user] || [])
-              .map(file =>
-                user === "USER_03" && file.toLowerCase().includes("secret_key")
-                  ? `<li><a href="#" onclick="openRoom3()">📁 ${file}</a></li>`
-                  : `<li>📄 ${file}</li>`
-              )
-              .join("")}
-          </ul>
-        </div>
-      `;
-
-      // Click → show bio
-      li.addEventListener("click", () => {
-        const bio = document.getElementById("suspectBio");
-        bio.querySelector("#bioName").textContent = li.dataset.name;
-        bio.querySelector("#bioLang").textContent = li.dataset.language;
-        bio.querySelector("#bioAccess").textContent = li.dataset.access;
-        bio.style.display = "block";
+      const users = new Set();
+      decryptedLines.forEach(line => {
+        const match = line.match(/USER_\d+/);
+        if (match) users.add(match[0]);
       });
 
-      suspects.appendChild(li);
-    });
+      users.forEach(user => {
+        const li = document.createElement("li");
+        li.classList.add("suspect");
 
-    suspects.style.display = "block"; // Make sure list is visible
+        li.dataset.name = user;
+        li.dataset.language =
+          user === "USER_12"
+            ? "R — statistical computing & data analysis"
+            : user === "USER_07"
+            ? "C/C++ — systems-level programming"
+            : user === "USER_03"
+            ? "SQL — structured database querying"
+            : "Unknown";
+
+        li.dataset.access =
+          user === "USER_12"
+            ? "Full admin access"
+            : user === "USER_07"
+            ? "Read / Write access"
+            : user === "USER_03"
+            ? "Restricted access"
+            : "Unknown";
+
+        li.innerHTML = `
+          <div class="suspect-title">${user}</div>
+          <div class="recent-files">
+            <em>Recent file access:</em>
+            <ul>
+              ${(userFileAccess[user] || [])
+                .map(file =>
+                  user === "USER_03" && file.includes("secret_key")
+                    ? `<li><a href="#" onclick="openRoom3()">📁 ${file}</a></li>`
+                    : `<li>📄 ${file}</li>`
+                )
+                .join("")}
+            </ul>
+          </div>
+        `;
+
+        // Click → show bio
+        li.addEventListener("click", () => {
+          const bio = document.getElementById("suspectBio");
+          bio.querySelector("#bioName").textContent = li.dataset.name;
+          bio.querySelector("#bioLang").textContent = li.dataset.language;
+          bio.querySelector("#bioAccess").textContent = li.dataset.access;
+          bio.style.display = "block";
+        });
+
+        suspects.appendChild(li);
+      });
+
+      suspects.style.display = "block"; // Show the list
+    } else {
+      output.classList.add("flash-red"); // wrong shift feedback
+    }
   });
 }
 
