@@ -336,13 +336,13 @@ function decodeCaesarLogs() {
     li.classList.add("suspect");
   
     // Attach bio info
-    li.dataset.name = user === "USER_12" ? "Alice Smith" :
-                       user === "USER_07" ? "Bob Jones" :
-                       user === "USER_03" ? "Charlie Lee" :
+    li.dataset.name = user === "USER_12" ? "USER_12" :
+                       user === "USER_07" ? "USER_07" :
+                       user === "USER_03" ? "USER_03" :
                        "Unknown";
-    li.dataset.language = user === "USER_12" ? "Python — beginner-friendly, versatile scripting language" :
-                          user === "USER_07" ? "Java — object-oriented, widely used in enterprise apps" :
-                          user === "USER_03" ? "JavaScript — runs in browsers, front-end & back-end" :
+    li.dataset.language = user === "USER_12" ? "R —  specifically designed as an environment for statistical computing and graphics, widely used by data scientists, statisticians, and researchers. " :
+                          user === "USER_07" ? "C/C++ — Foundational, high-performance languages that offer deep control over memory management and hardware. They are used for operating systems, game engines (like Unreal), and embedded systems." :
+                          user === "USER_03" ? "SQL —A domain-specific language (DSL) used to communicate with and manipulate relational databases. It is essential for data analysts, database administrators, and any data-driven applications" :
                           "Unknown";
     li.dataset.access = user === "USER_12" ? "Full admin access" :
                         user === "USER_07" ? "Read/Write access" :
