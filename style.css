@@ -268,3 +268,17 @@ pre {
   letter-spacing: 4px;
   text-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
 }
+
+.denied {
+  color: red;
+  font-weight: bold;
+}
+
+.suspect {
+  cursor: pointer;
+  color: #00ffcc;
+}
+
+.suspect:hover {
+  text-decoration: underline;
+}
