@@ -157,7 +157,9 @@ function unlock(roomNum, correct) {
     const room2 = document.getElementById("room2");
     room2.classList.remove("locked"); // fully interactive now
     room2.scrollIntoView({behavior:"smooth"});
-
+    const overlay = room2.querySelector(".room-lock-overlay");
+    if (overlay) overlay.remove(); 
+    
   } else {
     feedback.textContent = "ACCESS DENIED";
 
