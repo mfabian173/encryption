@@ -588,18 +588,23 @@ function typeText(element, text, speed = 30) {
   }, speed);
 }
 
-
 async function runRoom3() {
   if (!pyodideReady) return;
 
-  const loopPixels = document.getElementById("loopPixels").value.trim();
-  const appendBit = document.getElementById("appendBit").value.trim();
-  const loopBits = document.getElementById("loopBits").value.trim();
-  const addByte = document.getElementById("addByte").value.trim();
-  const output = document.getElementById("stegoOutput");
+  // Use innerText for editable <code> blocks to preserve student input
+  const loopPixels = document.getElementById("loopPixels").innerText.trim();
+  const appendBit = document.getElementById("appendBit").innerText.trim();
+  const loopBits = document.getElementById("loopBits").innerText.trim();
+  const addByte = document.getElementById("addByte").innerText.trim();
 
+  const output = document.getElementById("stegoOutput");
+  const img = document.getElementById("stegoImage");
+  const imgReveal = document.getElementById("stegoReveal");
+
+  // Wrap student code safely
   const studentCode = `
-pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
+pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), 
+          (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
 bits = []
 chars = []
 byte = []
@@ -610,7 +615,7 @@ ${appendBit}
 ${loopBits}
 ${addByte}
 
-# Convert bits to characters
+# Convert 8-bit chunks to characters
 i = 0
 while i < len(bits):
     byte_chunk = bits[i:i+8]
@@ -621,28 +626,35 @@ while i < len(bits):
         chars.append(chr(value))
     i += 8
 
-# Hidden message: 3 names (not linked to usernames) + Vigenère key
-print("Alice, Bob, Charlie\\nKEYFORROOM4")
+print("Alice, Bob, Charlie\\nBABBAGE")
 `;
 
   try {
+    // Run in Pyodide
     const result = await pyodide.runPythonAsync(studentCode);
 
-    // Animate image reveal with tile effect
-    tileReveal();
+    // Flip images
+    img.style.display = "none";
+    imgReveal.style.display = "block";
 
     // Animate the revealed text
     output.textContent = "";
-    let i = 0;
-    const interval = setInterval(() => {
-      output.textContent += result[i];
-      i++;
-      if (i >= result.length) clearInterval(interval);
-    }, 30);
+    for (let i = 0; i < result.length; i++) {
+      setTimeout(() => {
+        output.textContent += result[i];
+      }, i * 30);
+    }
+
+    // Reveal cracked message box
+    setTimeout(() => {
+      document.getElementById("crackedMessage").classList.remove("hidden");
+    }, result.length * 30 + 200);
 
   } catch (err) {
     output.textContent = "❌ Check your loops and append. Try again!";
+    console.error("Room 3 Python error:", err);
   }
 }
+
 
 window.addEventListener("load", initPyodide);
