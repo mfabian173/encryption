@@ -280,6 +280,7 @@ function caesarDecode(text, shift) {
 }
 
 // Decode logs based on user input
+// Decode logs based on user input
 function decodeCaesarLogs() {
   const shift = parseInt(document.getElementById("caesarShift").value);
   const output = document.getElementById("decodedLogs");
@@ -288,18 +289,56 @@ function decodeCaesarLogs() {
   const encrypted = document.getElementById("logData").textContent;
   const correctShift = 3;
 
+  // Reset UI
+  output.classList.remove("flash-red", "flash-green");
+  output.innerHTML = "";
+  suspects.innerHTML = "";
+  suspects.style.display = "none";
+
+  // ❌ Wrong shift
   if (shift !== correctShift) {
     output.classList.add("flash-red");
     animateText(output, "❌ INVALID DECRYPTION ATTEMPT");
-    setTimeout(() => {
-      output.textContent = "";
-      output.classList.remove("flash-red");
-    }, 3000);
     return;
   }
 
+  // ✅ Correct shift
   output.classList.add("flash-green");
-  animateText(output, decryptedLogs, 10, () => {
+
+  // 🔓 Decode logs line-by-line
+  const decryptedLines = encrypted
+    .split("\n")
+    .map(line => caesarDecode(line, shift));
+
+  const decryptedText = decryptedLines.join("\n");
+
+  // ✨ Animate decoded logs
+  animateText(output, decryptedText, 10, () => {
+    // 🎯 Build suspect list AFTER decode finishes
+    const users = new Set();
+
+    decryptedLines.forEach(line => {
+      const userMatch = line.match(/USER_\d+/);
+      if (userMatch) users.add(userMatch[0]);
+
+      // Highlight ACCESS DENIED lines
+      if (line.includes("ACCESS DENIED")) {
+        output.innerHTML = output.innerHTML.replace(
+          line,
+          `<span class="denied">${line}</span>`
+        );
+      }
+    });
+
+    // Populate suspects
+    users.forEach(user => {
+      const li = document.createElement("li");
+      li.textContent = user;
+      li.classList.add("suspect");
+      li.onclick = () => investigateSuspect(user);
+      suspects.appendChild(li);
+    });
+
     suspects.style.display = "block";
   });
 }
@@ -316,6 +355,10 @@ function animateText(element, text, speed = 20, done) {
       if (done) done();
     }
   }, speed);
+}
+
+function investigateSuspect(user) {
+  alert(`Investigating ${user}...`);
 }
 
 window.addEventListener("load", initPyodide);
