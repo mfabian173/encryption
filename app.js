@@ -589,35 +589,27 @@ function typeText(element, text, speed = 30) {
 }
 
 async function runRoom3() {
-  if (!pyodideReady) {
-    alert("Python environment not ready yet!");
-    return;
-  }
+  if (!pyodideReady) return;
 
-  const loopPixels = document.getElementById("loopPixels").innerText.trim();
-  const appendBit = document.getElementById("appendBit").innerText.trim();
-  const loopBits = document.getElementById("loopBits").innerText.trim();
-  const addByte = document.getElementById("addByte").innerText.trim();
-
+  const loopPixels = document.getElementById("loopPixels").textContent.trim();
+  const appendBit = document.getElementById("appendBit").textContent.trim();
+  const loopBits = document.getElementById("loopBits").textContent.trim();
+  const addByte = document.getElementById("addByte").textContent.trim();
   const output = document.getElementById("stegoOutput");
-  const img = document.getElementById("stegoImage");
-  const imgReveal = document.getElementById("stegoReveal");
 
-  // Build the student Python code
   const studentCode = `
-pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), 
-          (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
+pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
 bits = []
 chars = []
 byte = []
 
 ${loopPixels}
-${appendBit}
+    ${appendBit}
 
 ${loopBits}
-${addByte}
+    ${addByte}
 
-# Convert 8-bit chunks to characters
+# Convert bits to characters
 i = 0
 while i < len(bits):
     byte_chunk = bits[i:i+8]
@@ -628,18 +620,17 @@ while i < len(bits):
         chars.append(chr(value))
     i += 8
 
-print("Alice, Bob, Charlie\\nBABBAGE")
+# Hidden message: 3 names (not linked to usernames) + Vigenère key
+print("Alice, Bob, Charlie\\nKEYFORROOM4")
 `;
 
   try {
-    // Run Python code in Pyodide
     const result = await pyodide.runPythonAsync(studentCode);
 
-    // Flip images
-    img.style.display = "none";
-    imgReveal.style.display = "block";
+    // Animate image reveal with tile effect
+    tileReveal();
 
-    // Animate the revealed text character by character
+    // Animate the revealed text
     output.textContent = "";
     let i = 0;
     const interval = setInterval(() => {
@@ -648,19 +639,8 @@ print("Alice, Bob, Charlie\\nBABBAGE")
       if (i >= result.length) clearInterval(interval);
     }, 30);
 
-    // Show the "code cracked" box after animation
-    setTimeout(() => {
-      const cracked = document.getElementById("crackedMessage");
-      if (cracked) cracked.classList.remove("hidden");
-    }, result.length * 30 + 100);
-
-    // Update progress sidebar
-    const progress = document.getElementById("progressImage");
-    if (progress) progress.textContent = "✅ Image Evidence";
-
   } catch (err) {
     output.textContent = "❌ Check your loops and append. Try again!";
-    console.error("Room 3 Python error:", err);
   }
 }
 
