@@ -263,12 +263,10 @@ def base64_decode(text):
 
 
 const decryptedLogs = `
-This is a test log to date: 01-15-2025 03:47 - Caesar 3 used
-UserID: admin01 | IP: 192.168.1.24 | File: payroll.db
-This is a test log to date: 01-15-2025 03:55 - Password attempt
-UserID: guest07 | IP: 192.168.1.18 | File: —
-This is a test log to date: 01-15-2025 04:30 - Suspect1
-UserID: sys_core | IP: 10.0.0.5 | File: customer_dump.sql
+03:41:12 | USER_12 | 192.168.4.23 | OPENED FILE: finances.csv
+03:47:09 | USER_07 | 192.168.4.19 | OPENED FILE: employee_records.db
+03:52:44 | USER_07 | 192.168.4.19 | ACCESS DENIED: admin.cfg
+04:01:03 | USER_03 | 192.168.4.88 | OPENED FILE: secret_key.pdf
 `;
 
 
