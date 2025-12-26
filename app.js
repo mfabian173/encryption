@@ -316,11 +316,26 @@ function decodeCaesarLogs() {
 
   animateText(output, decryptedText, 10, () => {
     const users = new Set();
+    const fileAccess = {};
 
+    
     decryptedLines.forEach(line => {
       const userMatch = line.match(/USER_\d+/);
-      if (userMatch) users.add(userMatch[0]);
-
+      const fileMatch = line.match(/FILE:\s(.+)/);
+    
+      if (userMatch) {
+        const user = userMatch[0];
+        users.add(user);
+    
+        if (!fileAccess[user]) {
+          fileAccess[user] = [];
+        }
+    
+        if (fileMatch) {
+          fileAccess[user].push(fileMatch[1]);
+        }
+      }
+    
       if (line.includes("ACCESS DENIED")) {
         output.innerHTML = output.innerHTML.replace(
           line,
@@ -328,6 +343,7 @@ function decodeCaesarLogs() {
         );
       }
     });
+
 
 // Populate suspects
   users.forEach(user => {
@@ -350,6 +366,8 @@ function decodeCaesarLogs() {
                         "Unknown";
   
     suspects.appendChild(li);
+    li.dataset.files = JSON.stringify(fileAccess[user] || []);
+
   });
   
   // Show the section **before adding click handlers**
@@ -357,13 +375,35 @@ function decodeCaesarLogs() {
   
   // Attach click events
   document.querySelectorAll(".suspect").forEach(item => {
-    item.addEventListener("click", () => {
-      const bio = document.getElementById("suspectBio");
-      bio.querySelector("#bioName").textContent = item.dataset.name;
-      bio.querySelector("#bioLang").textContent = item.dataset.language;
-      bio.querySelector("#bioAccess").textContent = item.dataset.access;
-      bio.style.display = "block";
+      item.addEventListener("click", () => {
+        const bio = document.getElementById("suspectBio");
+        const filesList = bio.querySelector("#bioFiles");
+      
+        bio.querySelector("#bioName").textContent = item.textContent;
+        bio.querySelector("#bioLang").textContent = item.dataset.language;
+        bio.querySelector("#bioAccess").textContent = item.dataset.access;
+      
+        filesList.innerHTML = "";
+      
+        const files = JSON.parse(item.dataset.files || "[]");
+      
+        files.forEach(file => {
+          const li = document.createElement("li");
+      
+          // USER_03 special link
+          if (item.textContent === "USER_03" && file === "secret_key.pdf") {
+            li.innerHTML = `<a href="#" style="color:#ff5555;">${file}</a>`;
+            li.addEventListener("click", () => unlockRoom3());
+          } else {
+            li.textContent = file;
+          }
+      
+          filesList.appendChild(li);
+        });
+      
+        bio.style.display = "block";
     });
+
   });
   ;
 
@@ -387,6 +427,11 @@ function animateText(element, text, speed = 20, done) {
 
 function investigateSuspect(user) {
   alert(`Investigating ${user}...`);
+}
+function unlockRoom3() {
+  const room3 = document.getElementById("room3");
+  room3.style.display = "block";
+  room3.scrollIntoView({ behavior: "smooth" });
 }
 
 function updateProgress(item) {
