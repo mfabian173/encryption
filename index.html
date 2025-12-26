@@ -139,8 +139,15 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE. YRG GUR TNZRF ORTVA!
 
   <!-- Caesar input -->
   <p>Enter the Caesar shift number you think was used to decode the logs:</p>
-  <input id="caesarShift" type="number" placeholder="Shift (e.g., 20)">
-  <button onclick="decodeCaesarLogs()">Decode Logs</button>
+  <div class="code-input">
+    <code>
+      print(caesar(text,
+      <input id="caesarShift" type="number" min="0" max="25" placeholder="?" />
+      ))
+    </code>
+  </div>
+  
+  <button onclick="decodeCaesarLogs()">Run</button>
 
   <!-- Decoded logs -->
   <div class="logs">
