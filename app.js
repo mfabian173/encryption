@@ -298,33 +298,27 @@ function decodeCaesarLogs() {
   suspects.innerHTML = "";
   suspects.style.display = "none";
 
-  // ❌ Wrong shift
   if (shift !== correctShift) {
     output.classList.add("flash-red");
     animateText(output, "❌ INVALID DECRYPTION ATTEMPT");
     return;
   }
 
-  // ✅ Correct shift
   output.classList.add("flash-green");
 
-  // 🔓 Decode logs line-by-line
   const decryptedLines = encrypted
     .split("\n")
     .map(line => caesarDecode(line, shift));
 
   const decryptedText = decryptedLines.join("\n");
 
-  // ✨ Animate decoded logs
   animateText(output, decryptedText, 10, () => {
-    // 🎯 Build suspect list AFTER decode finishes
     const users = new Set();
 
     decryptedLines.forEach(line => {
       const userMatch = line.match(/USER_\d+/);
       if (userMatch) users.add(userMatch[0]);
 
-      // Highlight ACCESS DENIED lines
       if (line.includes("ACCESS DENIED")) {
         output.innerHTML = output.innerHTML.replace(
           line,
@@ -334,13 +328,11 @@ function decodeCaesarLogs() {
     });
 
     // Populate suspects
-// Populate suspects with clickable bios
     users.forEach(user => {
       const li = document.createElement("li");
       li.textContent = user;
       li.classList.add("suspect");
-    
-      // Attach bio info (replace these with your actual data)
+
       li.dataset.name = user === "USER_12" ? "Alice Smith" :
                          user === "USER_07" ? "Bob Jones" :
                          user === "USER_03" ? "Charlie Lee" :
@@ -353,27 +345,25 @@ function decodeCaesarLogs() {
                           user === "USER_07" ? "Read/Write access" :
                           user === "USER_03" ? "Limited access" :
                           "Unknown";
-    
+
       suspects.appendChild(li);
     });
 
-
-    suspects.style.display = "block";
-// Make suspects clickable to show bio
+    // Make suspects clickable
     document.querySelectorAll(".suspect").forEach(item => {
       item.addEventListener("click", () => {
         const bio = document.getElementById("suspectBio");
-    
-        // Fill in bio details
         bio.querySelector("#bioName").textContent = item.dataset.name;
         bio.querySelector("#bioLang").textContent = item.dataset.language;
         bio.querySelector("#bioAccess").textContent = item.dataset.access;
-    
-        // Show bio box
         bio.style.display = "block";
       });
     });
-  }
+
+    suspects.style.display = "block";
+  }); // <-- this closes animateText callback
+} // <-- this closes decodeCaesarLogs
+
 
 function animateText(element, text, speed = 20, done) {
   element.textContent = "";
