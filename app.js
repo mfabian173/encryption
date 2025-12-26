@@ -555,6 +555,16 @@ print("Alice, Bob, Charlie\\nKEYFORROOM4")
 
   try {
     const result = await pyodide.runPythonAsync(studentCode);
+    // Reveal the hidden image
+    const pre = document.getElementById("stegoImage");
+    const post = document.getElementById("stegoReveal");
+    
+    pre.classList.add("hidden");
+    
+    setTimeout(() => {
+      pre.style.display = "none";
+      post.style.display = "block";
+    }, 600);
 
     // Flip image to reveal "secret"
     img.src = "stego_reveal.png"; // replace with your image showing names/key
