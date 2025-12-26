@@ -163,29 +163,30 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE. YRG GUR TNZRF ORTVA! CNFFJ
   </div>
 
     <!-- Suspect list -->
-  <div id="suspects" style="display:none;">
-    <h3>Suspect List</h3>
-    <ul>
-      <li class="suspect" data-name="Alice Turner" data-language="Python — great for automation & data analysis" data-access="ilqdbqfhv.csv">XVHU_12</li>
-      <li class="suspect" data-name="Bob Chen" data-language="JavaScript — versatile for web and scripting" data-access="hpsorbhhbuhfrugv.db">XVHU_07</li>
-      <li class="suspect" data-name="Charlie Lopez" data-language="C++ — strong for high-performance computing" data-access="dgplq.cfg">XVHU_03</li>
-    </ul>
+  <!-- Dramatic Suspect List -->
+  <div id="suspectSection" style="display:none; margin-top:20px;">
+    <h2 style="color:#ff5555; border-bottom:2px solid #ff5555; padding-bottom:5px;">
+      SUSPECT LIST 🔍
+    </h2>
+    <ul id="suspects" style="list-style:none; padding:0;"></ul>
   
-    <div id="suspectBio" style="border:1px solid #ccc; padding:10px; margin-top:10px; display:none;">
-      <p><strong>Name:</strong> <span id="bioName"></span></p>
+    <!-- Suspect Bio Box -->
+    <div id="suspectBio" style="display:none; border:2px solid #ff5555; padding:10px; margin-top:10px; background:#111; color:#fff;">
+      <h3 id="bioName">Name</h3>
       <p><strong>Favorite Language:</strong> <span id="bioLang"></span></p>
-      <p><strong>Recent Access:</strong> <span id="bioAccess"></span></p>
+      <p><strong>Access Level:</strong> <span id="bioAccess"></span></p>
+      <button onclick="this.parentElement.style.display='none'" style="margin-top:5px; cursor:pointer;">Close</button>
     </div>
     
     <div id="caseSidebar" style="position:fixed; right:0; top:50px; width:250px; padding:10px; border-left:2px solid #333;">
-    <h3>Case File Progress</h3>
-    <ul>
-      <li id="progressNote">❌ Encrypted Note</li>
-      <li id="progressLogs">❌ Server Logs</li>
-      <li id="progressImage">⬜ Image Evidence</li>
-      <li id="progressAlibi">⬜ Alibi Records</li>
-    </ul>
-  </div>
+      <h3>Case File Progress</h3>
+      <ul>
+        <li id="progressNote">❌ Encrypted Note</li>
+        <li id="progressLogs">❌ Server Logs</li>
+        <li id="progressImage">⬜ Image Evidence</li>
+        <li id="progressAlibi">⬜ Alibi Records</li>
+      </ul>
+    </div>
 
   </div>
 
