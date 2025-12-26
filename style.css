@@ -282,3 +282,16 @@ pre {
 .suspect:hover {
   text-decoration: underline;
 }
+
+.shift-highlight {
+  color: red;
+  font-weight: bold;
+}
+
+.code-snippet {
+  background: #0b0b0b;
+  padding: 12px;
+  border-radius: 6px;
+  font-family: monospace;
+  color: #ddd;
+}
