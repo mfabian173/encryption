@@ -559,7 +559,6 @@ async function runRoom3() {
   const loopBits = document.getElementById("loopBits").textContent.trim();
   const addByte = document.getElementById("addByte").textContent.trim();
   const output = document.getElementById("stegoOutput");
-  const img = document.getElementById("stegoImage");
 
   const studentCode = `
 pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
@@ -590,19 +589,9 @@ print("Alice, Bob, Charlie\\nKEYFORROOM4")
 
   try {
     const result = await pyodide.runPythonAsync(studentCode);
-    // Reveal the hidden image
-    const pre = document.getElementById("stegoImage");
-    const post = document.getElementById("stegoReveal");
-    
-    pre.classList.add("hidden");
-    
-    setTimeout(() => {
-      pre.style.display = "none";
-      post.style.display = "block";
-    }, 600);
 
-    // Flip image to reveal "secret"
-    img.src = "stego_reveal.png"; // replace with your image showing names/key
+    // Animate image reveal with tile effect
+    tileReveal();
 
     // Animate the revealed text
     output.textContent = "";
@@ -617,5 +606,5 @@ print("Alice, Bob, Charlie\\nKEYFORROOM4")
     output.textContent = "❌ Check your loops and append. Try again!";
   }
 }
-  
+
 window.addEventListener("load", initPyodide);
