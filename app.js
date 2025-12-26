@@ -542,14 +542,52 @@ except Exception as e:
 }
 
 function unlockRoom4() {
+  const room3 = document.getElementById("room3");
   const room4 = document.getElementById("room4");
-  if (room4) {
+  const stage = document.getElementById("stageMessage");
+
+  // Optional dramatic stage message
+  if (stage) stage.textContent = "🔓 Room 4 Unlocked";
+
+  // Fade out Room 3
+  room3.style.transition = "opacity 0.8s";
+  room3.style.opacity = 0;
+
+  setTimeout(() => {
+    room3.style.display = "none"; // hide Room 3
+    room3.style.opacity = 1; // reset for later if needed
+
+    // Show Room 4
     room4.style.display = "block";
-    room4.scrollIntoView({ behavior: "smooth" });
-    const stage = document.getElementById("stageMessage");
-    if (stage) stage.textContent = "Room 4 Unlocked: Vigenère Cipher Challenge";
-  }
+    room4.style.opacity = 0;
+    room4.style.transition = "opacity 1s";
+    setTimeout(() => {
+      room4.style.opacity = 1;
+      room4.scrollIntoView({ behavior: "smooth" });
+
+      // Animate intro text
+      const introText = "🕵️‍♂️ Vigenère Cipher Challenge Unlocked!\nDecrypt the hidden message to proceed...";
+      const introEl = document.getElementById("room4Intro");
+
+      if (introEl) {
+        typeText(introEl, introText, 30);
+      }
+
+    }, 50);
+  }, 800);
 }
+
+// Typing animation helper
+function typeText(element, text, speed = 30) {
+  element.textContent = "";
+  let i = 0;
+  const interval = setInterval(() => {
+    element.textContent += text[i];
+    i++;
+    if (i >= text.length) clearInterval(interval);
+  }, speed);
+}
+
 
 async function runRoom3() {
   if (!pyodideReady) return;
