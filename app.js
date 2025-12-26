@@ -467,6 +467,44 @@ function runChallenge() {
     setTimeout(() => { output.classList.remove("flash-red"); output.textContent = ""; }, 3000);
   }
 }
+async function runStegoChallenge() {
+  if (!pyodideReady) return;
+
+  const code = document.getElementById("stegoInput").value;
+  const output = document.getElementById("stegoOutput");
+
+  try {
+    // Wrap user code and capture print output
+    const wrappedCode = `
+result = None
+import builtins
+_stdout = []
+def fake_print(*args, **kwargs):
+    _stdout.append(" ".join(map(str,args)))
+builtins.print = fake_print
+try:
+    exec("""${code.replace(/`/g, '\\`')}""")
+    if _stdout:
+        result = "\\n".join(_stdout)
+except Exception as e:
+    result = "ERROR: " + str(e)
+`;
+
+    await pyodide.runPythonAsync(wrappedCode);
+    const result = pyodide.globals.get("result");
+
+    // Show output
+    output.textContent = result || "No output";
+
+    // Optional: auto-unlock Room 4 if correct key found
+    if (result && result.includes("KEY:CRYPTO2025")) {
+      unlockRoom4();
+    }
+
+  } catch (err) {
+    output.textContent = "JS ERROR: " + err;
+  }
+}
 
     
 window.addEventListener("load", initPyodide);
