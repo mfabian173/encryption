@@ -395,6 +395,47 @@ function decodeCaesarLogs() {
     }
   });
 }
+function tileReveal() {
+  const container = document.getElementById("stegoContainer");
+  const pre = document.getElementById("stegoImage");
+  const post = document.getElementById("stegoReveal");
+
+  const rows = 6;
+  const cols = 6;
+  const tileWidth = pre.offsetWidth / cols;
+  const tileHeight = pre.offsetHeight / rows;
+
+  // Hide original image
+  pre.style.opacity = 0;
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const tile = document.createElement("div");
+      tile.className = "tile";
+      tile.style.width = tileWidth + "px";
+      tile.style.height = tileHeight + "px";
+      tile.style.left = c * tileWidth + "px";
+      tile.style.top = r * tileHeight + "px";
+      tile.style.backgroundImage = `url(${pre.src})`;
+      tile.style.backgroundPosition = `-${c * tileWidth}px -${r * tileHeight}px`;
+
+      container.appendChild(tile);
+
+      // staggered flip
+      setTimeout(() => tile.classList.add("flip"), 100 + (r + c) * 60);
+    }
+  }
+
+  // Reveal new image
+  setTimeout(() => {
+    post.style.opacity = 1;
+  }, 900);
+
+  // Show cracked message
+  setTimeout(() => {
+    document.getElementById("crackedMessage").classList.remove("hidden");
+  }, 1300);
+}
 
 
 function animateText(element, text, speed = 20, done) {
