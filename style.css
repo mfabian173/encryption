@@ -245,3 +245,26 @@ pre {
   color: #ff4d4d;
   font-weight: bold;
 }
+
+.room.locked {
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.room-lock-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.room-lock-overlay span {
+  color: #ff2e2e;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+}
