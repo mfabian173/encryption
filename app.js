@@ -506,5 +506,15 @@ except Exception as e:
   }
 }
 
+function unlockRoom4() {
+  const room4 = document.getElementById("room4");
+  if (room4) {
+    room4.style.display = "block";
+    room4.scrollIntoView({ behavior: "smooth" });
+    const stage = document.getElementById("stageMessage");
+    if (stage) stage.textContent = "Room 4 Unlocked: Vigenère Cipher Challenge";
+  }
+}
+
     
 window.addEventListener("load", initPyodide);
