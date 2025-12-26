@@ -384,7 +384,7 @@ function decodeCaesarLogs() {
           <ul>
             ${(userFileAccess[user] || [])
               .map(file =>
-                user === "USER_03" && file === "secret_key.png"
+                user === "USER_03" && file === "secret_key.jxz"
                   ? `<li><a href="#" onclick="openRoom3()">📁 ${file}</a></li>`
                   : `<li>📄 ${file}</li>`
               )
@@ -424,9 +424,19 @@ function animateText(element, text, speed = 20, done) {
 }
 
 function openRoom3() {
-  document.getElementById("room2").style.display = "none";
-  document.getElementById("room3").style.display = "block";
-  document.getElementById("room3").scrollIntoView({ behavior: "smooth" });
+  // Lock room 2 interaction if you want
+  document.getElementById("room2").classList.add("locked");
+
+  // Show room 3
+  const room3 = document.getElementById("room3");
+  room3.style.display = "block";
+  room3.scrollIntoView({ behavior: "smooth" });
+
+  // Optional dramatic message
+  const stage = document.getElementById("stageMessage");
+  if (stage) {
+    stage.textContent = "🔍 FILE UNLOCKED: IMAGE METADATA DETECTED";
+  }
 }
 
 function investigateSuspect(user) {
