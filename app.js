@@ -334,25 +334,46 @@ function decodeCaesarLogs() {
     });
 
     // Populate suspects
+// Populate suspects with clickable bios
     users.forEach(user => {
       const li = document.createElement("li");
       li.textContent = user;
       li.classList.add("suspect");
-      li.onclick = () => investigateSuspect(user);
+    
+      // Attach bio info (replace these with your actual data)
+      li.dataset.name = user === "USER_12" ? "Alice Smith" :
+                         user === "USER_07" ? "Bob Jones" :
+                         user === "USER_03" ? "Charlie Lee" :
+                         "Unknown";
+      li.dataset.language = user === "USER_12" ? "Python — beginner-friendly, versatile scripting language" :
+                            user === "USER_07" ? "Java — object-oriented, widely used in enterprise apps" :
+                            user === "USER_03" ? "JavaScript — runs in browsers, front-end & back-end" :
+                            "Unknown";
+      li.dataset.access = user === "USER_12" ? "Full admin access" :
+                          user === "USER_07" ? "Read/Write access" :
+                          user === "USER_03" ? "Limited access" :
+                          "Unknown";
+    
       suspects.appendChild(li);
     });
 
-    suspects.style.display = "block";
-    document.querySelectorAll(".suspect").forEach(item => {
-  item.addEventListener("click", () => {
-    const bio = document.getElementById("suspectBio");
-    document.getElementById("bioName").textContent = item.dataset.name;
-    document.getElementById("bioLang").textContent = item.dataset.language;
-    document.getElementById("bioAccess").textContent = item.dataset.access;
-    bio.style.display = "block";
-  });
-}
 
+    suspects.style.display = "block";
+// Make suspects clickable to show bio
+    document.querySelectorAll(".suspect").forEach(item => {
+      item.addEventListener("click", () => {
+        const bio = document.getElementById("suspectBio");
+    
+        // Fill in bio details
+        bio.querySelector("#bioName").textContent = item.dataset.name;
+        bio.querySelector("#bioLang").textContent = item.dataset.language;
+        bio.querySelector("#bioAccess").textContent = item.dataset.access;
+    
+        // Show bio box
+        bio.style.display = "block";
+      });
+    });
+  }
 
 function animateText(element, text, speed = 20, done) {
   element.textContent = "";
