@@ -569,5 +569,61 @@ print("".join(chars))
   }
 }
 
-    
+async function runRoom3() {
+  if (!pyodideReady) return;
+
+  const loopPixels = document.getElementById("loopPixels").textContent.trim();
+  const appendBit = document.getElementById("appendBit").textContent.trim();
+  const loopBits = document.getElementById("loopBits").textContent.trim();
+  const addByte = document.getElementById("addByte").textContent.trim();
+  const output = document.getElementById("stegoOutput");
+  const img = document.getElementById("stegoImage");
+
+  const studentCode = `
+pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
+bits = []
+chars = []
+byte = []
+
+${loopPixels}
+    ${appendBit}
+
+${loopBits}
+    ${addByte}
+
+# Convert bits to characters
+i = 0
+while i < len(bits):
+    byte_chunk = bits[i:i+8]
+    if len(byte_chunk) == 8:
+        value = 0
+        for b in byte_chunk:
+            value = value * 2 + b
+        chars.append(chr(value))
+    i += 8
+
+# Hidden message: 3 names (not linked to usernames) + Vigenère key
+print("Alice, Bob, Charlie\\nKEYFORROOM4")
+`;
+
+  try {
+    const result = await pyodide.runPythonAsync(studentCode);
+
+    // Flip image to reveal "secret"
+    img.src = "stego_reveal.png"; // replace with your image showing names/key
+
+    // Animate the revealed text
+    output.textContent = "";
+    let i = 0;
+    const interval = setInterval(() => {
+      output.textContent += result[i];
+      i++;
+      if (i >= result.length) clearInterval(interval);
+    }, 30);
+
+  } catch (err) {
+    output.textContent = "❌ Check your loops and append. Try again!";
+  }
+}
+  
 window.addEventListener("load", initPyodide);
