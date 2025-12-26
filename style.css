@@ -317,6 +317,33 @@ pre {
   text-align: center;
   font-family: monospace;
 }
+#stegoImageContainer {
+  text-align: center;
+  margin: 20px 0;
+}
+
+#stegoImage {
+  max-width: 100%;
+  border: 2px solid #555;
+  border-radius: 8px;
+  transition: 0.5s ease;
+}
+#stegoImage {
+  transition: transform 0.8s ease;
+}
+#stegoImage.revealed { transform: rotateY(180deg); }
+
+
+#stegoOutput {
+  background: #111;
+  color: #0f0;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: monospace;
+  white-space: pre-wrap;
+  min-height: 50px;
+}
+
 .code-snippet {
   background: #0b0b0b;
   padding: 12px;
