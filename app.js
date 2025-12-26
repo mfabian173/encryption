@@ -589,9 +589,11 @@ function typeText(element, text, speed = 30) {
 }
 
 async function runRoom3() {
-  if (!pyodideReady) return;
+  if (!pyodideReady) {
+    alert("Python environment not ready yet!");
+    return;
+  }
 
-  // Use innerText for editable <code> blocks to preserve student input
   const loopPixels = document.getElementById("loopPixels").innerText.trim();
   const appendBit = document.getElementById("appendBit").innerText.trim();
   const loopBits = document.getElementById("loopBits").innerText.trim();
@@ -601,7 +603,7 @@ async function runRoom3() {
   const img = document.getElementById("stegoImage");
   const imgReveal = document.getElementById("stegoReveal");
 
-  // Wrap student code safely
+  // Build the student Python code
   const studentCode = `
 pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), 
           (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
@@ -630,30 +632,74 @@ print("Alice, Bob, Charlie\\nBABBAGE")
 `;
 
   try {
-    // Run in Pyodide
+    // Run Python code in Pyodide
     const result = await pyodide.runPythonAsync(studentCode);
 
     // Flip images
     img.style.display = "none";
     imgReveal.style.display = "block";
 
-    // Animate the revealed text
+    // Animate the revealed text character by character
     output.textContent = "";
-    for (let i = 0; i < result.length; i++) {
-      setTimeout(() => {
-        output.textContent += result[i];
-      }, i * 30);
-    }
+    let i = 0;
+    const interval = setInterval(() => {
+      output.textContent += result[i];
+      i++;
+      if (i >= result.length) clearInterval(interval);
+    }, 30);
 
-    // Reveal cracked message box
+    // Show the "code cracked" box after animation
     setTimeout(() => {
-      document.getElementById("crackedMessage").classList.remove("hidden");
-    }, result.length * 30 + 200);
+      const cracked = document.getElementById("crackedMessage");
+      if (cracked) cracked.classList.remove("hidden");
+    }, result.length * 30 + 100);
+
+    // Update progress sidebar
+    const progress = document.getElementById("progressImage");
+    if (progress) progress.textContent = "✅ Image Evidence";
 
   } catch (err) {
     output.textContent = "❌ Check your loops and append. Try again!";
     console.error("Room 3 Python error:", err);
   }
+}
+
+// Optional: tile reveal effect if you want to restore flipping animation
+function tileReveal() {
+  const container = document.getElementById("stegoImageContainer");
+  const pre = document.getElementById("stegoImage");
+  const post = document.getElementById("stegoReveal");
+
+  if (!pre || !post) return;
+
+  const rows = 6;
+  const cols = 6;
+  const tileWidth = pre.offsetWidth / cols;
+  const tileHeight = pre.offsetHeight / rows;
+
+  // Hide original image
+  pre.style.opacity = 0;
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const tile = document.createElement("div");
+      tile.className = "tile";
+      tile.style.width = tileWidth + "px";
+      tile.style.height = tileHeight + "px";
+      tile.style.left = c * tileWidth + "px";
+      tile.style.top = r * tileHeight + "px";
+      tile.style.backgroundImage = `url(${pre.src})`;
+      tile.style.backgroundPosition = `-${c * tileWidth}px -${r * tileHeight}px`;
+      container.appendChild(tile);
+
+      setTimeout(() => tile.classList.add("flip"), 100 + (r + c) * 60);
+    }
+  }
+
+  // Reveal new image
+  setTimeout(() => {
+    post.style.opacity = 1;
+  }, 900);
 }
 
 
