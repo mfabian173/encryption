@@ -192,22 +192,24 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE. YRG GUR TNZRF ORTVA! CNFFJ
     <li id="progressAlibi">⬜ Alibi Records</li>
   </ul>
 </div>
-  
+
 <div id="room3" class="room" style="display:none;">
   <h2>Room 3: Image Evidence</h2>
   <p>A suspicious image file was accessed shortly before the breach.</p>
   <p><em>Steganography is the art of hiding secret data within another, seemingly harmless file (like an image, audio, or video), 
   making the existence of the hidden message undetectable to outsiders. (Kind of like invisible ink!)
   This file may contain hidden information…</em></p>
-
+  
   <!-- Image reveal -->
   <div id="stegoImageContainer">
-    <img id="stegoImage" src="suspicious_file.png" alt="Suspicious file" width="300">
+    <img id="stegoImage" 
+         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABgAAAAQACAIAAACoEwUVAAEON2NhQlgAAQ43anVtYgAAAB5qdW1kYzJwYQARABCAAACqADibcQNj" 
+         alt="Suspicious file" width="300">
   </div>
 
   <p>Below is the Python code to extract the hidden message. Fill in the missing parts marked with comments.</p>
 
-  <pre id="codeScaffold">
+  <pre id="codeScaffold" style="background:#f4f4f4;padding:10px;border-radius:5px;">
 pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
 bits = []
 chars = []
@@ -226,12 +228,72 @@ byte = []
 <code contenteditable="true" id="addByte" class="codeInput"># Fill: byte.append(b)</code>
 
 # Hidden conversion is handled automatically
-</pre>
+  </pre>
 
-<button onclick="runRoom3()">Run Code</button>
+  <button onclick="runRoom3()" style="margin-top:10px;">Run Code</button>
 
-<div id="stegoOutput"></div>
+  <div id="stegoOutput" style="white-space:pre-wrap;margin-top:10px;font-family:monospace;"></div>
 </div>
+
+<script>
+async function runRoom3() {
+  if (!pyodideReady) return;
+
+  const loopPixels = document.getElementById("loopPixels").textContent.trim();
+  const appendBit = document.getElementById("appendBit").textContent.trim();
+  const loopBits = document.getElementById("loopBits").textContent.trim();
+  const addByte = document.getElementById("addByte").textContent.trim();
+  const output = document.getElementById("stegoOutput");
+  const img = document.getElementById("stegoImage");
+
+  const studentCode = `
+pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
+bits = []
+chars = []
+byte = []
+
+${loopPixels}
+    ${appendBit}
+
+${loopBits}
+    ${addByte}
+
+# Convert bits to characters
+i = 0
+while i < len(bits):
+    byte_chunk = bits[i:i+8]
+    if len(byte_chunk) == 8:
+        value = 0
+        for b in byte_chunk:
+            value = value * 2 + b
+        chars.append(chr(value))
+    i += 8
+
+# Hidden message: 3 names + Vigenère key
+print("Alice, Bob, Charlie\\nBABBAGE")
+`;
+
+  try {
+    const result = await pyodide.runPythonAsync(studentCode);
+
+    // Flip image to reveal the secret
+    img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABgAAAAQACAIAAACoEwUVAAEON2NhQlgAAQ43anVtYgAAAB5qdW1kYzJwYQARABCAAACqADibcQNj";
+
+    // Animate the revealed text
+    output.textContent = "";
+    let i = 0;
+    const interval = setInterval(() => {
+      output.textContent += result[i];
+      i++;
+      if (i >= result.length) clearInterval(interval);
+    }, 30);
+
+  } catch (err) {
+    output.textContent = "❌ Check your loops and append. Try again!";
+  }
+}
+</script>
+
 
 <script src="app.js"></script>
 </body>
