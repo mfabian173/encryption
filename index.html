@@ -193,28 +193,33 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE. YRG GUR TNZRF ORTVA! CNFFJ
   </ul>
 </div>
 
-
 <div id="room3" class="room" style="display:none;">
   <h2>Room 3: Image Evidence</h2>
   <p>A suspicious image file was accessed shortly before the breach.</p>
   <p><em>Steganography is the art of hiding secret data within another, seemingly harmless file (like an image, audio, or video), 
     making the existence of the hidden message undetectable to outsiders. (Kind of like invisible ink!)
     This file may contain hidden information…</em></p>
+  
+  <img id="stegoImage" src="images/room3_secret.png" width="400">
 
-  <!-- Stego Image -->
-  <img id="stegoImage" src="images/room3_secret.png" alt="Suspicious Image" width="400">
-
-  <!-- Python coding area for students -->
   <div class="stego-challenge">
-    <label for="stegoInput">Write Python code to extract the hidden message:</label><br>
-    <textarea id="stegoInput" rows="8" cols="60" placeholder="e.g., read image pixels and extract LSBs..."></textarea><br>
-    <button onclick="runStegoChallenge()">Run Code</button>
+    <p><strong>Step 1: Loop through all pixels</strong> (use a for-loop to go through each pixel in the list):</p>
+    <input type="text" id="loopPixels" placeholder="for p in pixels:">
+
+    <p><strong>Step 2: Add the first value of each pixel to the bits list</strong> (append to the list):</p>
+    <input type="text" id="appendBit" placeholder="bits.append(p[0])">
+
+    <p><strong>Step 3: Loop through all bits you collected</strong> (use a for-loop over the bits list):</p>
+    <input type="text" id="loopBits" placeholder="for b in bits:">
+
+    <p><strong>Step 4: Add the bit to the current byte</strong> (append to the byte list):</p>
+    <input type="text" id="addByte" placeholder="byte.append(b)">
+
+    <button onclick="runRoom3()">Run Code</button>
   </div>
 
-  <!-- Output box -->
   <div id="stegoOutput" class="output-box"></div>
 </div>
-
 
 <script src="app.js"></script>
 </body>
