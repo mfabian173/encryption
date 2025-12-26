@@ -148,7 +148,10 @@ function unlock(roomNum, correct) {
     feedback.textContent = "ACCESS GRANTED";
 
     // Animate secret message
-    animateDecode(secretElem, correctAnswer);
+  animateDecode(
+    secretElem,
+    "IN ONE HOUR, ALL OF YOUR FILES WILL BE WIPED FOREVER. LET THE GAMES BEGIN!\nPASSWORD: PROGRAMMER"
+  );
 
     // Unlock Room 2
     const room2 = document.getElementById("room2");
