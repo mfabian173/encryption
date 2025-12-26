@@ -364,33 +364,33 @@ function decodeCaesarLogs() {
             ? "Restricted access"
             : "Unknown";
 
+        // Only show the name in the main list — no files
         li.innerHTML = `
           <div class="suspect-title">${user}</div>
-          </div>
         `;
 
-              // Click → show bio
-      li.addEventListener("click", () => {
-        const bio = document.getElementById("suspectBio");
-        bio.querySelector("#bioName").textContent = li.dataset.name;
-        bio.querySelector("#bioLang").textContent = li.dataset.language;
-        bio.querySelector("#bioAccess").textContent = li.dataset.access;
-      
-        // Populate recent files (including clickable Room 3 link)
-        const bioFiles = bio.querySelector("#bioFiles");
-        bioFiles.innerHTML = "";
-        (userFileAccess[user] || []).forEach(f => {
-          const liFile = document.createElement("li");
-          if (user === "USER_03" && f.includes("secret_key")) {
-            liFile.innerHTML = `<a href="#" onclick="openRoom3()">📁 ${f}</a>`;
-          } else {
-            liFile.textContent = `📄 ${f}`;
-          }
-          bioFiles.appendChild(liFile);
+        // Click → populate bio with recent files
+        li.addEventListener("click", () => {
+          const bio = document.getElementById("suspectBio");
+          bio.querySelector("#bioName").textContent = li.dataset.name;
+          bio.querySelector("#bioLang").textContent = li.dataset.language;
+          bio.querySelector("#bioAccess").textContent = li.dataset.access;
+
+          const bioFiles = bio.querySelector("#bioFiles");
+          bioFiles.innerHTML = "";
+
+          (userFileAccess[user] || []).forEach(f => {
+            const liFile = document.createElement("li");
+            if (user === "USER_03" && f.includes("secret_key")) {
+              liFile.innerHTML = `<a href="#" onclick="openRoom3()">📁 ${f}</a>`;
+            } else {
+              liFile.textContent = `📄 ${f}`;
+            }
+            bioFiles.appendChild(liFile);
+          });
+
+          bio.style.display = "block";
         });
-      
-        bio.style.display = "block";
-      });
 
         suspects.appendChild(li);
       });
