@@ -155,12 +155,22 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE. YRG GUR TNZRF ORTVA! CNFFJ
     <pre id="decodedLogs"></pre>
   </div>
 
-  <!-- Suspect list -->
-  <div class="suspectList">
-    <h3>Suspects</h3>
-    <ul id="suspects"></ul>
+    <!-- Suspect list -->
+  <div id="suspects" style="display:none;">
+    <h3>Suspect List</h3>
+    <ul>
+      <li class="suspect" data-name="Alice Turner" data-language="Python — great for automation & data analysis" data-access="ilqdbqfhv.csv">XVHU_12</li>
+      <li class="suspect" data-name="Bob Chen" data-language="JavaScript — versatile for web and scripting" data-access="hpsorbhhbuhfrugv.db">XVHU_07</li>
+      <li class="suspect" data-name="Charlie Lopez" data-language="C++ — strong for high-performance computing" data-access="dgplq.cfg">XVHU_03</li>
+    </ul>
+  
+    <div id="suspectBio" style="border:1px solid #ccc; padding:10px; margin-top:10px; display:none;">
+      <p><strong>Name:</strong> <span id="bioName"></span></p>
+      <p><strong>Favorite Language:</strong> <span id="bioLang"></span></p>
+      <p><strong>Recent Access:</strong> <span id="bioAccess"></span></p>
+    </div>
   </div>
-</div>
+
 
 <script src="app.js"></script>
 </body>
