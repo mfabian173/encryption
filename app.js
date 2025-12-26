@@ -301,6 +301,7 @@ function decodeCaesarLogs() {
   const shift = parseInt(document.getElementById("caesarShift").value);
   const output = document.getElementById("decodedLogs");
   const suspects = document.getElementById("suspects");
+  const suspectSection = document.getElementById("suspectSection");
   const encrypted = document.getElementById("logData").textContent;
   const correctShift = 3;
 
@@ -308,14 +309,12 @@ function decodeCaesarLogs() {
   output.classList.remove("flash-red", "flash-green");
   output.innerHTML = "";
   suspects.innerHTML = "";
-  suspects.style.display = "none";
+  suspectSection.style.display = "none";
 
   // Always decode logs, even if wrong
   const decryptedLines = encrypted.split("\n").map(line => caesarDecode(line, shift));
-
   const decryptedText = `🔐 Attempted shift: ${shift}\n\n` + decryptedLines.join("\n");
 
-  // Animate decrypted logs
   animateText(output, decryptedText, 10, () => {
     // Highlight ACCESS DENIED
     decryptedLines.forEach(line => {
@@ -327,11 +326,9 @@ function decodeCaesarLogs() {
       }
     });
 
-    // Correct shift → show suspects
     if (shift === correctShift) {
       output.classList.add("flash-green");
 
-      // Hardcoded suspect file access
       const userFileAccess = {
         "USER_12": ["finances.csv"],
         "USER_07": ["employee_records.db", "admin.cfg (DENIED)"],
@@ -389,15 +386,25 @@ function decodeCaesarLogs() {
           bio.querySelector("#bioName").textContent = li.dataset.name;
           bio.querySelector("#bioLang").textContent = li.dataset.language;
           bio.querySelector("#bioAccess").textContent = li.dataset.access;
+
+          // Populate recent files
+          const bioFiles = bio.querySelector("#bioFiles");
+          bioFiles.innerHTML = "";
+          (userFileAccess[user] || []).forEach(f => {
+            const liFile = document.createElement("li");
+            liFile.textContent = f;
+            bioFiles.appendChild(liFile);
+          });
+
           bio.style.display = "block";
         });
 
         suspects.appendChild(li);
       });
 
-      suspects.style.display = "block"; // Show the list
+      suspectSection.style.display = "block"; // Make entire section visible
     } else {
-      output.classList.add("flash-red"); // wrong shift feedback
+      output.classList.add("flash-red");
     }
   });
 }
