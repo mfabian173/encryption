@@ -327,42 +327,45 @@ function decodeCaesarLogs() {
       }
     });
 
-    // Populate suspects
-    users.forEach(user => {
-      const li = document.createElement("li");
-      li.textContent = user;
-      li.classList.add("suspect");
-
-      li.dataset.name = user === "USER_12" ? "Alice Smith" :
-                         user === "USER_07" ? "Bob Jones" :
-                         user === "USER_03" ? "Charlie Lee" :
-                         "Unknown";
-      li.dataset.language = user === "USER_12" ? "Python — beginner-friendly, versatile scripting language" :
-                            user === "USER_07" ? "Java — object-oriented, widely used in enterprise apps" :
-                            user === "USER_03" ? "JavaScript — runs in browsers, front-end & back-end" :
-                            "Unknown";
-      li.dataset.access = user === "USER_12" ? "Full admin access" :
-                          user === "USER_07" ? "Read/Write access" :
-                          user === "USER_03" ? "Limited access" :
+// Populate suspects
+  users.forEach(user => {
+    const li = document.createElement("li");
+    li.textContent = user;
+    li.classList.add("suspect");
+  
+    // Attach bio info
+    li.dataset.name = user === "USER_12" ? "Alice Smith" :
+                       user === "USER_07" ? "Bob Jones" :
+                       user === "USER_03" ? "Charlie Lee" :
+                       "Unknown";
+    li.dataset.language = user === "USER_12" ? "Python — beginner-friendly, versatile scripting language" :
+                          user === "USER_07" ? "Java — object-oriented, widely used in enterprise apps" :
+                          user === "USER_03" ? "JavaScript — runs in browsers, front-end & back-end" :
                           "Unknown";
-
-      suspects.appendChild(li);
+    li.dataset.access = user === "USER_12" ? "Full admin access" :
+                        user === "USER_07" ? "Read/Write access" :
+                        user === "USER_03" ? "Limited access" :
+                        "Unknown";
+  
+    suspects.appendChild(li);
+  });
+  
+  // Show the section **before adding click handlers**
+  document.getElementById("suspectSection").style.display = "block";
+  
+  // Attach click events
+  document.querySelectorAll(".suspect").forEach(item => {
+    item.addEventListener("click", () => {
+      const bio = document.getElementById("suspectBio");
+      bio.querySelector("#bioName").textContent = item.dataset.name;
+      bio.querySelector("#bioLang").textContent = item.dataset.language;
+      bio.querySelector("#bioAccess").textContent = item.dataset.access;
+      bio.style.display = "block";
     });
-  // Show the entire suspect section
-    document.getElementById("suspectSection").style.display = "block";
+  });
+  ;
 
-    // Make suspects clickable
-    document.querySelectorAll(".suspect").forEach(item => {
-      item.addEventListener("click", () => {
-        const bio = document.getElementById("suspectBio");
-        bio.querySelector("#bioName").textContent = item.dataset.name;
-        bio.querySelector("#bioLang").textContent = item.dataset.language;
-        bio.querySelector("#bioAccess").textContent = item.dataset.access;
-        bio.style.display = "block";
-      });
-    });
-
-    suspects.style.display = "block";
+  suspects.style.display = "block";
   }); // <-- this closes animateText callback
 } // <-- this closes decodeCaesarLogs
 
