@@ -348,6 +348,8 @@ function decodeCaesarLogs() {
 
       suspects.appendChild(li);
     });
+  // Show the entire suspect section
+    document.getElementById("suspectSection").style.display = "block";
 
     // Make suspects clickable
     document.querySelectorAll(".suspect").forEach(item => {
