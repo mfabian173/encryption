@@ -200,22 +200,16 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE. YRG GUR TNZRF ORTVA! CNFFJ
   <p>A suspicious image file was accessed shortly before the breach.</p>
   <p><em>Steganography hides secret data inside files. Your mission is to extract the hidden message!</em></p>
 
-  <!-- Images -->
   <div id="stegoImageContainer">
-    <img
-      id="stegoImage"
-      src="images/room3_pre.png"
-      width="300"
-      alt="Suspicious image file"
-    >
-  
-    <img
-      id="stegoReveal"
-      src="images/room3_post.png"
-      width="300"
-      alt="Hidden data revealed"
-      style="display:none;"
-    >
+    <img id="stegoImage" src="images/room3_pre.png" width="300" alt="Suspicious image file">
+    <img id="stegoReveal" src="images/room3_post.png" width="300" alt="Hidden data revealed" style="display:none;">
+  </div>
+
+  <!-- Cracked message -->
+  <div id="crackedMessage" class="hidden">
+    <h2>🔓 CODE CRACKED</h2>
+    <p>Hidden data successfully extracted.</p>
+    <button onclick="unlockRoom4()">➡ Proceed to Room 4</button>
   </div>
 
   <p>Below is the Python code to extract the hidden message. Fill in the missing parts marked with comments.</p>
