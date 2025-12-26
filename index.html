@@ -192,33 +192,45 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE. YRG GUR TNZRF ORTVA! CNFFJ
     <li id="progressAlibi">⬜ Alibi Records</li>
   </ul>
 </div>
-
+  
 <div id="room3" class="room" style="display:none;">
   <h2>Room 3: Image Evidence</h2>
   <p>A suspicious image file was accessed shortly before the breach.</p>
   <p><em>Steganography is the art of hiding secret data within another, seemingly harmless file (like an image, audio, or video), 
-    making the existence of the hidden message undetectable to outsiders. (Kind of like invisible ink!)
-    This file may contain hidden information…</em></p>
-  
-  <img id="stegoImage" src="images/room3_secret.png" width="400">
+  making the existence of the hidden message undetectable to outsiders. (Kind of like invisible ink!)
+  This file may contain hidden information…</em></p>
 
-  <div class="stego-challenge">
-    <p><strong>Step 1: Loop through all pixels</strong> (use a for-loop to go through each pixel in the list):</p>
-    <input type="text" id="loopPixels" placeholder="for p in pixels:">
-
-    <p><strong>Step 2: Add the first value of each pixel to the bits list</strong> (append to the list):</p>
-    <input type="text" id="appendBit" placeholder="bits.append(p[0])">
-
-    <p><strong>Step 3: Loop through all bits you collected</strong> (use a for-loop over the bits list):</p>
-    <input type="text" id="loopBits" placeholder="for b in bits:">
-
-    <p><strong>Step 4: Add the bit to the current byte</strong> (append to the byte list):</p>
-    <input type="text" id="addByte" placeholder="byte.append(b)">
-
-    <button onclick="runRoom3()">Run Code</button>
+  <!-- Image reveal -->
+  <div id="stegoImageContainer">
+    <img id="stegoImage" src="suspicious_file.png" alt="Suspicious file" width="300">
   </div>
 
-  <div id="stegoOutput" class="output-box"></div>
+  <p>Below is the Python code to extract the hidden message. Fill in the missing parts marked with comments.</p>
+
+  <pre id="codeScaffold">
+pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
+bits = []
+chars = []
+byte = []
+
+# Step 1: loop over each pixel
+<code contenteditable="true" id="loopPixels" class="codeInput"># Fill: for p in pixels:</code>
+
+# Step 2: append bit from pixel
+<code contenteditable="true" id="appendBit" class="codeInput"># Fill: bits.append(p[0])</code>
+
+# Step 3: loop over bits
+<code contenteditable="true" id="loopBits" class="codeInput"># Fill: for b in bits:</code>
+
+# Step 4: append bit to byte
+<code contenteditable="true" id="addByte" class="codeInput"># Fill: byte.append(b)</code>
+
+# Hidden conversion is handled automatically
+</pre>
+
+<button onclick="runRoom3()">Run Code</button>
+
+<div id="stegoOutput"></div>
 </div>
 
 <script src="app.js"></script>
