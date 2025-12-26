@@ -295,7 +295,6 @@ function decodeCaesarLogs() {
   const shift = parseInt(document.getElementById("caesarShift").value);
   const output = document.getElementById("decodedLogs");
   const suspects = document.getElementById("suspects");
-
   const encrypted = document.getElementById("logData").textContent;
   const correctShift = 3;
 
@@ -305,38 +304,13 @@ function decodeCaesarLogs() {
   suspects.innerHTML = "";
   suspects.style.display = "none";
 
-  // 🔓 Always decode (even if wrong)
-  const decryptedLines = encrypted
-    .split("\n")
-    .map(line => caesarDecode(line, shift));
-
-  const decryptedText =
-    `🔐 Attempted shift: ${shift}\n\n` + decryptedLines.join("\n");
-
-  // ❌ WRONG SHIFT
-  if (shift !== correctShift) {
-    output.classList.add("flash-red");
-
-    animateText(output, decryptedText, 10, () => {
-      output.innerHTML =
-        `<strong style="color:#ff5555;">❌ INCORRECT SHIFT</strong><br><br>` +
-        output.innerHTML;
-    });
-
-    return; // ⛔ stop here — no suspects unlocked
-  }
-
-  // ✅ CORRECT SHIFT
-  output.classList.add("flash-green");
+  // Decode lines even if shift is wrong
+  const decryptedLines = encrypted.split("\n").map(line => caesarDecode(line, shift));
+  const decryptedText = `🔐 Attempted shift: ${shift}\n\n` + decryptedLines.join("\n");
 
   animateText(output, decryptedText, 10, () => {
-    const users = new Set();
-
+    // Highlight ACCESS DENIED
     decryptedLines.forEach(line => {
-      const userMatch = line.match(/USER_\d+/);
-      if (userMatch) users.add(userMatch[0]);
-
-      // Highlight ACCESS DENIED
       if (line.includes("ACCESS DENIED")) {
         output.innerHTML = output.innerHTML.replace(
           line,
@@ -345,19 +319,35 @@ function decodeCaesarLogs() {
       }
     });
 
-    // 🔒 HARD-CODED FILE ACCESS (intentional for narrative control)
+    // Wrong shift
+    if (shift !== correctShift) {
+      output.classList.add("flash-red");
+      output.innerHTML =
+        `<strong style="color:#ff5555;">❌ INCORRECT SHIFT</strong><br><br>` + output.innerHTML;
+      return; // stop here — no suspects unlocked
+    }
+
+    // Correct shift
+    output.classList.add("flash-green");
+
+    const users = new Set();
+    decryptedLines.forEach(line => {
+      const userMatch = line.match(/USER_\d+/);
+      if (userMatch) users.add(userMatch[0]);
+    });
+
+    // Hardcoded file access
     const userFileAccess = {
       "USER_12": ["finances.csv"],
-      "USER_07": ["employee_records.txt", "admin.cfg (DENIED)"],
-      "USER_03": ["secret_key.png"]
+      "USER_07": ["employee_records.db", "admin.cfg (DENIED)"],
+      "USER_03": ["secret_key.jxz"] // <-- clickable
     };
 
-    // 🧍 Populate suspects
+    // Populate suspects
     users.forEach(user => {
       const li = document.createElement("li");
       li.classList.add("suspect");
 
-      // Bio metadata (no spoilers)
       li.dataset.name = user;
       li.dataset.language =
         user === "USER_12"
@@ -367,7 +357,6 @@ function decodeCaesarLogs() {
           : user === "USER_03"
           ? "SQL — structured database querying"
           : "Unknown";
-
       li.dataset.access =
         user === "USER_12"
           ? "Full admin access"
@@ -384,7 +373,7 @@ function decodeCaesarLogs() {
           <ul>
             ${(userFileAccess[user] || [])
               .map(file =>
-                user === "USER_03" && file === "secret_key.jxz"
+                user === "USER_03" && file.toLowerCase().includes("secret_key")
                   ? `<li><a href="#" onclick="openRoom3()">📁 ${file}</a></li>`
                   : `<li>📄 ${file}</li>`
               )
@@ -393,7 +382,7 @@ function decodeCaesarLogs() {
         </div>
       `;
 
-      // Click → bio
+      // Click → show bio
       li.addEventListener("click", () => {
         const bio = document.getElementById("suspectBio");
         bio.querySelector("#bioName").textContent = li.dataset.name;
@@ -405,7 +394,7 @@ function decodeCaesarLogs() {
       suspects.appendChild(li);
     });
 
-    suspects.style.display = "block";
+    suspects.style.display = "block"; // Make sure list is visible
   });
 }
 
