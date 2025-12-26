@@ -604,10 +604,10 @@ bits = []
 chars = []
 byte = []
 
-${loopPixels}
+    ${loopPixels}
     ${appendBit}
 
-${loopBits}
+    ${loopBits}
     ${addByte}
 
 # Convert bits to characters
