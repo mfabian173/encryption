@@ -178,7 +178,7 @@ function unlock(roomNum, correct) {
 const userFileAccess = {
   "USER_12": ["finances.csv"],
   "USER_07": ["employee_records.db", "admin.cfg"],
-  "USER_03": ["secret_key.png"] // <-- Room 3 entry point
+  "USER_03": ["secret_key.pdf"] // <-- Room 3 entry point
 };
 
 
@@ -328,12 +328,6 @@ function decodeCaesarLogs() {
 
     if (shift === correctShift) {
       output.classList.add("flash-green");
-
-      const userFileAccess = {
-        "USER_12": ["finances.csv"],
-        "USER_07": ["employee_records.db", "admin.cfg (DENIED)"],
-        "USER_03": ["secret_key.jxz"] // clickable
-      };
 
       const users = new Set();
       decryptedLines.forEach(line => {
