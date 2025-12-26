@@ -366,17 +366,6 @@ function decodeCaesarLogs() {
 
         li.innerHTML = `
           <div class="suspect-title">${user}</div>
-          <div class="recent-files">
-            <em>Recent file access:</em>
-            <ul>
-              ${(userFileAccess[user] || [])
-                .map(file =>
-                  user === "USER_03" && file.includes("secret_key")
-                    ? `<li><a href="#" onclick="openRoom3()">📁 ${file}</a></li>`
-                    : `<li>📄 ${file}</li>`
-                )
-                .join("")}
-            </ul>
           </div>
         `;
 
