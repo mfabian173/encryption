@@ -200,7 +200,21 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE. YRG GUR TNZRF ORTVA! CNFFJ
   <p><em>Steganography is the art of hiding secret data within another, seemingly harmless file (like an image, audio, or video), 
     making the existence of the hidden message undetectable to outsiders. (Kind of like invisible ink!)
     This file may contain hidden information…</em></p>
+
+  <!-- Stego Image -->
+  <img id="stegoImage" src="images/room3_secret.png" alt="Suspicious Image" width="400">
+
+  <!-- Python coding area for students -->
+  <div class="stego-challenge">
+    <label for="stegoInput">Write Python code to extract the hidden message:</label><br>
+    <textarea id="stegoInput" rows="8" cols="60" placeholder="e.g., read image pixels and extract LSBs..."></textarea><br>
+    <button onclick="runStegoChallenge()">Run Code</button>
+  </div>
+
+  <!-- Output box -->
+  <div id="stegoOutput" class="output-box"></div>
 </div>
+
 
 <script src="app.js"></script>
 </body>
