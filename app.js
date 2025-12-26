@@ -343,6 +343,13 @@ function decodeCaesarLogs() {
     });
 
     suspects.style.display = "block";
+    document.querySelectorAll(".suspect").forEach(item => {
+  item.addEventListener("click", () => {
+    const bio = document.getElementById("suspectBio");
+    document.getElementById("bioName").textContent = item.dataset.name;
+    document.getElementById("bioLang").textContent = item.dataset.language;
+    document.getElementById("bioAccess").textContent = item.dataset.access;
+    bio.style.display = "block";
   });
 }
 
@@ -364,4 +371,31 @@ function investigateSuspect(user) {
   alert(`Investigating ${user}...`);
 }
 
+function updateProgress(item) {
+  const el = document.getElementById(item);
+  if (el) el.textContent = "✅ " + el.textContent.slice(2);
+}
+
+function runChallenge() {
+  const challengeCode = document.getElementById("challengeInput").value;
+  const output = document.getElementById("decodedLogs");
+
+  // simple parser: check if it contains a loop and shift assignment
+  if (challengeCode.includes("for") && challengeCode.includes("range") && challengeCode.includes("shift")) {
+    const correctShift = 3; // same as normal
+    const decryptedLogs = caesarDecode(document.getElementById("logData").textContent, correctShift);
+    output.classList.add("flash-green");
+    output.textContent = decryptedLogs;
+
+    // Show suspects and update progress
+    document.getElementById("suspects").style.display = "block";
+    updateProgress("progressLogs");
+  } else {
+    output.classList.add("flash-red");
+    output.textContent = "❌ Challenge failed! Make sure to loop from 0-26 and set shift.";
+    setTimeout(() => { output.classList.remove("flash-red"); output.textContent = ""; }, 3000);
+  }
+}
+
+    
 window.addEventListener("load", initPyodide);
