@@ -193,42 +193,47 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE. YRG GUR TNZRF ORTVA! CNFFJ
   </ul>
 </div>
 ]
+  
+<!-- ROOM 3 -->
 <div id="room3" class="room" style="display:none;">
   <h2>Room 3: Image Evidence</h2>
   <p>A suspicious image file was accessed shortly before the breach.</p>
-  <p><em>Steganography is the art of hiding secret data within another, seemingly harmless file, like this image.
-  Use the Python code below to extract hidden information. Four parts are missing — fill in the boxes with the instructions!</em></p>
+  <p><em>Steganography hides secret data inside files. Your mission is to extract the hidden message!</em></p>
 
-  <!-- Image reveal -->
+  <!-- Images -->
   <div id="stegoImageContainer">
     <img id="stegoImage" 
-         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA" 
+         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABgAAAAQACAIAAACoEwUVAAEON2NhQlgAAQ43anVtYgAAAB5qdW1kYzJwYQARABCAAACqADibcQNjMnBhAAAANvpqdW1iAAAAR2p1bWRjMm1hABEAEIAAAKoAOJtxA3VybjpjMnBhOjVjYmU3ZDkxLWZlOTQtNDFkMy1hZmQ3LWQwOWY4MGNiY2YwNQAAAAHBanVtYgAAAClqdW1kYzJhcwARABCAAACqADibcQNjMnBhLmFzc2VydGlvbnMAAAAA5Wp1bWIAAAApanVtZGNib3IAEQAQgAAAqgA4m3EDYzJwYS5hY3Rpb25zLnYyAAAAALRjYm9yoWdhY3Rpb25zgqNmYWN0aW9ubGMycGEuY3JlYXRlZG1zb2Z0d2FyZUFnZW50v2RuYW1lZkdQVC00b/9xZGlnaXRhbFNvdXJjZVR5cGV4Rmh0dHA6Ly9jdi5pcHRjLm9yZy9uZXdzY29kZXMvZGlnaXRhbHNvdXJjZXR5cGUvdHJhaW5lZEFsZ29yaXRobWljTWVkaWGhZmFjdGlvbm5jMnBhLmNvbnZlcnRlZAAAAKtqdW1iAAAAKGp1bWRjYm9yABEAEIAAAKoAOJtxA2MycGEuaGFzaC5kYXRhAAAAAHtjYm9ypWpleGNsdXNpb25zgaJlc3RhcnQYIWZsZW5ndGgZNyxkbmFtZW5qdW1iZiBtYW5pZmVzdGNhbGdmc2hhMjU2ZGhhc2hYIKuhKsva8x5tG1wTCznTU02FmkX9DijSGF+p+Y3yU5rFY3BhZEgAAAAAAAAAAAAAAe1qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAABvmNib3Kmamluc3RhbmNlSUR4LHhtcDppaWQ6ZjBhMGY2NjctZWJhMy00Y2VmLWIzY2EtMjU5NTIyOWQyNGYydGNsYWltX2dlbmVyYXRvcl9pbmZvv2RuYW1lZ0No" 
          alt="Suspicious file" width="300">
+    <img id="stegoReveal" 
+         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABgAAAAQACAIAAACoEwUVAAEglWNhQlgAASCVanVtYgAAAB5qdW1kYzJwYQARABCAAACqADibcQNjMnBhAAAANvpqdW1iAAAAR2p1bWRjMm1hABEAEIAAAKoAOJtxA3VybjpjMnBhOjVkOGI0OGNhLWM4YmEtNDZkNy1iMmVmLTY1ZjI0MTczN2YxYgAAAAHBanVtYgAAAClqdW1kYzJhcwARABCAAACqADibcQNjMnBhLmFzc2VydGlvbnMAAAAA5Wp1bWIAAAApanVtZGNib3IAEQAQgAAAqgA4m3EDYzJwYS5hY3Rpb25zLnYyAAAAALRjYm9yoWdhY3Rpb25zgqNmYWN0aW9ubGMycGEuY3JlYXRlZG1zb2Z0d2FyZUFnZW50v2RuYW1lZkdQVC00b/9xZGlnaXRhbFNvdXJjZVR5cGV4Rmh0dHA6Ly9jdi5pcHRjLm9yZy9uZXdzY29kZXMvZGlnaXRhbHNvdXJjZXR5cGUvdHJhaW5lZEFsZ29yaXRobWljTWVkaWGhZmFjdGlvbm5jMnBhLmNvbnZlcnRlZAAAAKtqdW1iAAAAKGp1bWRjYm9yABEAEIAAAKoAOJtxA2MycGEuaGFzaC5kYXRhAAAAAHtjYm9ypWpleGNsdXNpb25zgaJlc3RhcnQYIWZsZW5ndGgZNyxkbmFtZW5qdW1iZiBtYW5pZmVzdGNhbGdmc2hhMjU2ZGhhc2hYIHwI32gbx68R/oHm6qUMSvypVvRy4BSy8Hi5XhHNApgGY3BhZEgAAAAAAAAAAAAAAe1qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAABvmNib3Kmamluc3RhbmNlSUR4LHhtcDppaWQ6YTgyMDk3ZjktYTA5NS00YTU1LTkxMjAtNWU3YTk0NDMyYzRldGNsYWltX2dlbmVyYXRvcl9pbmZvv2RuYW1lZ0No" 
+         alt="Hidden secrets" width="300" style="display:none;">
   </div>
 
-  <pre style="background-color:#111; color:#00ff00; padding:15px; border-radius:5px; font-family:monospace;">
-# Room 3 Steganography Extractor
+  <p>Below is the Python code to extract the hidden message. Fill in the missing parts marked with comments.</p>
 
-pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
+  <pre style="background:#000;color:#0f0;padding:15px;border-radius:5px;overflow-x:auto;">
+pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), 
+          (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
 bits = []
 chars = []
 byte = []
 
-# Step 1: loop over each pixel
-<code contenteditable="true" id="loopPixels" style="background:#111; color:#ff0;"># Fill here: for p in pixels:</code>
+# Step 1: Loop over each pixel
+<code contenteditable="true" id="loopPixels" class="codeInput" style="color:#ff0;"># Fill: for p in pixels:</code>
 
-# Step 2: append bit from pixel
-<code contenteditable="true" id="appendBit" style="background:#111; color:#ff0;"># Fill here: bits.append(p[0])</code>
+# Step 2: Append bit from pixel
+<code contenteditable="true" id="appendBit" class="codeInput" style="color:#ff0;"># Fill: bits.append(p[0])</code>
 
-# Step 3: loop over bits
-<code contenteditable="true" id="loopBits" style="background:#111; color:#ff0;"># Fill here: for b in bits:</code>
+# Step 3: Loop over bits
+<code contenteditable="true" id="loopBits" class="codeInput" style="color:#ff0;"># Fill: for b in bits:</code>
 
-# Step 4: append bit to byte
-<code contenteditable="true" id="addByte" style="background:#111; color:#ff0;"># Fill here: byte.append(b)</code>
+# Step 4: Append bit to byte
+<code contenteditable="true" id="addByte" class="codeInput" style="color:#ff0;"># Fill: byte.append(b)</code>
 
-# Behind the scenes: convert bits to characters
+# Behind the scenes: convert 8 bits to characters
 i = 0
-while i &lt; len(bits):
+while i < len(bits):
     byte_chunk = bits[i:i+8]
     if len(byte_chunk) == 8:
         value = 0
@@ -237,13 +242,12 @@ while i &lt; len(bits):
         chars.append(chr(value))
     i += 8
 
-# Reveal hidden message
-print("".join(chars))
+# Print the hidden message
+print("Alice, Bob, Charlie\\nBABBAGE")
   </pre>
 
   <button onclick="runRoom3()" style="margin-top:10px;">Run Code</button>
-
-  <div id="stegoOutput" style="white-space:pre-wrap; margin-top:10px; font-family:monospace;"></div>
+  <div id="stegoOutput" style="white-space:pre-wrap;margin-top:10px;font-family:monospace;color:#0f0;background:#000;padding:10px;"></div>
 </div>
 
 <script>
@@ -256,9 +260,11 @@ async function runRoom3() {
   const addByte = document.getElementById("addByte").textContent.trim();
   const output = document.getElementById("stegoOutput");
   const img = document.getElementById("stegoImage");
+  const imgReveal = document.getElementById("stegoReveal");
 
   const studentCode = `
-pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
+pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), 
+          (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
 bits = []
 chars = []
 byte = []
@@ -269,7 +275,7 @@ ${loopPixels}
 ${loopBits}
     ${addByte}
 
-# Convert bits to characters
+# Behind the scenes: convert 8 bits to characters
 i = 0
 while i < len(bits):
     byte_chunk = bits[i:i+8]
@@ -280,17 +286,17 @@ while i < len(bits):
         chars.append(chr(value))
     i += 8
 
-# Hidden message: 3 names (not linked to usernames) + Vigenère key
 print("Alice, Bob, Charlie\\nBABBAGE")
 `;
 
   try {
     const result = await pyodide.runPythonAsync(studentCode);
 
-    // Flip image to reveal "secret" image
-    img.src = "data:image/png;base64,REPLACE_WITH_SECOND_IMAGE_BASE64";
+    // Flip images
+    img.style.display = "none";
+    imgReveal.style.display = "block";
 
-    // Typewriter animation for output
+    // Animate the revealed text
     output.textContent = "";
     let i = 0;
     const interval = setInterval(() => {
