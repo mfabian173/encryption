@@ -287,7 +287,26 @@ pre {
   color: red;
   font-weight: bold;
 }
+.code-input {
+  background: #111;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
 
+.code-input code {
+  font-family: monospace;
+  color: #ccc;
+}
+
+.code-input input {
+  width: 50px;
+  background: #000;
+  border: 1px solid #444;
+  color: red;
+  text-align: center;
+  font-family: monospace;
+}
 .code-snippet {
   background: #0b0b0b;
   padding: 12px;
