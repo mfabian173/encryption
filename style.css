@@ -231,3 +231,17 @@ pre {
   0% { background: rgba(255,0,0,0.4); }
   100% { background: transparent; }
 }
+
+.log-denied {
+  color: #ff3b3b;
+  font-weight: bold;
+}
+
+.log-success {
+  color: #9dff9d;
+}
+
+.suspect-denied {
+  color: #ff4d4d;
+  font-weight: bold;
+}
