@@ -321,7 +321,7 @@ function decodeCaesarLogs() {
     
     decryptedLines.forEach(line => {
       const userMatch = line.match(/USER_\d+/);
-      const fileMatch = line.match(/FILE:\s(.+)/);
+      const fileMatch = line.match(/OPENED FILE:\s(.+)|FILE:\s(.+)/);
     
       if (userMatch) {
         const user = userMatch[0];
