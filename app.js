@@ -592,10 +592,10 @@ function typeText(element, text, speed = 30) {
 async function runRoom3() {
   if (!pyodideReady) return;
 
-  const loopPixels = document.getElementById("loopPixels").textContent.trim();
-  const appendBit = document.getElementById("appendBit").textContent.trim();
-  const loopBits = document.getElementById("loopBits").textContent.trim();
-  const addByte = document.getElementById("addByte").textContent.trim();
+  const loopPixels = document.getElementById("loopPixels").value.trim();
+  const appendBit = document.getElementById("appendBit").value.trim();
+  const loopBits = document.getElementById("loopBits").value.trim();
+  const addByte = document.getElementById("addByte").value.trim();
   const output = document.getElementById("stegoOutput");
 
   const studentCode = `
