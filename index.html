@@ -154,6 +154,13 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE. YRG GUR TNZRF ORTVA! CNFFJ
   <div class="logs">
     <pre id="decodedLogs"></pre>
   </div>
+  
+  <div id="challengeBox">
+    <h4>Challenge: Loop</h4>
+    <p>Instead of guessing the shift, try a loop through 0–26 to find the correct one!</p>
+    <textarea id="challengeInput" placeholder="for value in range(0,26): shift = value"></textarea>
+    <button onclick="runChallenge()">Run Challenge</button>
+  </div>
 
     <!-- Suspect list -->
   <div id="suspects" style="display:none;">
@@ -169,6 +176,17 @@ VA BAR UBHE, NYY BS LBHE SVYRF JVYY OR JVCRQ SBERIRE. YRG GUR TNZRF ORTVA! CNFFJ
       <p><strong>Favorite Language:</strong> <span id="bioLang"></span></p>
       <p><strong>Recent Access:</strong> <span id="bioAccess"></span></p>
     </div>
+    
+    <div id="caseSidebar" style="position:fixed; right:0; top:50px; width:250px; padding:10px; border-left:2px solid #333;">
+    <h3>Case File Progress</h3>
+    <ul>
+      <li id="progressNote">❌ Encrypted Note</li>
+      <li id="progressLogs">❌ Server Logs</li>
+      <li id="progressImage">⬜ Image Evidence</li>
+      <li id="progressAlibi">⬜ Alibi Records</li>
+    </ul>
+  </div>
+
   </div>
 
 
