@@ -516,5 +516,58 @@ function unlockRoom4() {
   }
 }
 
+async function runRoom3() {
+  if (!pyodideReady) return;
+
+  const loopPixels = document.getElementById("loopPixels").value.trim();
+  const appendBit = document.getElementById("appendBit").value.trim();
+  const loopBits = document.getElementById("loopBits").value.trim();
+  const addByte = document.getElementById("addByte").value.trim();
+  const output = document.getElementById("stegoOutput");
+
+  // Insert student input into scaffold
+  const studentCode = `
+pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
+bits = []
+chars = []
+byte = []
+
+${loopPixels}
+    ${appendBit}
+
+${loopBits}
+    ${addByte}
+
+# Behind the scenes: convert bits to characters
+i = 0
+while i < len(bits):
+    byte_chunk = bits[i:i+8]
+    if len(byte_chunk) == 8:
+        value = 0
+        for b in byte_chunk:
+            value = value * 2 + b
+        chars.append(chr(value))
+    i += 8
+
+print("".join(chars))
+`;
+
+  try {
+    // Run Pyodide
+    const result = await pyodide.runPythonAsync(studentCode);
+
+    // Animate typewriter effect
+    output.textContent = "";
+    let i = 0;
+    const interval = setInterval(() => {
+      output.textContent += result[i];
+      i++;
+      if (i >= result.length) clearInterval(interval);
+    }, 30); // 30ms per character
+  } catch (err) {
+    output.textContent = "❌ Error in your code. Check your loops and append.";
+  }
+}
+
     
 window.addEventListener("load", initPyodide);
