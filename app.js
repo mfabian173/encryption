@@ -175,6 +175,11 @@ function unlock(roomNum, correct) {
   }
 }
 
+const userFileAccess = {
+  "USER_12": ["finances.csv"],
+  "USER_07": ["employee_records.db", "admin.cfg"],
+  "USER_03": ["secret_key.png"] // <-- Room 3 entry point
+};
 
 
 function showBrief(cipher) {
@@ -300,42 +305,38 @@ function decodeCaesarLogs() {
   suspects.innerHTML = "";
   suspects.style.display = "none";
 
-  if (shift !== correctShift) {
-    output.classList.add("flash-red");
-    animateText(output, "❌ INVALID DECRYPTION ATTEMPT");
-    return;
-  }
-
-  output.classList.add("flash-green");
-
+  // 🔓 Always decode (even if wrong)
   const decryptedLines = encrypted
     .split("\n")
     .map(line => caesarDecode(line, shift));
 
-  const decryptedText = decryptedLines.join("\n");
+  const decryptedText =
+    `🔐 Attempted shift: ${shift}\n\n` + decryptedLines.join("\n");
+
+  // ❌ WRONG SHIFT
+  if (shift !== correctShift) {
+    output.classList.add("flash-red");
+
+    animateText(output, decryptedText, 10, () => {
+      output.innerHTML =
+        `<strong style="color:#ff5555;">❌ INCORRECT SHIFT</strong><br><br>` +
+        output.innerHTML;
+    });
+
+    return; // ⛔ stop here — no suspects unlocked
+  }
+
+  // ✅ CORRECT SHIFT
+  output.classList.add("flash-green");
 
   animateText(output, decryptedText, 10, () => {
     const users = new Set();
-    const fileAccess = {};
 
-    
     decryptedLines.forEach(line => {
       const userMatch = line.match(/USER_\d+/);
-      const fileMatch = line.match(/OPENED FILE:\s(.+)|FILE:\s(.+)/);
-    
-      if (userMatch) {
-        const user = userMatch[0];
-        users.add(user);
-    
-        if (!fileAccess[user]) {
-          fileAccess[user] = [];
-        }
-    
-        if (fileMatch) {
-          fileAccess[user].push(fileMatch[1]);
-        }
-      }
-    
+      if (userMatch) users.add(userMatch[0]);
+
+      // Highlight ACCESS DENIED
       if (line.includes("ACCESS DENIED")) {
         output.innerHTML = output.innerHTML.replace(
           line,
@@ -344,72 +345,69 @@ function decodeCaesarLogs() {
       }
     });
 
+    // 🔒 HARD-CODED FILE ACCESS (intentional for narrative control)
+    const userFileAccess = {
+      "USER_12": ["finances.csv"],
+      "USER_07": ["employee_records.txt", "admin.cfg (DENIED)"],
+      "USER_03": ["secret_key.png"]
+    };
 
-// Populate suspects
-  users.forEach(user => {
-    const li = document.createElement("li");
-    li.textContent = user;
-    li.classList.add("suspect");
-  
-    // Attach bio info
-    li.dataset.name = user === "USER_12" ? "USER_12" :
-                       user === "USER_07" ? "USER_07" :
-                       user === "USER_03" ? "USER_03" :
-                       "Unknown";
-    li.dataset.language = user === "USER_12" ? "R —  specifically designed as an environment for statistical computing and graphics, widely used by data scientists, statisticians, and researchers. " :
-                          user === "USER_07" ? "C/C++ — Foundational, high-performance languages that offer deep control over memory management and hardware. They are used for operating systems, game engines (like Unreal), and embedded systems." :
-                          user === "USER_03" ? "SQL —A domain-specific language (DSL) used to communicate with and manipulate relational databases. It is essential for data analysts, database administrators, and any data-driven applications" :
-                          "Unknown";
-    li.dataset.access = user === "USER_12" ? "Full admin access" :
-                        user === "USER_07" ? "Read/Write access" :
-                        user === "USER_03" ? "Limited access" :
-                        "Unknown";
-  
-    suspects.appendChild(li);
-    li.dataset.files = JSON.stringify(fileAccess[user] || []);
+    // 🧍 Populate suspects
+    users.forEach(user => {
+      const li = document.createElement("li");
+      li.classList.add("suspect");
 
-  });
-  
-  // Show the section **before adding click handlers**
-  document.getElementById("suspectSection").style.display = "block";
-  
-  // Attach click events
-  document.querySelectorAll(".suspect").forEach(item => {
-      item.addEventListener("click", () => {
+      // Bio metadata (no spoilers)
+      li.dataset.name = user;
+      li.dataset.language =
+        user === "USER_12"
+          ? "R — statistical computing & data analysis"
+          : user === "USER_07"
+          ? "C/C++ — systems-level programming"
+          : user === "USER_03"
+          ? "SQL — structured database querying"
+          : "Unknown";
+
+      li.dataset.access =
+        user === "USER_12"
+          ? "Full admin access"
+          : user === "USER_07"
+          ? "Read / Write access"
+          : user === "USER_03"
+          ? "Restricted access"
+          : "Unknown";
+
+      li.innerHTML = `
+        <div class="suspect-title">${user}</div>
+        <div class="recent-files">
+          <em>Recent file access:</em>
+          <ul>
+            ${(userFileAccess[user] || [])
+              .map(file =>
+                user === "USER_03" && file === "secret_key.png"
+                  ? `<li><a href="#" onclick="openRoom3()">📁 ${file}</a></li>`
+                  : `<li>📄 ${file}</li>`
+              )
+              .join("")}
+          </ul>
+        </div>
+      `;
+
+      // Click → bio
+      li.addEventListener("click", () => {
         const bio = document.getElementById("suspectBio");
-        const filesList = bio.querySelector("#bioFiles");
-      
-        bio.querySelector("#bioName").textContent = item.textContent;
-        bio.querySelector("#bioLang").textContent = item.dataset.language;
-        bio.querySelector("#bioAccess").textContent = item.dataset.access;
-      
-        filesList.innerHTML = "";
-      
-        const files = JSON.parse(item.dataset.files || "[]");
-      
-        files.forEach(file => {
-          const li = document.createElement("li");
-      
-          // USER_03 special link
-          if (item.textContent === "USER_03" && file === "secret_key.pdf") {
-            li.innerHTML = `<a href="#" style="color:#ff5555;">${file}</a>`;
-            li.addEventListener("click", () => unlockRoom3());
-          } else {
-            li.textContent = file;
-          }
-      
-          filesList.appendChild(li);
-        });
-      
+        bio.querySelector("#bioName").textContent = li.dataset.name;
+        bio.querySelector("#bioLang").textContent = li.dataset.language;
+        bio.querySelector("#bioAccess").textContent = li.dataset.access;
         bio.style.display = "block";
+      });
+
+      suspects.appendChild(li);
     });
 
+    suspects.style.display = "block";
   });
-  ;
-
-  suspects.style.display = "block";
-  }); // <-- this closes animateText callback
-} // <-- this closes decodeCaesarLogs
+}
 
 
 function animateText(element, text, speed = 20, done) {
@@ -423,6 +421,12 @@ function animateText(element, text, speed = 20, done) {
       if (done) done();
     }
   }, speed);
+}
+
+function openRoom3() {
+  document.getElementById("room2").style.display = "none";
+  document.getElementById("room3").style.display = "block";
+  document.getElementById("room3").scrollIntoView({ behavior: "smooth" });
 }
 
 function investigateSuspect(user) {
