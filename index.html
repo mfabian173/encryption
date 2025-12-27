@@ -253,16 +253,41 @@ while i < len(bits):
 <div id="room4" class="room" style="display:none;">
   <h2>Room 4: Vigenère Cipher Challenge</h2>
 
-  <p>Use the Vigenère cipher with the correct keyword to decode the hidden data. </p>
+  <p>
+    A partially obscured document has been recovered.<br>
+    Use the <strong>Vigenère cipher</strong> and the correct keyword to decode it.
+  </p>
 
   <!-- Vigenère input area -->
-  <textarea id="vigenereInput" placeholder="Enter your Python code to decode..."></textarea>
+  <textarea
+    id="vigenereInput"
+    placeholder="# Step 1: Define the keyword
+# Step 2: Decode the document
+# Step 3: Print the result
+
+key = \"YOUR_KEYWORD\"
+decoded = vigenere_decode(CIPHERTEXT, key)
+print(decoded)"
+    style="width:100%; height:180px;"
+  ></textarea>
+
   <button onclick="runVigenere()">Run Code</button>
 
-  <div id="vigenereOutput" style="white-space: pre-wrap; margin-top:10px; font-family: monospace; color:#0f0; background:#000; padding:10px;"></div>
+  <div
+    id="vigenereOutput"
+    style="
+      white-space: pre-wrap;
+      margin-top:10px;
+      font-family: monospace;
+      color:#0f0;
+      background:#000;
+      padding:10px;
+    "
+  ></div>
 
   <!-- Suspect profiles -->
   <div id="suspectProfiles" style="margin-top:20px;">
+
     <!-- USER_03 -->
     <div id="user03Profile" class="case-box hidden">
       <h2>🔍 SUSPECT PROFILE UNLOCKED</h2>
@@ -292,7 +317,10 @@ while i < len(bits):
       <h3>Alibi Statement</h3>
       <p>“Sleeping soundly all night.”</p>
     </div>
+
   </div>
+</div>
+
 
   <!-- Final report input -->
   <div id="finalReport" class="case-box hidden" style="margin-top:20px;">
