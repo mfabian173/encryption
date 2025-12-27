@@ -683,5 +683,75 @@ function submitReport() {
   }
 }
 
+// Called when student runs their Vigenère Python code
+async function runVigenere() {
+  if (!pyodideReady) return;
+
+  const code = document.getElementById("vigenereInput").value;
+  const output = document.getElementById("vigenereOutput");
+
+  try {
+    const wrappedCode = `
+result = None
+import builtins
+_stdout = []
+def fake_print(*args, **kwargs):
+    _stdout.append(" ".join(map(str,args)))
+builtins.print = fake_print
+try:
+    exec("""${code.replace(/`/g, '\\`')}""")
+    if _stdout:
+        result = "\\n".join(_stdout)
+except Exception as e:
+    result = "ERROR: " + str(e)
+`;
+
+    await pyodide.runPythonAsync(wrappedCode);
+    const result = pyodide.globals.get("result");
+
+    output.textContent = result || "No output";
+
+    // Trigger suspect reveal and final report if all names are present
+    if (
+      result &&
+      result.includes("ALICE MERCER") &&
+      result.includes("CHARLIE MERCER") &&
+      result.includes("BOB MERCER")
+    ) {
+      revealSuspects();
+      revealFinalReport();
+    }
+
+  } catch (err) {
+    output.textContent = "JS ERROR: " + err;
+  }
+}
+
+// Show all suspect profiles
+function revealSuspects() {
+  document.getElementById("user03Profile").classList.remove("hidden");
+  document.getElementById("user07Profile").classList.remove("hidden");
+  document.getElementById("user12Profile").classList.remove("hidden");
+}
+
+// Show final report input
+function revealFinalReport() {
+  document.getElementById("finalReport").classList.remove("hidden");
+  document.getElementById("finalReport").scrollIntoView({behavior:"smooth"});
+}
+
+// Submit final culprit report
+function submitCulprit() {
+  const input = document.getElementById("culpritInput").value.trim().toUpperCase();
+  const feedback = document.getElementById("finalFeedback");
+
+  if (input === "CHARLIE MERCER" || input === "USER_07") {
+    feedback.style.color = "lime";
+    feedback.textContent = "✅ Success! You solved the case!";
+  } else {
+    feedback.style.color = "red";
+    feedback.textContent = "❌ That is not correct. Review the evidence and alibis carefully.";
+  }
+}
 
 window.addEventListener("load", initPyodide);
