@@ -590,12 +590,17 @@ function typeText(element, text, speed = 30) {
 
 async function runRoom3() {
   if (!pyodideReady) return;
+  
+  function getCode(id) {
+    const el = document.getElementById(id);
+    return el ? el.innerText.trim() : "";
+  }
+  
+  const loopPixels = getCode("loopPixels");
+  const appendBit  = getCode("appendBit");
+  const loopBits   = getCode("loopBits");
+  const addByte    = getCode("addByte");
 
-  const loopPixels = document.getElementById("loopPixels").textContent.trim();
-  const appendBit = document.getElementById("appendBit").textContent.trim();
-  const loopBits = document.getElementById("loopBits").textContent.trim();
-  const addByte = document.getElementById("addByte").textContent.trim();
-  const output = document.getElementById("stegoOutput");
 
   function indent(code, spaces = 4) {
     const pad = " ".repeat(spaces);
@@ -649,44 +654,6 @@ result = "Alice, Bob, Charlie\\nBABBAGE"
   }
 }
 
-
-// Optional: tile reveal effect if you want to restore flipping animation
-function tileReveal() {
-  const container = document.getElementById("stegoImageContainer");
-  const pre = document.getElementById("stegoImage");
-  const post = document.getElementById("stegoReveal");
-
-  if (!pre || !post) return;
-
-  const rows = 6;
-  const cols = 6;
-  const tileWidth = pre.offsetWidth / cols;
-  const tileHeight = pre.offsetHeight / rows;
-
-  // Hide original image
-  pre.style.opacity = 0;
-
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const tile = document.createElement("div");
-      tile.className = "tile";
-      tile.style.width = tileWidth + "px";
-      tile.style.height = tileHeight + "px";
-      tile.style.left = c * tileWidth + "px";
-      tile.style.top = r * tileHeight + "px";
-      tile.style.backgroundImage = `url(${pre.src})`;
-      tile.style.backgroundPosition = `-${c * tileWidth}px -${r * tileHeight}px`;
-      container.appendChild(tile);
-
-      setTimeout(() => tile.classList.add("flip"), 100 + (r + c) * 60);
-    }
-  }
-
-  // Reveal new image
-  setTimeout(() => {
-    post.style.opacity = 1;
-  }, 900);
-}
 
 
 window.addEventListener("load", initPyodide);
