@@ -591,23 +591,33 @@ function typeText(element, text, speed = 30) {
 async function runRoom3() {
   if (!pyodideReady) return;
 
-  const loopPixels = document.getElementById("loopPixels").textContent.trim();
-  const appendBit = document.getElementById("appendBit").textContent.trim();
-  const loopBits = document.getElementById("loopBits").textContent.trim();
-  const addByte = document.getElementById("addByte").textContent.trim();
+  const loopPixels = document.getElementById("loopPixels").value.trim();
+  const appendBit = document.getElementById("appendBit").value.trim();
+  const loopBits = document.getElementById("loopBits").value.trim();
+  const addByte = document.getElementById("addByte").value.trim();
   const output = document.getElementById("stegoOutput");
 
+  // Indent every line of student code by 4 spaces
+  function indent(code, spaces = 4) {
+    const pad = " ".repeat(spaces);
+    return code
+      .split("\n")
+      .map(line => line.trim() ? pad + line : "")
+      .join("\n");
+  }
+
   const studentCode = `
-pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
+pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,),
+          (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
 bits = []
 chars = []
 byte = []
 
-${loopPixels}
-    ${appendBit}
+${indent(loopPixels)}
+${indent(appendBit)}
 
-${loopBits}
-    ${addByte}
+${indent(loopBits)}
+${indent(addByte)}
 
 # Convert bits to characters
 i = 0
@@ -620,17 +630,17 @@ while i < len(bits):
         chars.append(chr(value))
     i += 8
 
-# Hidden message: 3 names (not linked to usernames) + Vigenère key
+# Hidden message
 print("Alice, Bob, Charlie\\nKEYFORROOM4")
 `;
 
   try {
     const result = await pyodide.runPythonAsync(studentCode);
 
-    // Animate image reveal with tile effect
+    // Animate image reveal
     tileReveal();
 
-    // Animate the revealed text
+    // Animate revealed text
     output.textContent = "";
     let i = 0;
     const interval = setInterval(() => {
@@ -640,9 +650,11 @@ print("Alice, Bob, Charlie\\nKEYFORROOM4")
     }, 30);
 
   } catch (err) {
-    output.textContent = "❌ Check your loops and append. Try again!";
+    console.error("Room 3 Python error:", err);
+    output.textContent = "❌ Check your loops and append. Make sure all indentation is correct!";
   }
 }
+
 
 // Optional: tile reveal effect if you want to restore flipping animation
 function tileReveal() {
