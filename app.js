@@ -684,7 +684,7 @@ function submitReport() {
 }
 
 // Called when student runs their Vigenère Python code
-async function runVigenere() {
+asyncasync function runVigenere() {
   if (!pyodideReady) return;
 
   const code = document.getElementById("vigenereInput").value;
@@ -692,12 +692,37 @@ async function runVigenere() {
 
   try {
     const wrappedCode = `
+# === LOCKED GAME DATA ===
+CIPHERTEXT = "UCFEPF ZQSSK: QNWEM MIVYEV"
+ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+def vigenere_decode(ciphertext, key):
+    key = key.upper()
+    plaintext = ""
+    key_index = 0
+
+    for char in ciphertext:
+        if char.upper() in ALPHABET:
+            c = ALPHABET.index(char.upper())
+            k = ALPHABET.index(key[key_index % len(key)])
+            p = (c - k) % 26
+            plaintext += ALPHABET[p]
+            key_index += 1
+        else:
+            plaintext += char
+
+    return plaintext
+
+# === USER CODE EXECUTION ===
 result = None
 import builtins
 _stdout = []
+
 def fake_print(*args, **kwargs):
-    _stdout.append(" ".join(map(str,args)))
+    _stdout.append(" ".join(map(str, args)))
+
 builtins.print = fake_print
+
 try:
     exec("""${code.replace(/`/g, '\\`')}""")
     if _stdout:
@@ -707,11 +732,11 @@ except Exception as e:
 `;
 
     await pyodide.runPythonAsync(wrappedCode);
-    const result = pyodide.globals.get("result");
 
+    const result = pyodide.globals.get("result");
     output.textContent = result || "No output";
 
-    // Trigger suspect reveal and final report if all names are present
+    // Trigger suspect reveal if all names are present
     if (
       result &&
       result.includes("ALICE MERCER") &&
@@ -726,6 +751,7 @@ except Exception as e:
     output.textContent = "JS ERROR: " + err;
   }
 }
+
 
 // Show all suspect profiles
 function revealSuspects() {
