@@ -252,67 +252,6 @@ print("Alice, Bob, Charlie\\nBABBAGE")
   <div id="stegoOutput" style="white-space:pre-wrap;margin-top:10px;font-family:monospace;color:#0f0;background:#000;padding:10px;"></div>
 </div>
 
-<script>
-async function runRoom3() {
-  if (!pyodideReady) return;
-
-  const loopPixels = document.getElementById("loopPixels").textContent.trim();
-  const appendBit = document.getElementById("appendBit").textContent.trim();
-  const loopBits = document.getElementById("loopBits").textContent.trim();
-  const addByte = document.getElementById("addByte").textContent.trim();
-  const output = document.getElementById("stegoOutput");
-  const img = document.getElementById("stegoImage");
-  const imgReveal = document.getElementById("stegoReveal");
-
-  const studentCode = `
-pixels = [(0,), (1,), (0,), (1,), (1,), (0,), (0,), (1,), 
-          (0,), (1,), (1,), (0,), (1,), (0,), (1,), (0,)]
-bits = []
-chars = []
-byte = []
-
-${loopPixels}
-    ${appendBit}
-
-${loopBits}
-    ${addByte}
-
-# Behind the scenes: convert 8 bits to characters
-i = 0
-while i < len(bits):
-    byte_chunk = bits[i:i+8]
-    if len(byte_chunk) == 8:
-        value = 0
-        for b in byte_chunk:
-            value = value * 2 + b
-        chars.append(chr(value))
-    i += 8
-
-print("Alice, Bob, Charlie\\nBABBAGE")
-`;
-
-  try {
-    const result = await pyodide.runPythonAsync(studentCode);
-
-    // Flip images
-    img.style.display = "none";
-    imgReveal.style.display = "block";
-
-    // Animate the revealed text
-    output.textContent = "";
-    let i = 0;
-    const interval = setInterval(() => {
-      output.textContent += result[i];
-      i++;
-      if (i >= result.length) clearInterval(interval);
-    }, 30);
-
-  } catch (err) {
-    output.textContent = "❌ Check your loops and append. Try again!";
-  }
-}
-</script>
-
 <!-- ROOM 4 -->
 <div id="room4" class="room" style="display:none;">
   <h2>Room 4: Vigenère Cipher Challenge</h2>
