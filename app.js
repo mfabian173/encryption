@@ -664,6 +664,24 @@ result = "".join(chars)
   }
 }
 
+function submitReport() {
+  const answer = document
+    .getElementById("culpritInput")
+    .value
+    .trim()
+    .toUpperCase();
+
+  const feedback = document.getElementById("reportFeedback");
+
+  if (answer === "ALEX MERCER" || answer === "USER_07") {
+    feedback.textContent = "✅ SUCCESS! You solved the case.";
+    feedback.className = "success";
+    showVictory();
+  } else {
+    feedback.textContent = "❌ Evidence does not support this conclusion.";
+    feedback.className = "error";
+  }
+}
 
 
 window.addEventListener("load", initPyodide);
