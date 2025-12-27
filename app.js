@@ -683,7 +683,6 @@ function submitReport() {
   }
 }
 
-// Called when student runs their Vigenère Python code
 async function runVigenere() {
   if (!pyodideReady) return;
 
@@ -724,7 +723,7 @@ def fake_print(*args, **kwargs):
 builtins.print = fake_print
 
 try:
-    exec("""${code.replace(/`/g, '\\`')}""")
+    exec("""${code.replace(/`/g, "\\`")}""")
     if _stdout:
         result = "\\n".join(_stdout)
 except Exception as e:
@@ -736,7 +735,25 @@ except Exception as e:
     const result = pyodide.globals.get("result");
     output.textContent = result || "No output";
 
-    // Trigger suspect reveal if all names are present
+    // Mystical document reveal
+    if (result) {
+      const doc = document.getElementById("mysticalDoc");
+      const text = document.getElementById("mysticalText");
+
+      if (doc && text) {
+        doc.classList.remove("hidden");
+        text.textContent = "";
+
+        let i = 0;
+        const interval = setInterval(() => {
+          text.textContent += result[i];
+          i++;
+          if (i >= result.length) clearInterval(interval);
+        }, 25);
+      }
+    }
+
+    // Unlock suspects + final report
     if (
       result &&
       result.includes("ALICE MERCER") &&
