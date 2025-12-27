@@ -644,9 +644,14 @@ while i < len(bits):
     output.textContent = "";
     let i = 0;
     const interval = setInterval(() => {
-      output.textContent += result[i++];
-      if (i >= result.length) clearInterval(interval);
+      if (i >= result.length) {
+        clearInterval(interval);
+        return;
+      }
+      output.textContent += result[i];
+      i++;
     }, 30);
+
 
   } catch (err) {
     console.error(err);
