@@ -396,7 +396,7 @@ function decodeCaesarLogs() {
   });
 }
 function tileReveal() {
-  const container = document.getElementById("stegoContainer");
+  const container = document.getElementById("stegoImageContainer");
   const pre = document.getElementById("stegoImage");
   const post = document.getElementById("stegoReveal");
 
@@ -428,6 +428,8 @@ function tileReveal() {
 
   // Reveal new image
   setTimeout(() => {
+    post.style.display = "block";
+
     post.style.opacity = 1;
   }, 900);
 
@@ -647,6 +649,8 @@ result = "".join(chars)
     const interval = setInterval(() => {
       if (i >= result.length) {
         clearInterval(interval);
+        tileReveal();
+
         return;
       }
       output.textContent += result[i];
