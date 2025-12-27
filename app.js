@@ -591,19 +591,15 @@ function typeText(element, text, speed = 30) {
 async function runRoom3() {
   if (!pyodideReady) return;
 
-  const loopPixels = document.getElementById("loopPixels").value.trim();
-  const appendBit = document.getElementById("appendBit").value.trim();
-  const loopBits = document.getElementById("loopBits").value.trim();
-  const addByte = document.getElementById("addByte").value.trim();
+  const loopPixels = document.getElementById("loopPixels").textContent.trim();
+  const appendBit = document.getElementById("appendBit").textContent.trim();
+  const loopBits = document.getElementById("loopBits").textContent.trim();
+  const addByte = document.getElementById("addByte").textContent.trim();
   const output = document.getElementById("stegoOutput");
 
-  // Indent every line of student code by 4 spaces
   function indent(code, spaces = 4) {
     const pad = " ".repeat(spaces);
-    return code
-      .split("\n")
-      .map(line => line.trim() ? pad + line : "")
-      .join("\n");
+    return code.split("\n").map(l => l.trim() ? pad + l : "").join("\n");
   }
 
   const studentCode = `
@@ -613,13 +609,12 @@ bits = []
 chars = []
 byte = []
 
-${indent(loopPixels)}
+${loopPixels}
 ${indent(appendBit)}
 
-${indent(loopBits)}
+${loopBits}
 ${indent(addByte)}
 
-# Convert bits to characters
 i = 0
 while i < len(bits):
     byte_chunk = bits[i:i+8]
@@ -630,28 +625,27 @@ while i < len(bits):
         chars.append(chr(value))
     i += 8
 
-# Hidden message
-print("Alice, Bob, Charlie\\nKEYFORROOM4")
+result = "Alice, Bob, Charlie\\nBABBAGE"
 `;
 
   try {
-    const result = await pyodide.runPythonAsync(studentCode);
+    await pyodide.runPythonAsync(studentCode);
+    const result = pyodide.globals.get("result");
 
-    // Animate image reveal
-    tileReveal();
+    document.getElementById("stegoImage").style.display = "none";
+    document.getElementById("stegoReveal").style.display = "block";
+    document.getElementById("crackedMessage").classList.remove("hidden");
 
-    // Animate revealed text
     output.textContent = "";
     let i = 0;
     const interval = setInterval(() => {
-      output.textContent += result[i];
-      i++;
+      output.textContent += result[i++];
       if (i >= result.length) clearInterval(interval);
     }, 30);
 
   } catch (err) {
-    console.error("Room 3 Python error:", err);
-    output.textContent = "❌ Check your loops and append. Make sure all indentation is correct!";
+    console.error(err);
+    output.textContent = "❌ Check your loops and append.";
   }
 }
 
