@@ -590,6 +590,8 @@ function typeText(element, text, speed = 30) {
 
 async function runRoom3() {
   if (!pyodideReady) return;
+
+  const output = document.getElementById("stegoOutput");
   
   function getCode(id) {
     const el = document.getElementById(id);
