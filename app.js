@@ -684,7 +684,7 @@ function submitReport() {
 }
 
 // Called when student runs their Vigenère Python code
-asyncasync function runVigenere() {
+async function runVigenere() {
   if (!pyodideReady) return;
 
   const code = document.getElementById("vigenereInput").value;
