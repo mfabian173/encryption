@@ -250,13 +250,62 @@ while i < len(bits):
   <div id="stegoOutput" style="white-space:pre-wrap;margin-top:10px;font-family:monospace;color:#0f0;background:#000;padding:10px;"></div>
 </div>
 
-<!-- ROOM 4 -->
 <div id="room4" class="room" style="display:none;">
   <h2>Room 4: Vigenère Cipher Challenge</h2>
-  <pre id="room4Intro" style="background:#000;color:#0f0;padding:15px;border-radius:5px;"></pre>
-  <!-- Your challenge inputs go here -->
+
+  <p>Use the Vigenère cipher with the correct keyword to decode the hidden data. </p>
+
+  <!-- Vigenère input area -->
+  <textarea id="vigenereInput" placeholder="Enter your Python code to decode..."></textarea>
+  <button onclick="runVigenere()">Run Code</button>
+
+  <div id="vigenereOutput" style="white-space: pre-wrap; margin-top:10px; font-family: monospace; color:#0f0; background:#000; padding:10px;"></div>
+
+  <!-- Suspect profiles -->
+  <div id="suspectProfiles" style="margin-top:20px;">
+    <!-- USER_03 -->
+    <div id="user03Profile" class="case-box hidden">
+      <h2>🔍 SUSPECT PROFILE UNLOCKED</h2>
+      <p><strong>User:</strong> USER_03</p>
+      <p><strong>Name:</strong> Alice Mercer</p>
+      <p><strong>Role:</strong> Systems Engineer</p>
+      <h3>Alibi Statement</h3>
+      <p>“Left the building at 03:30.”</p>
+    </div>
+
+    <!-- USER_07 -->
+    <div id="user07Profile" class="case-box hidden">
+      <h2>🔍 SUSPECT PROFILE UNLOCKED</h2>
+      <p><strong>User:</strong> USER_07</p>
+      <p><strong>Name:</strong> Charlie Mercer</p>
+      <p><strong>Role:</strong> Security Officer</p>
+      <h3>Alibi Statement</h3>
+      <p>“Started morning surveillance at 04:00.”</p>
+    </div>
+
+    <!-- USER_12 -->
+    <div id="user12Profile" class="case-box hidden">
+      <h2>🔍 SUSPECT PROFILE UNLOCKED</h2>
+      <p><strong>User:</strong> USER_12</p>
+      <p><strong>Name:</strong> Bob Mercer</p>
+      <p><strong>Role:</strong> Chief Financial Officer</p>
+      <h3>Alibi Statement</h3>
+      <p>“Sleeping soundly all night.”</p>
+    </div>
+  </div>
+
+  <!-- Final report input -->
+  <div id="finalReport" class="case-box hidden" style="margin-top:20px;">
+    <h2>🧠 Final Analysis</h2>
+    <p>Review all evidence collected across the investigation. Only one suspect's alibi cannot be true based on system logs.</p>
+    <p>File your final report when ready.</p>
+    <label>Identified Culprit:</label>
+    <input id="culpritInput" placeholder="Enter suspect name">
+    <button onclick="submitCulprit()">Submit Report</button>
+    <p id="finalFeedback" style="margin-top:10px;"></p>
+  </div>
 </div>
-  
+
 <div id="detectiveReport" class="report hidden">
   <h1>🗂 DETECTIVE REPORT</h1>
 
