@@ -631,6 +631,7 @@ while i < len(bits):
             value = value * 2 + b
         chars.append(chr(value))
     i += 8
+result = "".join(chars)
 `;
 
   try {
