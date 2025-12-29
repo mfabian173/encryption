@@ -259,38 +259,65 @@ while i < len(bits):
   </p>
 
   <!-- Vigenère input area -->
-  <textarea
-    id="vigenereInput"
-    placeholder="# Step 1: Define the keyword
-# Step 2: Decode the document
-# Step 3: Print the result
+  <div class="code-workshop">
 
-key = \"YOUR_KEYWORD\"
-decoded = vigenere_decode(CIPHERTEXT, key)
-print(decoded)"
-    style="width:100%; height:180px;"
-  ></textarea>
+    <pre class="code-display">
+  # Vigenère Cipher — Decryption
+  
+  def vigenere_decode(text, key):
+      result = ""
+      key = key.upper()
+      key_index = 0
+  
+      for char in text:
+          if char.isalpha():
+              shift = ord(key[key_index % len(key)]) - 65
+              decoded = chr((ord(char.upper()) - 65 - shift) % 26 + 65)
+              result += decoded
+              key_index += 1
+          else:
+              result += char
+  
+      return result
+  
+  text = CIPHERTEXT
+    </pre>
+  
+    <div class="student-inputs">
+      <label>Enter the keyword:</label>
+      <input id="vigKey" placeholder='e.g. "BABBAGE"' />
+  
+      <label>Call the function vigenere_decode using the TEXT and the KEY:</label>
+      <input id="vigCall" placeholder="decoded = vigenere_decode(text, key)" />
+  
+      <label>Print the result:</label>
+      <input id="vigPrint" placeholder="print(decoded)" />
+    </div>
+  
+    <button onclick="runVigenere()">Run Decryption</button>
+  </div>
 
-<div id="mysticalDoc" class="mystical-doc">
-  <div class="doc-header">📜 RECOVERED ARCHIVE FRAGMENT</div>
-  <pre id="mysticalText">
-BDDFIT YPK RFDWVKCR
 
-UTFT_03: BMJDF NFSDGS
-SPMF: TATUFMQ FOHJOFFS
-BMBJC: MFHU CVJMEJNH BU 03:30
-
-UTFT_07: CIBSMJF NFSDGS
-SPMF: TFDVSJUZ PGGJDFS
-BMBJC: PO EVUZ GSPN 04:00
-
-UTFT_12: CPC NFSDFS
-SPMF: DIJFG GJOBODJBM PGGJDFS
-BMBJC: DMBJNT TMFFQ
-
-TUBUVT: JODPOTJTUFODJFT EFUFD UFE
-  </pre>
-</div>
+  <div id="mysticalDoc" class="mystical-doc">
+    <div class="doc-header">📜 RECOVERED ARCHIVE FRAGMENT</div>
+    <pre id="mysticalText">
+  BDDFIT YPK RFDWVKCR
+  
+  UTFT_03: BMJDF NFSDGS
+  SPMF: TATUFMQ FOHJOFFS
+  BMBJC: MFHU CVJMEJNH BU 03:30
+  
+  UTFT_07: CIBSMJF NFSDGS
+  SPMF: TFDVSJUZ PGGJDFS
+  BMBJC: PO EVUZ GSPN 04:00
+  
+  UTFT_12: CPC NFSDFS
+  SPMF: DIJFG GJOBODJBM PGGJDFS
+  BMBJC: DMBJNT TMFFQ
+  
+  TUBUVT: JODPOTJTUFODJFT EFUFD UFE
+    </pre>
+  </div>
 
   <!-- Suspect profiles -->
   <div id="suspectProfiles" style="margin-top:20px;">
@@ -326,7 +353,7 @@ TUBUVT: JODPOTJTUFODJFT EFUFD UFE
     </div>
 
   </div>
-</div>
+
 
 
   <!-- Final report input -->
