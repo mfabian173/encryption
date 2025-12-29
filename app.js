@@ -689,6 +689,7 @@ async function runVigenere() {
   const keyInput = document.getElementById("vigKey").value.trim();
   const callInput = document.getElementById("vigCall").value.trim();
   const printInput = document.getElementById("vigPrint").value.trim();
+  const output = document.getElementById("vigenereOutput");
 
   if (!keyInput || !callInput || !printInput) {
     alert("⚠️ Complete all lines of code before running.");
@@ -701,26 +702,9 @@ ${callInput}
 ${printInput}
 `;
 
-  const output = document.getElementById("vigenereOutput");
-
   try {
     const wrappedCode = `
-# === LOCKED GAME DATA ===
-CIPHERTEXT = """BDDFIT YPK RFDWVKCR
-
-UTFT_03: BMJDF NFSDGS
-SPMF: TATUFMQ FOHJOFFS
-BMBJC: MFHU CVJMEJNH BU 03:30
-
-UTFT_07: CIBSMJF NFSDGS
-SPMF: TFDVSJUZ PGGJDFS
-BMBJC: PO EVUZ GSPN 04:00
-
-UTFT_12: CPC NFSDFS
-SPMF: DIJFG GJOBODJBM PGGJDFS
-BMBJC: DMBJNT TMFFQ
-
-TUBUVT: JODPOTJTUFODJFT EFUFD UFE"""
+CIPHERTEXT = document.getElementById("mysticalText").textContent
 
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -728,7 +712,6 @@ def vigenere_decode(ciphertext, key):
     key = key.upper()
     plaintext = ""
     key_index = 0
-
     for char in ciphertext:
         if char.upper() in ALPHABET:
             c = ALPHABET.index(char.upper())
@@ -737,21 +720,17 @@ def vigenere_decode(ciphertext, key):
             key_index += 1
         else:
             plaintext += char
-
     return plaintext
 
-# === USER CODE EXECUTION ===
 result = None
 import builtins
 _stdout = []
-
 def fake_print(*args, **kwargs):
-    _stdout.append(" ".join(map(str, args)))
-
+    _stdout.append(" ".join(map(str,args)))
 builtins.print = fake_print
 
 try:
-    exec("""${code.replace(/`/g, "\\`")}""")
+    exec("""${code.replace(/`/g,'\\`')}""")
     if _stdout:
         result = "\\n".join(_stdout)
 except Exception as e:
@@ -759,30 +738,28 @@ except Exception as e:
 `;
 
     await pyodide.runPythonAsync(wrappedCode);
-    const result = pyodide.globals.get("result");
+    const resultText = pyodide.globals.get("result");
 
-    output.textContent = result || "";
+    output.textContent = resultText || "";
 
-    // 🔓 Visual decode
-    if (result) {
-      const text = document.getElementById("mysticalText");
-      if (!text) return;
-
-      text.textContent = "";
+    // Animate
+    const textEl = document.getElementById("mysticalText");
+    if (textEl && resultText) {
+      textEl.textContent = "";
       let i = 0;
       const interval = setInterval(() => {
-        text.textContent += result[i];
+        textEl.textContent += resultText[i];
         i++;
-        if (i >= result.length) clearInterval(interval);
+        if (i >= resultText.length) clearInterval(interval);
       }, 25);
     }
 
     // Unlock suspects
     if (
-      result &&
-      result.includes("ALICE MERCER") &&
-      result.includes("CHARLIE MERCER") &&
-      result.includes("BOB MERCER")
+      resultText &&
+      resultText.includes("ALICE MERCER") &&
+      resultText.includes("CHARLIE MERCER") &&
+      resultText.includes("BOB MERCER")
     ) {
       revealSuspects();
       revealFinalReport();
@@ -792,6 +769,7 @@ except Exception as e:
     console.error(err);
   }
 }
+
 
 
 // Show all suspect profiles
