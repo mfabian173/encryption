@@ -695,17 +695,11 @@ async function runVigenere() {
     return;
   }
 
-  const code = `
-key = "${keyInput.toUpperCase()}"
-${callInput}
-${printInput}
-`;
-
   const outputEl = document.getElementById("vigenereOutput");
 
-  try {
-    const wrappedCode = `
-# === GAME DATA ===
+  // Wrap user code safely
+  const safeCode = `
+ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 CIPHERTEXT = """BDDFIT YPK RFDWVKCR
 
 UTFT_03: BMJDF NFSDGS
@@ -722,8 +716,6 @@ BMBJC: DMBJNT TMFFQ
 
 TUBUVT: JODPOTJTUFODJFT EFUFD UFE"""
 
-ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
 def vigenere_decode(ciphertext, key):
     key = key.upper()
     plaintext = ""
@@ -738,24 +730,29 @@ def vigenere_decode(ciphertext, key):
             plaintext += char
     return plaintext
 
-# === USER CODE ===
-result = None
+# Predefine safe variables
+key = "${keyInput.toUpperCase()}"
+decoded = vigenere_decode(CIPHERTEXT, key)
+
+# Capture print output safely
 import builtins
 _stdout = []
 def fake_print(*args, **kwargs):
     _stdout.append(" ".join(map(str, args)))
 builtins.print = fake_print
 
+result = None
 try:
-    # run user code safely
-    exec("""${code.replace(/`/g, "\\`").replace(/document/g,'')}""")
+    ${callInput.replace(/document|text/g,'')}  # remove unsafe JS vars
+    ${printInput.replace(/document|text/g,'')}
     if _stdout:
         result = "\\n".join(_stdout)
 except Exception as e:
     result = "ERROR: " + str(e)
 `;
 
-    await pyodide.runPythonAsync(wrappedCode);
+  try {
+    await pyodide.runPythonAsync(safeCode);
     const result = pyodide.globals.get("result");
 
     outputEl.textContent = result || "No output";
@@ -784,6 +781,8 @@ except Exception as e:
     outputEl.textContent = "JS ERROR: " + err;
   }
 }
+
+
 
 // Show all suspect profiles
 function revealSuspects() {
