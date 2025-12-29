@@ -695,8 +695,7 @@ async function runVigenere() {
     return;
   }
 
-  // Construct the user code
-  const userCode = `
+  const code = `
 key = "${keyInput.toUpperCase()}"
 ${callInput}
 ${printInput}
@@ -704,8 +703,9 @@ ${printInput}
 
   const outputEl = document.getElementById("vigenereOutput");
 
-  // Pyodide wrapped code (Python only)
-  const wrappedCode = `
+  try {
+    const wrappedCode = `
+# === GAME DATA ===
 CIPHERTEXT = """BDDFIT YPK RFDWVKCR
 
 UTFT_03: BMJDF NFSDGS
@@ -728,7 +728,6 @@ def vigenere_decode(ciphertext, key):
     key = key.upper()
     plaintext = ""
     key_index = 0
-
     for char in ciphertext:
         if char.upper() in ALPHABET:
             c = ALPHABET.index(char.upper())
@@ -737,9 +736,9 @@ def vigenere_decode(ciphertext, key):
             key_index += 1
         else:
             plaintext += char
-
     return plaintext
 
+# === USER CODE ===
 result = None
 import builtins
 _stdout = []
@@ -748,20 +747,20 @@ def fake_print(*args, **kwargs):
 builtins.print = fake_print
 
 try:
-    exec("""${userCode.replace(/`/g, "\\`")}""")
+    # run user code safely
+    exec("""${code.replace(/`/g, "\\`").replace(/document/g,'')}""")
     if _stdout:
         result = "\\n".join(_stdout)
 except Exception as e:
     result = "ERROR: " + str(e)
 `;
 
-  try {
     await pyodide.runPythonAsync(wrappedCode);
     const result = pyodide.globals.get("result");
 
     outputEl.textContent = result || "No output";
 
-    // JS-only display animation
+    // Animate mysticalText
     if (result) {
       const mysticalEl = document.getElementById("mysticalText");
       mysticalEl.textContent = "";
@@ -773,13 +772,10 @@ except Exception as e:
       }, 25);
     }
 
-    // Unlock suspects if correct
-    if (
-      result &&
-      result.includes("ALICE MERCER") &&
-      result.includes("CHARLIE MERCER") &&
-      result.includes("BOB MERCER")
-    ) {
+    // Unlock suspects if decoded correctly
+    if (result && result.includes("ALICE MERCER") &&
+        result.includes("CHARLIE MERCER") &&
+        result.includes("BOB MERCER")) {
       revealSuspects();
       revealFinalReport();
     }
