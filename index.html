@@ -257,6 +257,27 @@ while i < len(bits):
     A partially obscured document has been recovered.<br>
     Use the <strong>Vigenère cipher</strong> and the correct keyword to decode it.
   </p>
+  
+  <div id="mysticalDoc" class="mystical-doc">
+    <div class="doc-header">📜 RECOVERED ARCHIVE FRAGMENT</div>
+    <pre id="mysticalText">
+  BDDFIT YPK RFDWVKCR
+  
+  UTFT_03: BMJDF NFSDGS
+  SPMF: TATUFMQ FOHJOFFS
+  BMBJC: MFHU CVJMEJNH BU 03:30
+  
+  UTFT_07: CIBSMJF NFSDGS
+  SPMF: TFDVSJUZ PGGJDFS
+  BMBJC: PO EVUZ GSPN 04:00
+  
+  UTFT_12: CPC NFSDFS
+  SPMF: DIJFG GJOBODJBM PGGJDFS
+  BMBJC: DMBJNT TMFFQ
+  
+  TUBUVT: JODPOTJTUFODJFT EFUFD UFE
+    </pre>
+  </div>
 
   <!-- Vigenère input area -->
   <div class="code-workshop">
@@ -281,7 +302,6 @@ while i < len(bits):
       return result
   
   text = CIPHERTEXT
-    <pre id="vigenereOutput" style="background:#000;color:#0f0;padding:10px;border-radius:5px;"></pre>
     </pre>
   
     <div class="student-inputs">
@@ -294,32 +314,15 @@ while i < len(bits):
       <br>
       <label>Print the result:</label>
       <input id="vigPrint" placeholder="" />
+      
+      <pre id="vigenereOutput" style="background:#000;color:#0f0;padding:10px;border-radius:5px;"></pre>
+
     </div>
   
     <button onclick="runVigenere()">Run Decryption</button>
   </div>
 
 
-  <div id="mysticalDoc" class="mystical-doc">
-    <div class="doc-header">📜 RECOVERED ARCHIVE FRAGMENT</div>
-    <pre id="mysticalText">
-  BDDFIT YPK RFDWVKCR
-  
-  UTFT_03: BMJDF NFSDGS
-  SPMF: TATUFMQ FOHJOFFS
-  BMBJC: MFHU CVJMEJNH BU 03:30
-  
-  UTFT_07: CIBSMJF NFSDGS
-  SPMF: TFDVSJUZ PGGJDFS
-  BMBJC: PO EVUZ GSPN 04:00
-  
-  UTFT_12: CPC NFSDFS
-  SPMF: DIJFG GJOBODJBM PGGJDFS
-  BMBJC: DMBJNT TMFFQ
-  
-  TUBUVT: JODPOTJTUFODJFT EFUFD UFE
-    </pre>
-  </div>
 
   <!-- Suspect profiles -->
   <div id="suspectProfiles" style="margin-top:20px;">
