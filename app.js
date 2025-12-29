@@ -686,7 +686,15 @@ function submitReport() {
 async function runVigenere() {
   if (!pyodideReady) return;
 
-  const code = document.getElementById("vigenereInput").value;
+  const keyInput = document.getElementById("vigKey").value;
+  const callInput = document.getElementById("vigCall").value;
+  const printInput = document.getElementById("vigPrint").value;
+  
+  const code = `
+  key = ${keyInput}
+  ${callInput}
+  ${printInput}
+  `;
   const output = document.getElementById("vigenereOutput");
 
   try {
