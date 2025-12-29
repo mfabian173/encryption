@@ -692,7 +692,22 @@ async function runVigenere() {
   try {
     const wrappedCode = `
 # === LOCKED GAME DATA ===
-CIPHERTEXT = "UCFEPF ZQSSK: QNWEM MIVYEV"
+CIPHERTEXT = CIPHERTEXT = """BDDFIT YPK RFDWVKCR
+
+UTFT_03: BMJDF NFSDGS
+SPMF: TATUFMQ FOHJOFFS
+BMBJC: MFHU CVJMEJNH BU 03:30
+
+UTFT_07: CIBSMJF NFSDGS
+SPMF: TFDVSJUZ PGGJDFS
+BMBJC: PO EVUZ GSPN 04:00
+
+UTFT_12: CPC NFSDFS
+SPMF: DIJFG GJOBODJBM PGGJDFS
+BMBJC: DMBJNT TMFFQ
+
+TUBUVT: JODPOTJTUFODJFT EFUFD UFE"""
+
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def vigenere_decode(ciphertext, key):
@@ -737,13 +752,11 @@ except Exception as e:
 
     // Mystical document reveal
     if (result) {
-      const doc = document.getElementById("mysticalDoc");
       const text = document.getElementById("mysticalText");
-
-      if (doc && text) {
-        doc.classList.remove("hidden");
+    
+      if (text) {
         text.textContent = "";
-
+    
         let i = 0;
         const interval = setInterval(() => {
           text.textContent += result[i];
@@ -752,6 +765,7 @@ except Exception as e:
         }, 25);
       }
     }
+
 
     // Unlock suspects + final report
     if (
