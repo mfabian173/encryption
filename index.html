@@ -346,33 +346,34 @@ while i < len(bits):
       <h3>Alibi Statement</h3>
       <p>“Sleeping soundly all night.”</p>
     </div>
-
+    
+  <div id="detectiveReport" class="report hidden">
+    <h1>🗂 DETECTIVE REPORT</h1>
+  
+    <label>Case ID</label>
+    <input value="CS-2025-001" disabled>
+  
+    <label>Identified Culprit</label>
+    <input id="culpritInput" placeholder="Enter suspect name">
+  
+    <button onclick="submitReport()">Submit Final Report</button>
+  
+    <p id="reportFeedback"></p>
+  </div>
+  
+  <div id="victoryScreen" class="victory hidden">
+    <h1>🏆 CASE CLOSED</h1>
+    <p>You solved the case using:</p>
+    <ul>
+      <li>Python loops</li>
+      <li>String manipulation</li>
+      <li>Logical reasoning</li>
+    </ul>
+    <p><strong>Excellent detective work.</strong></p>
   </div>
 
-<div id="detectiveReport" class="report hidden">
-  <h1>🗂 DETECTIVE REPORT</h1>
-
-  <label>Case ID</label>
-  <input value="CS-2025-001" disabled>
-
-  <label>Identified Culprit</label>
-  <input id="culpritInput" placeholder="Enter suspect name">
-
-  <button onclick="submitReport()">Submit Final Report</button>
-
-  <p id="reportFeedback"></p>
 </div>
 
-<div id="victoryScreen" class="victory hidden">
-  <h1>🏆 CASE CLOSED</h1>
-  <p>You solved the case using:</p>
-  <ul>
-    <li>Python loops</li>
-    <li>String manipulation</li>
-    <li>Logical reasoning</li>
-  </ul>
-  <p><strong>Excellent detective work.</strong></p>
-</div>
 
 <script src="app.js"></script>
 </body>
