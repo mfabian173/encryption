@@ -673,7 +673,7 @@ function submitReport() {
 
   const feedback = document.getElementById("reportFeedback");
 
-  if (answer === "ALEX MERCER" || answer === "USER_07") {
+  if (answer === "BOB MERCER" || answer === "USER_07") {
     feedback.textContent = "✅ SUCCESS! You solved the case.";
     feedback.className = "success";
     showVictory();
