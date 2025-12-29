@@ -783,7 +783,7 @@ function submitCulprit() {
   const input = document.getElementById("culpritInput").value.trim().toUpperCase();
   const feedback = document.getElementById("finalFeedback");
 
-  if (input === "CHARLIE MERCER" || input === "USER_07") {
+  if (input === "BOB MERCER" || input === "USER_12") {
     feedback.style.color = "lime";
     feedback.textContent = "✅ Success! You solved the case!";
   } else {
