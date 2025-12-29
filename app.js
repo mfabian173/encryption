@@ -774,22 +774,31 @@ function revealSuspects() {
 
 // Show final report input
 function revealFinalReport() {
-  document.getElementById("finalReport").classList.remove("hidden");
-  document.getElementById("finalReport").scrollIntoView({behavior:"smooth"});
+  document.getElementById("detectiveReport").classList.remove("hidden");
+  document.getElementById("detectiveReport").scrollIntoView({behavior:"smooth"});
 }
 
-// Submit final culprit report
 function submitCulprit() {
   const input = document.getElementById("culpritInput").value.trim().toUpperCase();
-  const feedback = document.getElementById("finalFeedback");
+  const feedback = document.getElementById("reportFeedback"); // Use detectiveReport feedback
 
   if (input === "BOB MERCER" || input === "USER_12") {
     feedback.style.color = "lime";
     feedback.textContent = "✅ Success! You solved the case!";
+    showVictory();
   } else {
     feedback.style.color = "red";
     feedback.textContent = "❌ That is not correct. Review the evidence and alibis carefully.";
   }
 }
+
+function showVictory() {
+  const victory = document.getElementById("victoryScreen");
+  if (victory) {
+    victory.classList.remove("hidden");
+    victory.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
 
 window.addEventListener("load", initPyodide);
