@@ -686,21 +686,27 @@ function submitReport() {
 async function runVigenere() {
   if (!pyodideReady) return;
 
-  const keyInput = document.getElementById("vigKey").value;
-  const callInput = document.getElementById("vigCall").value;
-  const printInput = document.getElementById("vigPrint").value;
-  
+  const keyInput = document.getElementById("vigKey").value.trim();
+  const callInput = document.getElementById("vigCall").value.trim();
+  const printInput = document.getElementById("vigPrint").value.trim();
+
+  if (!keyInput || !callInput || !printInput) {
+    alert("⚠️ Complete all lines of code before running.");
+    return;
+  }
+
   const code = `
-  key = ${keyInput}
-  ${callInput}
-  ${printInput}
-  `;
+key = "${keyInput.toUpperCase()}"
+${callInput}
+${printInput}
+`;
+
   const output = document.getElementById("vigenereOutput");
 
   try {
     const wrappedCode = `
 # === LOCKED GAME DATA ===
-CIPHERTEXT = CIPHERTEXT = """BDDFIT YPK RFDWVKCR
+CIPHERTEXT = """BDDFIT YPK RFDWVKCR
 
 UTFT_03: BMJDF NFSDGS
 SPMF: TATUFMQ FOHJOFFS
@@ -727,8 +733,7 @@ def vigenere_decode(ciphertext, key):
         if char.upper() in ALPHABET:
             c = ALPHABET.index(char.upper())
             k = ALPHABET.index(key[key_index % len(key)])
-            p = (c - k) % 26
-            plaintext += ALPHABET[p]
+            plaintext += ALPHABET[(c - k) % 26]
             key_index += 1
         else:
             plaintext += char
@@ -754,28 +759,25 @@ except Exception as e:
 `;
 
     await pyodide.runPythonAsync(wrappedCode);
-
     const result = pyodide.globals.get("result");
-    output.textContent = result || "No output";
 
-    // Mystical document reveal
+    output.textContent = result || "";
+
+    // 🔓 Visual decode
     if (result) {
       const text = document.getElementById("mysticalText");
-    
-      if (text) {
-        text.textContent = "";
-    
-        let i = 0;
-        const interval = setInterval(() => {
-          text.textContent += result[i];
-          i++;
-          if (i >= result.length) clearInterval(interval);
-        }, 25);
-      }
+      if (!text) return;
+
+      text.textContent = "";
+      let i = 0;
+      const interval = setInterval(() => {
+        text.textContent += result[i];
+        i++;
+        if (i >= result.length) clearInterval(interval);
+      }, 25);
     }
 
-
-    // Unlock suspects + final report
+    // Unlock suspects
     if (
       result &&
       result.includes("ALICE MERCER") &&
@@ -787,7 +789,7 @@ except Exception as e:
     }
 
   } catch (err) {
-    output.textContent = "JS ERROR: " + err;
+    console.error(err);
   }
 }
 
