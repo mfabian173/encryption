@@ -689,22 +689,38 @@ async function runVigenere() {
   const keyInput = document.getElementById("vigKey").value.trim();
   const callInput = document.getElementById("vigCall").value.trim();
   const printInput = document.getElementById("vigPrint").value.trim();
-  const output = document.getElementById("vigenereOutput");
 
   if (!keyInput || !callInput || !printInput) {
     alert("⚠️ Complete all lines of code before running.");
     return;
   }
 
-  const code = `
+  // Construct the user code
+  const userCode = `
 key = "${keyInput.toUpperCase()}"
 ${callInput}
 ${printInput}
 `;
 
-  try {
-    const wrappedCode = `
-CIPHERTEXT = document.getElementById("mysticalText").textContent
+  const outputEl = document.getElementById("vigenereOutput");
+
+  // Pyodide wrapped code (Python only)
+  const wrappedCode = `
+CIPHERTEXT = """BDDFIT YPK RFDWVKCR
+
+UTFT_03: BMJDF NFSDGS
+SPMF: TATUFMQ FOHJOFFS
+BMBJC: MFHU CVJMEJNH BU 03:30
+
+UTFT_07: CIBSMJF NFSDGS
+SPMF: TFDVSJUZ PGGJDFS
+BMBJC: PO EVUZ GSPN 04:00
+
+UTFT_12: CPC NFSDFS
+SPMF: DIJFG GJOBODJBM PGGJDFS
+BMBJC: DMBJNT TMFFQ
+
+TUBUVT: JODPOTJTUFODJFT EFUFD UFE"""
 
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -712,6 +728,7 @@ def vigenere_decode(ciphertext, key):
     key = key.upper()
     plaintext = ""
     key_index = 0
+
     for char in ciphertext:
         if char.upper() in ALPHABET:
             c = ALPHABET.index(char.upper())
@@ -720,57 +737,57 @@ def vigenere_decode(ciphertext, key):
             key_index += 1
         else:
             plaintext += char
+
     return plaintext
 
 result = None
 import builtins
 _stdout = []
 def fake_print(*args, **kwargs):
-    _stdout.append(" ".join(map(str,args)))
+    _stdout.append(" ".join(map(str, args)))
 builtins.print = fake_print
 
 try:
-    exec("""${code.replace(/`/g,'\\`')}""")
+    exec("""${userCode.replace(/`/g, "\\`")}""")
     if _stdout:
         result = "\\n".join(_stdout)
 except Exception as e:
     result = "ERROR: " + str(e)
 `;
 
+  try {
     await pyodide.runPythonAsync(wrappedCode);
-    const resultText = pyodide.globals.get("result");
+    const result = pyodide.globals.get("result");
 
-    output.textContent = resultText || "";
+    outputEl.textContent = result || "No output";
 
-    // Animate
-    const textEl = document.getElementById("mysticalText");
-    if (textEl && resultText) {
-      textEl.textContent = "";
+    // JS-only display animation
+    if (result) {
+      const mysticalEl = document.getElementById("mysticalText");
+      mysticalEl.textContent = "";
       let i = 0;
       const interval = setInterval(() => {
-        textEl.textContent += resultText[i];
+        mysticalEl.textContent += result[i];
         i++;
-        if (i >= resultText.length) clearInterval(interval);
+        if (i >= result.length) clearInterval(interval);
       }, 25);
     }
 
-    // Unlock suspects
+    // Unlock suspects if correct
     if (
-      resultText &&
-      resultText.includes("ALICE MERCER") &&
-      resultText.includes("CHARLIE MERCER") &&
-      resultText.includes("BOB MERCER")
+      result &&
+      result.includes("ALICE MERCER") &&
+      result.includes("CHARLIE MERCER") &&
+      result.includes("BOB MERCER")
     ) {
       revealSuspects();
       revealFinalReport();
     }
 
   } catch (err) {
-    console.error(err);
+    outputEl.textContent = "JS ERROR: " + err;
   }
 }
-
-
 
 // Show all suspect profiles
 function revealSuspects() {
