@@ -686,20 +686,20 @@ function submitReport() {
 async function runVigenere() {
   if (!pyodideReady) return;
 
-  const keyInput = document.getElementById("vigKey").value.trim();
-  const callInput = document.getElementById("vigCall").value.trim();
-  const printInput = document.getElementById("vigPrint").value.trim();
+  const keyInput = document.getElementById("vigKey").value.trim().toUpperCase();
   const outputEl = document.getElementById("vigenereOutput");
 
-  if (!keyInput || !callInput || !printInput) {
-    alert("⚠️ Complete all lines of code before running.");
+  if (!keyInput) {
+    alert("⚠️ Enter a key before running.");
     return;
   }
 
-  const safeCode = `
+  // Entire Python logic is self-contained
+  const pythonCode = `
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-CIPHERTEXT = """BDDFIT YPK RFDWVKCR
+CIPHERTEXT = """
+BDDFIT YPK RFDWVKCR
 
 UTFT_03: BMJDF NFSDGS
 SPMF: TATUFMQ FOHJOFFS
@@ -713,7 +713,8 @@ UTFT_12: CPC NFSDFS
 SPMF: DIJFG GJOBODJBM PGGJDFS
 BMBJC: DMBJNT TMFFQ
 
-TUBUVT: JODPOTJTUFODJFT EFUFD UFE"""
+TUBUVT: JODPOTJTUFODJFT EFUFD UFE
+"""
 
 def vigenere_decode(ciphertext, key):
     key = key.upper()
@@ -729,47 +730,30 @@ def vigenere_decode(ciphertext, key):
             plaintext += char
     return plaintext
 
-# Safe predefined variables
-key = "${keyInput.toUpperCase()}"
-decoded = vigenere_decode(CIPHERTEXT, key)
-text = decoded  # always safe
+decoded = vigenere_decode(CIPHERTEXT, "${keyInput}")
 
-# Capture print output
+# Always define 'text' so there are no undefined errors
+text = decoded
+
+# Capture prints safely
 import builtins
 _stdout = []
-def fake_print(*args, **kwargs):
+def fake_print(*args):
     _stdout.append(" ".join(map(str, args)))
 builtins.print = fake_print
 
-try:
-    ${callInput}   # user code safe
-    ${printInput}  # user code safe
-except Exception as e:
-    _stdout.append("ERROR: " + str(e))
+print(text)  # print decoded text
 
 result = "\\n".join(_stdout)
 `;
 
   try {
-    await pyodide.runPythonAsync(safeCode);
+    await pyodide.runPythonAsync(pythonCode);
     const result = pyodide.globals.get("result");
-
     outputEl.textContent = result || "No output";
 
-    // Animate mysticalText
-    if (result) {
-      const mysticalEl = document.getElementById("mysticalText");
-      mysticalEl.textContent = "";
-      let i = 0;
-      const interval = setInterval(() => {
-        mysticalEl.textContent += result[i];
-        i++;
-        if (i >= result.length) clearInterval(interval);
-      }, 25);
-    }
-
-    // Unlock suspects if decoded correctly
-    if (result && result.toUpperCase().includes("ALICE MERCER") &&
+    // Automatically reveal suspects if names found
+    if (result.toUpperCase().includes("ALICE MERCER") &&
         result.toUpperCase().includes("CHARLIE MERCER") &&
         result.toUpperCase().includes("BOB MERCER")) {
       revealSuspects();
