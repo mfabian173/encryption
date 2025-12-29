@@ -551,14 +551,7 @@ function unlockRoom4() {
   // Optional dramatic stage message
   if (stage) stage.textContent = "🔓 Room 4 Unlocked";
 
-  // Fade out Room 3
-  room3.style.transition = "opacity 0.8s";
-  room3.style.opacity = 0;
-
   setTimeout(() => {
-    room3.style.display = "none"; // hide Room 3
-    room3.style.opacity = 1; // reset for later if needed
-
     // Show Room 4
     room4.style.display = "block";
     room4.style.opacity = 0;
