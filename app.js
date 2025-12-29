@@ -689,17 +689,16 @@ async function runVigenere() {
   const keyInput = document.getElementById("vigKey").value.trim();
   const callInput = document.getElementById("vigCall").value.trim();
   const printInput = document.getElementById("vigPrint").value.trim();
+  const outputEl = document.getElementById("vigenereOutput");
 
   if (!keyInput || !callInput || !printInput) {
     alert("⚠️ Complete all lines of code before running.");
     return;
   }
 
-  const outputEl = document.getElementById("vigenereOutput");
-
-  // Wrap user code safely
   const safeCode = `
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 CIPHERTEXT = """BDDFIT YPK RFDWVKCR
 
 UTFT_03: BMJDF NFSDGS
@@ -730,25 +729,25 @@ def vigenere_decode(ciphertext, key):
             plaintext += char
     return plaintext
 
-# Predefine safe variables
+# Safe predefined variables
 key = "${keyInput.toUpperCase()}"
 decoded = vigenere_decode(CIPHERTEXT, key)
+text = decoded  # always safe
 
-# Capture print output safely
+# Capture print output
 import builtins
 _stdout = []
 def fake_print(*args, **kwargs):
     _stdout.append(" ".join(map(str, args)))
 builtins.print = fake_print
 
-result = None
 try:
-    ${callInput.replace(/document|text/g,'')}  # remove unsafe JS vars
-    ${printInput.replace(/document|text/g,'')}
-    if _stdout:
-        result = "\\n".join(_stdout)
+    ${callInput}   # user code safe
+    ${printInput}  # user code safe
 except Exception as e:
-    result = "ERROR: " + str(e)
+    _stdout.append("ERROR: " + str(e))
+
+result = "\\n".join(_stdout)
 `;
 
   try {
@@ -770,9 +769,9 @@ except Exception as e:
     }
 
     // Unlock suspects if decoded correctly
-    if (result && result.includes("ALICE MERCER") &&
-        result.includes("CHARLIE MERCER") &&
-        result.includes("BOB MERCER")) {
+    if (result && result.toUpperCase().includes("ALICE MERCER") &&
+        result.toUpperCase().includes("CHARLIE MERCER") &&
+        result.toUpperCase().includes("BOB MERCER")) {
       revealSuspects();
       revealFinalReport();
     }
@@ -781,8 +780,6 @@ except Exception as e:
     outputEl.textContent = "JS ERROR: " + err;
   }
 }
-
-
 
 // Show all suspect profiles
 function revealSuspects() {
