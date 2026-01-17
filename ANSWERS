@@ -1,0 +1,17 @@
+ROOM1: PROGRAMMER
+ROOM2:13
+ROOM3:
+for p in pixels:
+
+bits.append(p[0])
+
+for b in bits:
+
+byte.append(b)
+
+ROOM4:
+BABBAGE
+
+decoded = vigenere_decode(text, key)
+
+print(decoded)
